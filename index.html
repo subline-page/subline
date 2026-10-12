@@ -200,8 +200,6 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 .sl[hidden]{display:none}
 .sl .p,.sl .add{color:var(--d-mut)}
 .sl .add b{color:var(--d-link);font-weight:400}
-.sl .pv{display:inline-block;white-space:nowrap;transition:color .14s ease-out}
-.sl .pv.on{color:var(--d-sl);text-decoration:underline}
 .dc[data-off] .sl{opacity:0}
 .bar{position:absolute;right:14px;top:-20px;display:flex;align-items:center;gap:2px;padding:3px;background:var(--d-float);border:1px solid var(--d-float-line);
   border-radius:8px;z-index:2;box-shadow:var(--d-shadow);transition:opacity .14s ease-out}
@@ -882,11 +880,9 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     });
 
   // The hero demo: a Discord channel that plays what Subline does, then loops.
-  // It follows the real client. For an Automatic owner every ≈ line ends in
-  // "Preview ✦ (5 left)", one count shared by every line; a press puts
-  // "✦ translating…" in its place, then the ✦ line replaces the ≈ one, with
-  // "Add AI" on it. ⚡ (AI) and 🌐 sit in a message's hover toolbar, next to
-  // the emoji button.
+  // It follows the real client: ⚡ and 🌐 sit in a message's hover toolbar, next
+  // to the emoji button. For an Automatic owner ⚡ is a ✦ preview, "Preview ✦
+  // (5 left today)", and the ✦ line then replaces the ≈ one, with "Add AI" on it.
   // A status shows translated in place in its bubble; ✦ (≈ on Automatic)
   // switches it to the original, which then ends in ↩.
   // The page ships the END state in its HTML (every line ✦), so with scripts off,
@@ -964,18 +960,6 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
         anim(sl, [{ opacity: 0 }, { opacity: 1 }], 280);
       }, 110);
     }
-    // Automatic's Preview ✦ on a ≈ line: muted like the tail, one count for all.
-    var left = 5;
-    function pv(busy) {
-      var t = el("span", "add", " · ");
-      t.appendChild(el("span", "pv", busy ? "✦ translating…" : "Preview ✦ (" + left + " left)"));
-      return t;
-    }
-    function recount() {
-      [].forEach.call(root.querySelectorAll(".pv"), function (n) {
-        if (n.textContent.indexOf("Preview") === 0) n.textContent = "Preview ✦ (" + left + " left)";
-      });
-    }
     function tail(text, link) {
       var t = el("span", "add", " · " + (text || ""));
       if (link) t.appendChild(el("b", "", link));
@@ -1036,7 +1020,6 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       [].forEach.call(root.querySelectorAll(".dm"), function (n) { n.hidden = true; n.classList.remove("hover"); });
       [].forEach.call(root.querySelectorAll(".sl"), function (n) { n.hidden = true; });
       root.removeAttribute("data-off");
-      left = 5;
       if (pop) pop.hidden = true;
       status(true);
       if (bar) bar.hidden = true;
@@ -1049,23 +1032,24 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       [0, reset],
       [100, function () { say("<b>" + G + " under every message you can't read.</b> Google, instant."); }],
       [400, function () { show("luna"); }],
-      [700, function () { line("luna", "≈", "es", "anyone playing tonight? I'm really bored", pv()); }],
+      [700, function () { line("luna", "≈", "es", "anyone playing tonight? I'm really bored"); }],
       [1000, function () { show("kenji"); }],
-      [700, function () { line("kenji", "≈", "ja", "I can go! If it's from 9 o'clock", pv()); }],
+      [700, function () { line("kenji", "≈", "ja", "I can go! If it's from 9 o'clock"); }],
       [2000, function () { show("you"); say("<b>Your own messages stay as they are.</b>"); }],
       [2400, function () { show("rafa"); }],
-      [700, function () { line("rafa", "≈", "pt", "brother I'm dead kkkkk", pv()); say("<b>Slang trips Google up.</b>"); }],
-      [1800, function () { point(m("rafa").querySelector(".pv")); }],
-      [700, function () {
-        var c = m("rafa").querySelector(".pv");
-        if (c) c.classList.add("on");
-        say("Every " + G + " line has <b>Preview " + S + "</b>. Automatic gives you 5 a day.");
+      [700, function () { line("rafa", "≈", "pt", "brother I'm dead kkkkk"); say("<b>Slang trips Google up.</b>"); }],
+      [1800, function () { hover("rafa"); point(zap); }],
+      [1000, function () {
+        showTip(zap, "Preview ✦ (5 left today)");
+        say("Hover the message and press <b>⚡</b> for a <b>" + S + " preview</b>. Automatic gives you 5 a day.");
       }],
-      [2000, function () { press(m("rafa").querySelector(".pv")); }],
-      [200, function () { line("rafa", "≈", "pt", "brother I'm dead kkkkk", pv(true)); }],
-      [1400, function () {
-        left = 4;
-        recount();
+      [1900, function () { press(zap); }],
+      [300, function () {
+        hideTip();
+        hover(null);
+        line("rafa", "≈", "pt", "brother I'm dead kkkkk", tail("⚡ translating…"));
+      }],
+      [1300, function () {
         line("rafa", "✦", "pt", "bro I'm dying lol", tail("", "Add AI"));
         say("<b>" + S + " AI translates with context</b> and gets it right. Its line replaces the " + G + " one.");
       }],

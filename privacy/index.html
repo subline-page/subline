@@ -210,7 +210,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <a class="pv-back" href="../">← subline.page</a>
 
 <h1>Privacy</h1>
-<p class="pv-date">Last updated 11 October 2026</p>
+<p class="pv-date">Last updated 12 October 2026</p>
 <p class="pv-intro">Subline translates Discord messages on your computer. To translate, it must send text to a translation service. This page says what leaves your computer, where it goes, what is kept, and for how long. It describes what the current version (0.2.4) does today. Where something is outside our control, or we have not confirmed it, this page says so.</p>
 
 <nav class="toc" aria-label="Contents">
@@ -309,7 +309,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li>Automatically, on every message that ≈ would translate, when your plan includes AI.</li>
   <li>With AI, when you press ⚡ on a single message. This works on any message, in any channel, DMs included. It sends only when you press it.</li>
-  <li>For ✦ previews. Automatic owners without AI get up to 5 a day. <b>Preview ✦</b> ends every ≈ line. A message with no ≈ line offers ⚡ instead, in any channel, DMs included. A preview is sent only when you press one of these.</li>
+  <li>For ✦ previews. Automatic owners without AI get up to 5 a day. Press ⚡ on a single message, in any channel, DMs included. A preview is sent only when you press it.</li>
 </ul>
 
 <h3>What one ✦ request carries</h3>
@@ -371,13 +371,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h2 id="surfaces">Profiles, statuses, embeds and titles</h2>
 <p>With a paid plan, Subline also translates text around messages. The setting is <b>Profiles, embeds and more</b> in <b>Subline → Settings</b>. It is on by default.</p>
 <ul>
-  <li><b>Bios and custom statuses</b> of other people, wherever Discord shows them: member list, profiles, the DM list and DM profiles. Which rule applies depends on where you are in Discord:
-    <ul>
-      <li>With a server channel open, they follow that channel's rule, as messages do. If the channel is off, or <b>All servers</b> is off and you did not turn the channel on, they are not sent.</li>
-      <li>With a server open but no channel open in it (for example its member page), they follow <b>All servers</b>.</li>
-      <li>In Home, the DM list, an open DM or group DM, and Friends, they are translated <b>even when DMs are off</b>.</li>
-    </ul>
-    Your own bio is never sent. Your own status is not sent from your profile, but it can be sent when it shows in a member list.</li>
+  <li><b>Bios and custom statuses</b> of other people, wherever Discord shows them: member list, profiles, the DM list and DM profiles. These have <b>no channel or DM switch</b>. They are translated even when DMs are off. Your own bio is never sent. Your own status is not sent from your profile, but it can be sent when it shows in a member list.</li>
   <li><b>Embeds, polls and forwarded messages</b>, in channels that are on.</li>
   <li><b>Channel topics, voice channel descriptions and voice statuses, guidelines and events</b>, in server channels that are on.</li>
   <li><b>Server rules, and events that belong to no channel.</b> These have no channel switch.</li>
@@ -547,7 +541,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>30 days:</b> a link from your scrambled install id to your code, so Subline can switch on by itself.</li>
   <li><b>3 days:</b> notes that a purchase is in progress, links from Dodo's payment or subscription id to your scrambled install id and to the checkout, the purchase result (paid, pending or failed), and changes from payment notices waiting to be matched to a code.</li>
   <li><b>About 2 days:</b> the checkout session, linked to your scrambled install id. Recent checkouts per computer, with their Dodo link, product, where they started and when.</li>
-  <li><b>2 hours:</b> how many checkouts your computer and your IP address started this hour. The limits are 6 per computer and 20 per IP address.</li>
+  <li><b>2 hours:</b> how many checkouts your computer and your IP address started this hour. The limits are 6 per computer and 20 per IP address. The IP counter's name holds a <b>keyed hash</b> of your address, not the address (see <a href="#ip">IP addresses</a>).</li>
 </ul>
 
 <h3>Waiting for payment</h3>
@@ -561,7 +555,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>Each server code keeps a list of the scrambled install ids that claimed it. <b>No expiry.</b></li>
   <li>Each install can claim one server code, ever. The relay keeps a marker for that. <b>No expiry.</b></li>
   <li>If you use IPv6, the relay counts claims of that server code from your network (the first 48 bits of your IPv6 address). This limits how many claims one network can make. It stores a <b>keyed hash</b> of the network, not the network itself (see <a href="#ip">IP addresses</a>). A network's count is deleted 30 days after its last claim of that server code. Nothing is stored for IPv4.</li>
-  <li>Tries from your IP address are counted per day: at most 30 successes and 20 failures. The counter's name includes your IP address (IPv4 in full, or the first 64 bits of IPv6). It holds only counts. It is deleted 2 days later.</li>
+  <li>Tries from your IP address are counted per day: at most 30 successes and 20 failures. The counter's name holds a <b>keyed hash</b> of your IP address (IPv4 in full, or the first 64 bits of IPv6), not the address. It holds only counts. It is deleted 2 days later.</li>
   <li>When a server code hits a network limit, the relay logs the server code and a short tag made from the keyed hash.</li>
   <li>When a server code is claimed quickly (half or nine tenths of its claims within an hour), the relay logs the server code and claim counts.</li>
   <li>The relay counts, per server code, how many accounts that redeemed it later bought AI. This is a number only, with no expiry.</li>
@@ -574,13 +568,13 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <thead><tr><th>Use</th><th>Form</th><th>How long</th></tr></thead>
 <tbody>
 <tr><td>✦ translation and status checks</td><td data-k="Form">Not used by the relay's code.</td><td data-k="How long">Not kept</td></tr>
-<tr><td>Checkout limit</td><td data-k="Form">Plain: IPv4 in full, or the first 64 bits of IPv6, in a counter's name.</td><td data-k="How long">2 hours</td></tr>
-<tr><td>Server code tries</td><td data-k="Form">Plain, in a counter's name. Counts only.</td><td data-k="How long">2 days</td></tr>
+<tr><td>Checkout limit</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name.</td><td data-k="How long">2 hours</td></tr>
+<tr><td>Server code tries</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name. Counts only.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Server code claims (IPv6 only)</td><td data-k="Form">Keyed hash of the first 48 bits of IPv6, with a count.</td><td data-k="How long">30 days after that network's last claim of that server code</td></tr>
-<tr><td>Purchase checks from this website</td><td data-k="Form">Plain, in a per-minute counter held in memory. Limit 120 a minute.</td><td data-k="How long">About a minute</td></tr>
+<tr><td>Purchase checks from this website</td><td data-k="Form">Keyed hash, in the name of a per-minute counter held in memory. Limit 120 a minute.</td><td data-k="How long">About a minute</td></tr>
 <tr><td>Patch reports</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6.</td><td data-k="How long">8 days</td></tr>
 <tr><td>Feedback limits</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, mixed with the day, in a counter's name. Counts only. Not stored with your feedback.</td><td data-k="How long">Deleted at the first daily cleanup after that UTC day</td></tr>
-<tr><td>Older versions (0.1.x)</td><td data-k="Form">Plain, in daily counter names.</td><td data-k="How long">2 days</td></tr>
+<tr><td>Older versions (0.1.x)</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in daily counter names.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Cloudflare's own records</td><td data-k="Form">May include your IP address. See <a href="#logs">Server logs</a>.</td><td data-k="How long">Set by Cloudflare</td></tr>
 </tbody></table>
 
@@ -589,7 +583,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>A keyed hash is HMAC-SHA-256 with a secret key that only the relay holds. The relay keeps the first 32 hex characters.</li>
   <li>Without the key, nobody can work back from the hash to your address, even by trying every possible address.</li>
   <li>Each use mixes in its own label, so the same address gives a different hash in each place.</li>
-  <li>If the key is missing on the relay, it stores nothing made from your address. It then refuses patch reports. Server code claims run without the network limit. Feedback runs without its per-install and per-address limits.</li>
+  <li>If the key is missing on the relay, it stores nothing made from your address. It then refuses patch reports. Server code claims run without the network limit and without the per-address limit on tries. Feedback runs without its per-install and per-address limits. Checkouts, purchase checks and older versions run without their per-address limits. The other limits still apply.</li>
   <li>Server code network counts stored before 0.2.4 held the plain first 48 bits. The relay converts each one to the keyed form the next time that server code's record is loaded. Without the key, it deletes them.</li>
 </ul>
 
@@ -605,7 +599,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>60 seconds before the saved answer expires;</li>
   <li>when Discord's window comes back online or into focus, at most once every 10 minutes;</li>
   <li>when your code changes;</li>
-  <li>for Automatic without AI, when <b>Preview ✦</b> or ⚡ first shows on a new UTC day;</li>
+  <li>for Automatic without AI, when ⚡ first shows on a new UTC day;</li>
   <li>after AI ends, at 2 minutes, 10 minutes, 30 minutes and 2 hours;</li>
   <li>after the relay refuses a ✦ request for your plan, and after you redeem a server code or try to buy something you already own;</li>
   <li>after a failure, at 5, 15 and 60 seconds, then every 5 minutes until answered.</li>
@@ -651,7 +645,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li><b>Your message</b>, up to 2,000 characters. You need a message or a report.</li>
   <li><b>Your email</b>, if you want a reply. It is optional. Leave it empty to stay anonymous.</li>
-  <li><b>A bad-translation report</b>, only from <b>Report translation</b>. It holds that one message's original text, the translation you saw, whether it was ≈ or ✦, and the two languages. It never holds other messages. The original is usually someone else's message. It is Discord's own text, so mentions in it show as Discord's codes, which include ids.</li>
+  <li><b>A bad-translation report</b>, only from <b>Report translation</b>. It holds that one message's original text, the translation you saw, whether it was ≈ or ✦, and the two languages. It never holds other messages. The original is usually someone else's message. Mentions, channels, roles and custom emoji in it are replaced by words such as "@user" and "#channel", so it holds no Discord ids.</li>
   <li><b>Recent error codes.</b> Up to 10 from this Discord session. Each is a code from a fixed list, with its time to the minute and, if there was one, an HTTP status number. No error text and no message text.</li>
   <li><b>App details.</b> The Subline version and build, your system (Mac, Windows, Linux or other) and your plan.</li>
 </ul>
@@ -695,10 +689,10 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 
 <h2 id="logs">Server logs</h2>
 <ul>
-  <li>Cloudflare's Workers Logs are switched on for the relay.</li>
+  <li>Cloudflare's Workers Logs keep only the relay's own log lines. Request logs (each request's address, headers and network details) are switched off.</li>
   <li>The relay's own log lines are warnings and errors with fixed text. They contain no message text, no usernames and no request bodies. Error text is cut to 200 characters. On the translation and spending paths, codes and IP addresses are blanked from error text. Other error text is not blanked.</li>
   <li>Some log lines do hold: a server code with a short network tag or claim counts, Dodo checkout and payment ids, a Dodo product id, up to 200 characters of an error from Dodo, broken item names from patch reports, a feedback item's id when its email copy fails, and the AI service's name and error status.</li>
-  <li>Cloudflare may also record details of each request on its own, such as the address requested, headers and your IP address. Cloudflare decides which details it records, and for how long. We have not yet confirmed this for the relay.</li>
+  <li>Cloudflare's network still carries each request. It can keep its own security and traffic records, which can include your IP address. Cloudflare decides what it keeps, and for how long.</li>
   <li>Subline's setup adds no other log store.</li>
 </ul>
 
@@ -740,7 +734,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li>A first-use record that holds your <b>install id itself</b> (not scrambled), for 90 days.</li>
   <li>Daily counts per install, holding the install id itself, for 2 days. Per-minute counts, for 2 minutes.</li>
-  <li>Daily counts per IP address, with the address in plain form (IPv4 in full, or the first 64 bits of IPv6), for 2 days.</li>
+  <li>Daily counts per IP address, for 2 days. The counter's name holds a keyed hash of the address (IPv4 in full, or the first 64 bits of IPv6), not the address.</li>
 </ul>
 <p>The relay reads first-use records to recognise early users.</p>
 <p>Versions 0.1.8 and earlier let you enter your own AI key (for Groq, Anthropic or Google Gemini). That key stays hidden in Vencord's <code>settings.json</code>. If it is still there and no Subline code is saved, ✦ requests go from your computer straight to that AI service, with your key. They carry the same message text, usernames, message ids and context lines as a ✦ prompt, and that service sees your IP address. Saving a Subline code switches this off.</p>
@@ -749,8 +743,8 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <table class="rt">
 <thead><tr><th>Switch</th><th>What it stops</th><th>What it does not stop</th></tr></thead>
 <tbody>
-<tr><td>Globe button (one channel)</td><td data-k="What it stops">Messages, embeds, polls, forwards, topics and titles in that channel. In a server channel, also bios and statuses while that channel is open.</td><td data-k="What it does not stop">Bios and statuses in Home, the DM list, DMs and Friends. Server rules, onboarding questions, and events that belong to no channel. ⚡ when you press it. Status checks, patch reports, the badge list.</td></tr>
-<tr><td><b>All servers</b> off</td><td data-k="What it stops">Every server channel, except those you turn on with the globe button. Bios and statuses while a server is open, except in channels you turned on.</td><td data-k="What it does not stop">Bios and statuses in Home, the DM list, DMs and Friends. Server rules, onboarding questions, and events that belong to no channel (use the next switch). ⚡ when you press it. Status checks, patch reports, the badge list.</td></tr>
+<tr><td>Globe button (one channel)</td><td data-k="What it stops">Messages, embeds, polls, forwards, topics and titles in that channel.</td><td data-k="What it does not stop">Bios and statuses anywhere. Server rules, onboarding questions, and events that belong to no channel. ⚡ when you press it. Status checks, patch reports, the badge list.</td></tr>
+<tr><td><b>All servers</b> off</td><td data-k="What it stops">Every server channel, except those you turn on with the globe button.</td><td data-k="What it does not stop">Bios, statuses, server rules, onboarding questions, and events that belong to no channel (use the next switch). ⚡ when you press it. Status checks, patch reports, the badge list.</td></tr>
 <tr><td><b>Profiles, embeds and more</b> off</td><td data-k="What it stops">All bios, statuses, embeds, polls, topics, titles and other text around messages.</td><td data-k="What it does not stop">Messages in channels that are on. Status checks, patch reports, the badge list.</td></tr>
 <tr><td>DMs (off by default)</td><td data-k="What it stops">Messages in DMs and group DMs, until you turn one on with the globe button.</td><td data-k="What it does not stop">Bios and custom statuses in Home, the DM list, DMs and Friends. ⚡ in DMs when you press it.</td></tr>
 <tr><td><b>Earlier messages</b> set to 0</td><td data-k="What it stops">Translating recent messages when you open a channel.</td><td data-k="What it does not stop">New messages.</td></tr>
@@ -798,11 +792,11 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Server code tries</td><td data-k="Holds">Counts, under a name with your IP.</td><td data-k="How long">2 days</td></tr>
 <tr><td>"Seen today" markers</td><td data-k="Holds">Scrambled code or install id.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Feedback counters</td><td data-k="Holds">Counts, under keyed hashes of install id and IP.</td><td data-k="How long">Until the first daily cleanup after that day</td></tr>
-<tr><td>Checkout limits</td><td data-k="Holds">Counts per computer and per IP.</td><td data-k="How long">2 hours</td></tr>
+<tr><td>Checkout limits</td><td data-k="Holds">Counts per computer and per keyed hash of IP.</td><td data-k="How long">2 hours</td></tr>
 <tr><td>Daily totals</td><td data-k="Holds">Numbers only.</td><td data-k="How long">35 days</td></tr>
 <tr><td>Analytics rows</td><td data-k="Holds">Result, 8-character fingerprint, plan, count.</td><td data-k="How long">Set by Cloudflare</td></tr>
 <tr><td>Workers Logs</td><td data-k="Holds">Relay log lines, request details recorded by Cloudflare.</td><td data-k="How long">Set by Cloudflare</td></tr>
-<tr><td>Older versions</td><td data-k="Holds">Install id itself; plain IP in counters.</td><td data-k="How long">90 days; 2 days</td></tr>
+<tr><td>Older versions</td><td data-k="Holds">Install id itself; keyed hash of IP in counters.</td><td data-k="How long">90 days; 2 days</td></tr>
 </tbody></table>
 
 <table class="rt">
