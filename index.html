@@ -275,10 +275,8 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   <div data-thanks-keys>
     <p class="lead">Your code:</p>
     <div class="panel keyrow" data-thanks-key><code class="mono" data-thanks-code>ABCD-1234-EFGH-5678</code><button class="btn btn-secondary" type="button" data-thanks-copy>Copy</button></div>
-    <p class="fine" data-thanks-site-only>Paste it when the installer asks. It's in your receipt email too.</p>
-    <p class="fine" data-thanks-buy-only hidden>Enter it in Subline under <b>I have a code</b>. It's in your receipt email too.</p>
+    <p class="fine" data-thanks-site-only>Enter it in Discord, in <b>Subline → Settings</b> under <b>Enter a code</b>. It's in your receipt email too.</p>
   </div>
-  <p class="lead" data-thanks-buy-nokey hidden>Your code is in your email from <b>Dodo Payments</b>. Enter it in Subline under <b>I have a code</b>.</p>
   <div data-thanks-site-only>
     <div class="thanks-cta">
       <a data-dl="mac" class="btn btn-primary" href="https://github.com/subline-page/subline/releases/latest">Download for Mac</a>
@@ -291,7 +289,6 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   <p class="kicker">Thanks</p>
   <h2 class="sec">Payment processing.</h2>
   <p class="lead">Your code arrives by email from <b>Dodo Payments</b> in a few minutes. <b>Check spam.</b></p>
-  <p class="fine" data-thanks-buy-only hidden>Enter it in Subline under <b>I have a code</b>.</p>
 </div>
 <div data-thanks-discord hidden>
   <p class="kicker">Thanks</p>
@@ -327,7 +324,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 <div data-thanks-failed hidden>
   <p class="kicker">Checkout</p>
   <h2 class="sec">Payment didn't go through.</h2>
-  <p class="lead">Nothing was charged. <a href="./#pricing" data-thanks-retry>Try again</a>.</p>
+  <p class="lead">Nothing was charged. Go back to Discord and try again.</p>
   <p class="fine">Using a VPN? Turn it off only while you pay. Discord can stay on.</p>
 </div>
 <p class="fine" style="margin-top:32px"><a href="/">Go to the Subline home page</a></p>
@@ -466,10 +463,8 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   // (fallbackKeys), in case the purchase has not switched on after a few
   // minutes: a buyer must never be left with a payment and nothing to type.
   //
-  // A checkout started on the /buy page returns to "?from=buy". That view is the
-  // code with "Enter it in Subline under I have a code.", and no downloads: the
-  // buyer may be on a phone. Its return carries fromBuy: true (the field is only
-  // there on a /buy return, so every other return keeps its exact shape).
+  // The site sells nothing since 0.2.8 (the /buy page is gone): a return that
+  // still says "?from=buy" is read like any other site return.
   //
   // A checkout started from the Subline installer returns to "?from=installer".
   // The installer is still open and carries on by itself once the purchase
@@ -494,16 +489,13 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     var from = params ? params.get("from") : null;
     var fromDiscord = from === "discord";
     var fromInstaller = from === "installer";
-    var fromBuy = from === "buy";
     var isReturn = !!params && status !== "" && !!(params.get("payment_id") || params.get("subscription_id"));
     if (!isReturn) {
       // A cleaned address: the outcome is in result=, never a key.
       var result = params ? params.get("result") : null;
       var kept = result === "ok" || result === "pending" || result === "failed" ? result : null;
       if (!kept && !fromDiscord && !fromInstaller && hash !== "#thanks") return null;
-      var bare = { state: kept || "pending", keys: [], fromDiscord: fromDiscord, fromInstaller: fromInstaller };
-      if (fromBuy) bare.fromBuy = true;
-      return bare;
+      return { state: kept || "pending", keys: [], fromDiscord: fromDiscord, fromInstaller: fromInstaller };
     }
   
     var OK = ["succeeded", "active"];
@@ -524,9 +516,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       if (keys.length > 0) out.fallbackKeys = keys;
       return out;
     }
-    var site = { state: state, keys: keys, fromDiscord: false, fromInstaller: false };
-    if (fromBuy) site.fromBuy = true;
-    return site;
+    return { state: state, keys: keys, fromDiscord: false, fromInstaller: false };
   }
   
   // The address the page keeps after reading a return (before "#thanks"): the
@@ -536,7 +526,6 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     var parts = [];
     if (ret.fromDiscord) parts.push("from=discord");
     else if (ret.fromInstaller) parts.push("from=installer");
-    else if (ret.fromBuy) parts.push("from=buy");
     parts.push("result=" + ret.state);
     return "?" + parts.join("&");
   }
@@ -619,7 +608,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     [].forEach.call(document.querySelectorAll("body > section"), function (s) { if (s !== section) s.hidden = true; });
     function part(name) { return section.querySelector("[data-thanks-" + name + "]"); }
     function each(name, fn) { [].forEach.call(section.querySelectorAll("[data-thanks-" + name + "]"), fn); }
-    var d = ret.fromDiscord, inst = ret.fromInstaller, buy = !!ret.fromBuy;
+    var d = ret.fromDiscord, inst = ret.fromInstaller;
     var site = !d && !inst;
     // The code is in the email only after a one-time purchase. AI is a
     // subscription and does not change the code, so its view leaves that out.
@@ -637,13 +626,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       if (fb && state === "failed") fb.hidden = true;
     }
     show(ret.state);
-    each("site-only", function (el) { el.hidden = buy; });
-    each("buy-only", function (el) { el.hidden = !buy; });
     each("email", function (el) { el.hidden = !oneTime; });
-    var nokey = part("buy-nokey");
-    if (nokey) nokey.hidden = !buy || ret.keys.length > 0;
-    var retry = part("retry");
-    if (retry && buy) retry.setAttribute("href", "buy/");
     // A Discord or installer return that carried a key: offer it collapsed,
     // only as the way out if the purchase has not switched on by itself.
     if (fb) {
