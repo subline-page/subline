@@ -763,6 +763,92 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   var links = [].slice.call(document.querySelectorAll("[data-dl]"));
   links.forEach(function (a) { if (!a.getAttribute("href") || a.getAttribute("href") === "#") a.href = RELEASES; });
 
+  // The site's pings to Subline's server (relay POST /v1/hit). Pure: no DOM of
+  // its own, and the network is handed in (sendPing gets navigator and fetch),
+  // so the build inlines this text into the page and a node test runs the very
+  // same text.
+  //
+  // Two pings, nothing else: one when the page opens ({e: "visit"}), and one
+  // when a download button is pressed ({e: "download", os: "mac" | "win"}).
+  // Each carries the source: the page's ?ref= value, else the name of the site
+  // the visitor came from (its host name only, never the full address), else
+  // nothing. No cookie, no id, no browser details. The server keeps only daily
+  // counts (relay src/funnel.ts).
+  //
+  // A ping never delays or blocks anything: sendBeacon queues it and returns at
+  // once, even while the browser leaves for the download; fetch with keepalive
+  // is the fallback; every failure is silent.
+  
+  var HIT_URL = "https://relay.subline.page/v1/hit";
+  
+  /** The source: ?ref= of the page, else the referring site's host name (not this site's own). */
+  function pingRef(search, referrer, ownHost) {
+    var ref = "";
+    try {
+      var m = /[?&]ref=([^&#]*)/.exec(search || "");
+      if (m) ref = decodeURIComponent(m[1].replace(/\+/g, " "));
+    } catch (e) {
+      ref = "";
+    }
+    if (!ref && referrer) {
+      var h = /^[a-z][a-z0-9+.-]*:\/\/(?:[^\/?#@]*@)?([^\/?#:@]+)/i.exec(String(referrer));
+      if (h && h[1].toLowerCase() !== String(ownHost || "").toLowerCase()) ref = h[1];
+    }
+    // The server keeps at most 40 characters of letters, digits, dots and dashes.
+    return ref.slice(0, 64);
+  }
+  
+  /** The computer type of a download button: its data-dl kind, else the hero button's default text. */
+  function downloadOs(dl, hero) {
+    if (dl === "win") return "win";
+    if (dl === "mac" || dl === "mac-intel") return "mac";
+    return hero === "secondary" ? "win" : "mac";
+  }
+  
+  /** Send one ping. Returns how it went out ("beacon", "fetch" or "none"); never throws. */
+  function sendPing(url, payload, nav, fetchFn) {
+    var body;
+    try {
+      body = JSON.stringify(payload);
+    } catch (e) {
+      return "none";
+    }
+    try {
+      if (nav && typeof nav.sendBeacon === "function" && nav.sendBeacon(url, body)) return "beacon";
+    } catch (e) {
+      // fall through to fetch
+    }
+    try {
+      if (typeof fetchFn === "function") {
+        var p = fetchFn(url, {
+          method: "POST", body: body, keepalive: true, mode: "no-cors", credentials: "omit",
+          referrerPolicy: "no-referrer", headers: { "content-type": "text/plain" }
+        });
+        if (p && typeof p.catch === "function") p.catch(function () {});
+        return "fetch";
+      }
+    } catch (e) {
+      // silent
+    }
+    return "none";
+  }
+
+  // One visit ping now, and one download ping per press of a download button
+  // (the hero buttons, whichever system they were set to, and every data-dl
+  // link). Never waits and never stops the download: the link opens as usual.
+  (function () {
+    var send = function (payload) {
+      return sendPing(HIT_URL, payload, navigator, typeof fetch === "function" ? function (u, o) { return fetch(u, o); } : null);
+    };
+    var ref = pingRef(location.search, document.referrer, location.hostname);
+    send({ e: "visit", ref: ref });
+    [].forEach.call(document.querySelectorAll('[data-dl], [data-hero="primary"], [data-hero="secondary"]'), function (a) {
+      a.addEventListener("click", function () {
+        send({ e: "download", os: downloadOs(a.getAttribute("data-dl"), a.getAttribute("data-hero")), ref: ref });
+      });
+    });
+  })();
+
   function set(kind, url) {
     links.filter(function (a) { return a.getAttribute("data-dl") === kind; })
          .forEach(function (a) { a.href = url; });

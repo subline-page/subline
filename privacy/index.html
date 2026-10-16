@@ -261,7 +261,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>Feedback goes only when you press Send.</b> You see all of it first. The relay keeps it for 180 days and emails a copy to the owner. See <a href="#feedback">Feedback box</a>.</li>
   <li><b>Payments go through Dodo Payments, and start only inside Discord.</b> This website sells nothing. Dodo collects your name, email and payment details. Dodo's payment notices to the relay can include your name, email, address and some card details. The relay does not store or log them.</li>
   <li><b>Subline checks in with the relay</b> every time Discord starts, and about every 24 hours. It sends your install id. Only uninstalling stops this.</li>
-  <li><b>No ads and no cookies.</b> No third-party analytics or tracking scripts in the app or on this website. The relay keeps its own usage counts (see <a href="#stats">Stats</a>).</li>
+  <li><b>No ads and no cookies.</b> No third-party analytics or tracking scripts in the app or on this website. This website sends Subline's server one ping when the home page opens, and one when you press a download button. The relay keeps only daily counts of these, and its own usage counts (see <a href="#stats">Stats</a> and <a href="#website">This website</a>).</li>
   <li><b>Your computer keeps copies.</b> Translations, your code (in plain text), a log file and settings stay on your computer. Some of these stay after you uninstall.</li>
   <li><b>You can turn things off.</b> Use the globe button for one channel, or <b>Subline → Settings</b> for all servers and for profiles and embeds. DMs are off until you turn one on.</li>
 </ul>
@@ -652,7 +652,9 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <table class="rt">
 <thead><tr><th>Use</th><th>Form</th><th>How long</th></tr></thead>
 <tbody>
-<tr><td>✦ translation and status checks</td><td data-k="Form">Not used by the relay's code.</td><td data-k="How long">Not kept</td></tr>
+<tr><td>✦ translation</td><td data-k="Form">Not used by the relay's code.</td><td data-k="How long">Not kept</td></tr>
+<tr><td>Status checks</td><td data-k="Form">Only for the daily install counts (see <a href="#stats">Stats</a>): a keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 50 installs and 5 new installs are counted per address a day.</td><td data-k="How long">2 days</td></tr>
+<tr><td>Website pings</td><td data-k="Form">A keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 30 page opens and 10 download presses are counted per address a day.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Checkout limit</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name.</td><td data-k="How long">2 hours</td></tr>
 <tr><td>Server code tries</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name. Counts only.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Server code claims (IPv6 only)</td><td data-k="Form">Keyed hash of the first 48 bits of IPv6, with a count.</td><td data-k="How long">30 days after that network's last claim of that server code</td></tr>
@@ -670,14 +672,14 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>A keyed hash is HMAC-SHA-256 with a secret key that only the relay holds. The relay keeps the first 32 hex characters.</li>
   <li>Without the key, nobody can work back from the hash to your address, even by trying every possible address.</li>
   <li>Each use mixes in its own label, so the same address gives a different hash in each place.</li>
-  <li>If the key is missing on the relay, it stores nothing made from your address. It then refuses patch reports and linking. Server code claims run without the network limit and without the per-address limit on tries. Feedback runs without its per-install and per-address limits. Checkouts, purchase checks and older versions run without their per-address limits. The other limits still apply.</li>
+  <li>If the key is missing on the relay, it stores nothing made from your address. It then refuses patch reports and linking. Website pings and install check-ins are then not counted at all. Server code claims run without the network limit and without the per-address limit on tries. Feedback runs without its per-install and per-address limits. Checkouts, purchase checks and older versions run without their per-address limits. The other limits still apply.</li>
   <li>Server code network counts stored before 0.2.4 held the plain first 48 bits. The relay converts each one to the keyed form the next time that server code's record is loaded. Without the key, it deletes them.</li>
 </ul>
 
 <h2 id="background">Background checks</h2>
 <p>Some requests happen without you doing anything. None of them carries message text.</p>
 
-<h3>Status checks (Subline inside Discord)</h3>
+<h3 id="status-checks">Status checks (Subline inside Discord)</h3>
 <p>Subline asks the relay what your plan is. It sends your code (or, without one, your install id), your install id, the Subline version, and the app it runs in. If this computer used Subline before 0.2.0, it adds a flag that says so. It runs:</p>
 <ul>
   <li>every time Discord starts, even if you never bought anything;</li>
@@ -692,6 +694,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>after a failure, at 5, 15 and 60 seconds, then every 5 minutes until answered.</li>
 </ul>
 <p>Each check shows the relay that your install is in use, when, and with which version. Cloudflare sees your IP address. If this computer or your code is on an account, the check updates this computer's last-seen day there. A status check never carries your Discord account id.</p>
+<p>The relay also counts how many installs check in each day, and how many of them are new. See <a href="#stats">Stats</a>.</p>
 
 <h3>Patch reports</h3>
 <p>Discord updates can break the parts of Discord that Subline hooks into. Subline checks for this once per Discord session: 30 seconds after messages first load, or after 10 minutes if they never load.</p>
@@ -781,7 +784,10 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 
 <h2 id="stats">Stats</h2>
 <ul>
-  <li><b>Daily totals.</b> The relay counts per day: active paid codes, ✦ previews served, and purchases per plan. For older versions it also counts active installs and new first-use records. These are numbers only. They are kept 35 days.</li>
+  <li><b>Daily totals.</b> The relay counts per day: active paid codes, ✦ previews served, and purchases per plan. For older versions it also counts active installs and new first-use records. These are numbers only. They are kept 400 days.</li>
+  <li><b>Install counts.</b> The relay counts how many installs check in each day (see <a href="#status-checks">status checks</a>). It also counts how many of them are new: an install it has never seen before. For this, it keeps only scrambled markers, never your install id. Each marker is named with a keyed hash of your install id (see <a href="#ip">IP addresses</a>). The day's marker is kept 2 days. The "seen before" marker is kept 400 days. The counts are numbers only, kept 400 days.</li>
+  <li><b>Checkout counts.</b> The relay counts per day how many checkouts start, for Automatic and for AI. It counts new purchases the same way. These are numbers only, kept 400 days. A purchase with a 100%-off coupon is not counted as a purchase. To leave it out, the relay keeps Dodo's payment id of a payment of 0 for 3 days.</li>
+  <li><b>Website counts.</b> See <a href="#website">This website</a>.</li>
   <li><b>"Seen today" markers.</b> To count each paid AI code once a day, the relay writes a marker named with a 16-character SHA-256 fingerprint (no secret) of your code. For older versions, the fingerprint is of your install id instead. It is written on ✦ requests. It is kept 2 days.</li>
   <li><b>An analytics row per ✦ request,</b> in Cloudflare Workers Analytics Engine. It holds the result (for example "ok" or "daily limit reached"), an 8-character fingerprint (SHA-256, no secret) of your code, your install id or, for ✦ previews, your account id, the plan name, the number of messages, and sometimes the AI service's error code. It holds no text, no IP address and no country. Cloudflare decides how long it keeps these rows.</li>
 </ul>
@@ -799,9 +805,14 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li>This website sells nothing. All buying happens inside Discord.</li>
   <li>subline.page is hosted on <b>GitHub Pages</b>. GitHub receives each visit, with your IP address.</li>
-  <li>No cookies. No local storage. No analytics. No third-party scripts, fonts or images.</li>
+  <li>No cookies. No local storage. No third-party analytics, scripts, fonts or images.</li>
+  <li><b>Pings to Subline's server.</b> The home page sends one ping to the relay when it opens. It sends one more when you press a download button. The privacy page sends none.</li>
+  <li>A ping holds the source: the page's <code>?ref=</code> value, or the name of the site you came from (for example reddit.com, never the full address). A download ping also holds the computer type of the button: Mac or Windows.</li>
+  <li>A ping sets no cookie and holds no id. The relay keeps no IP address, no browser details and no id from it.</li>
+  <li>The relay keeps only daily counts: page opens, and download presses for Mac and for Windows, each also per source. It keeps up to 50 source names a day. Other sources count as "other". The counts are kept 400 days.</li>
+  <li>To limit fake counts, the relay counts at most 30 page opens and 10 download presses per IP address a day. The counter's name holds a keyed hash of your address, not the address (see <a href="#ip">IP addresses</a>). It is deleted after 2 days.</li>
   <li>The download section asks GitHub for the latest release. Your browser calls <code>https://api.github.com/repos/subline-page/subline/releases/latest</code>. The answer is kept in your browser tab (session storage) for 10 minutes. Downloads come from GitHub.</li>
-  <li>The page guesses your system (Mac or Windows, and the Mac chip type) inside your browser. This is never sent anywhere.</li>
+  <li>The page guesses your system (Mac or Windows, and the Mac chip type) inside your browser. The guess is never sent. A download ping says only which button you pressed: Mac or Windows.</li>
   <li>When the browser add-on is out, its buttons link to the Chrome Web Store and Firefox Add-ons. Those stores then see your visit.</li>
 </ul>
 
