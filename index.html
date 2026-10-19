@@ -167,9 +167,9 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 @media (min-width:980px){.hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px}}
 .hero h1{font-family:var(--font-serif);font-size:52px;line-height:1.04;letter-spacing:-.02em;font-weight:400;margin:22px 0 0;max-width:14ch}
 .cta{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-top:30px;scroll-margin-top:24px}
-.cta .alt{font-size:14px}
-.hero-notes{margin-top:14px}
+.hero-notes{margin-top:16px}
 .hero-notes p{margin:6px 0 0}
+.hero-notes .also{margin:0;font-size:14px;color:var(--muted)}
 .gl-inline{font-family:var(--font-mono);font-size:1em;color:var(--accent)}
 @media (max-width:640px){.hero h1{font-size:36px}}
 /* The demo: a Discord channel drawn in the page's own palette (tokens.css),
@@ -346,13 +346,11 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   <h1>Read Discord in your language.</h1>
   <div class="cta" id="downloads">
     <a class="btn btn-primary" data-hero="primary" href="https://github.com/subline-page/subline/releases/latest">Download for Mac</a>
-    <a class="alt" data-hero="secondary" href="https://github.com/subline-page/subline/releases/latest">Windows</a>
     <span class="fine">$4.99, once</span>
   </div>
   <div class="hero-notes">
-    <p class="fine" data-hero="intel" hidden>Intel Mac? <a data-dl="mac-intel" href="https://github.com/subline-page/subline/releases/latest">Get the Intel version.</a></p>
+    <p class="also">Also for <a data-hero="secondary" href="https://github.com/subline-page/subline/releases/latest">Windows</a><span data-hero="intel" hidden> · <a data-dl="mac-intel" href="https://github.com/subline-page/subline/releases/latest">Intel Mac</a></span><span data-store="chrome"> · <a href="https://chromewebstore.google.com/detail/subline/eenbmffpbhjoadmigpnhidcoafmcncaa">Chrome</a></span></p>
     <p class="fine" data-hero="win-note" hidden>Windows warns the first time, because Subline isn't signed for Windows yet. Choose <b>Keep</b>, then <b>More info</b>, then <b>Run anyway</b>.</p>
-    <p class="fine" data-store="chrome">Discord in Chrome? <a href="https://chromewebstore.google.com/detail/subline/eenbmffpbhjoadmigpnhidcoafmcncaa">Add Subline to Chrome.</a></p>
     <p class="fine" data-hero="phone" hidden>Subline runs on a Mac or Windows computer. Open this page there.</p>
   </div>
 </div>
@@ -728,7 +726,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   // Hero. Without JS both links go to the releases page. Windows: the button
   // downloads the .exe, "Mac" is the other link, and the line about Windows'
   // first-run warning shows. Mac: the button downloads the .dmg, "Windows" is
-  // the other link, with an Intel line. A phone gets a line saying Subline
+  // the other link, and the Intel Mac link shows. A phone gets a line saying Subline
   // runs on a computer. The data-dl hook lets the release lookup below fill in
   // the exact file.
   var heroPrimary = document.querySelector('[data-hero="primary"]');
