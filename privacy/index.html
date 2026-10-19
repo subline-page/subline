@@ -212,7 +212,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <a class="pv-back" href="../">← subline.page</a>
 
 <h1>Privacy</h1>
-<p class="pv-date">Last updated 14 October 2026</p>
+<p class="pv-date">Last updated 19 October 2026</p>
 <p class="pv-intro">Subline translates Discord messages on your computer. To translate, it must send text to a translation service. This page says what leaves your computer, where it goes, what is kept, and for how long. It describes what the current version (0.2.8) does today. Where something is outside our control, or we have not confirmed it, this page says so.</p>
 
 <nav class="toc" aria-label="Contents">
@@ -257,7 +257,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>≈ translations go to Google.</b> Your computer sends the message text straight to Google Translate.</li>
   <li><b>Names and pronouns go to Google only when you hover them</b>, or open a profile card. Only names in a script your language does not use, and pronouns. See <a href="#names">Names and pronouns</a>.</li>
   <li><b>✦ translations go to Subline's relay, then to an AI service.</b> Each ✦ request also carries usernames, message ids and up to 8 earlier messages for context. Those earlier messages can include your own.</li>
-  <li><b>The relay does not store the messages it translates.</b> It keeps your code, your account, the keyed hash from linking, scrambled ids of your computers, and purchase links. Most of these have no expiry.</li>
+  <li><b>The relay does not store the messages it translates.</b> For ✦ previews only, it keeps a scrambled form of the text for up to 3 days, so the same message is not counted twice. It keeps your code, your account, the keyed hash from linking, scrambled ids of your computers, and purchase links. Most of these have no expiry.</li>
   <li><b>Feedback goes only when you press Send.</b> You see all of it first. The relay keeps it for 180 days and emails a copy to the owner. See <a href="#feedback">Feedback box</a>.</li>
   <li><b>Payments go through Dodo Payments, and start only inside Discord.</b> This website sells nothing. Dodo collects your name, email and payment details. Dodo's payment notices to the relay can include your name, email, address and some card details. The relay does not store or log them.</li>
   <li><b>Subline checks in with the relay</b> every time Discord starts, and about every 24 hours. It sends your install id. Only uninstalling stops this.</li>
@@ -284,7 +284,8 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h3>What is not sent</h3>
 <ul>
   <li>Your own messages are never sent to be translated by themselves. If you press ⚡ on one of your own messages, it is sent. With ✦, your own messages can also go as context. See the next section.</li>
-  <li>Messages that need no translation stay on your computer. This includes text that is only emoji, mentions, links, digits or punctuation. It also includes chat shorthand, laughter, repeated words, and text already in your language. Subline decides this on your computer.</li>
+  <li>Messages that need no translation stay on your computer. This includes text that is only emoji, mentions, links, digits or punctuation. It also includes chat shorthand, laughter and repeated words. Subline decides this on your computer.</li>
+  <li>If you read English, a message that Subline is sure is English also stays on your computer. For other reading languages, Subline cannot tell this on your computer. The message goes to Google, and with AI to the relay, and they answer that it needs no translation.</li>
   <li>Language detection runs on your computer. Google also detects the language as part of each translation. There is no separate detection request.</li>
   <li>Attachment file names and voice audio are never translated or sent.</li>
 </ul>
@@ -352,6 +353,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>The relay sends the request to <b>OpenRouter</b>, a service that passes requests on to AI hosts. The model is <code>openai/gpt-oss-120b</code>.</li>
   <li>Subline asks OpenRouter to try <b>Groq</b>, then <b>Cerebras</b>, then <b>DeepInfra</b>, in that order.</li>
   <li>Subline also allows OpenRouter to fall back to other hosts of the same model. So another host can serve a request. Subline excludes four hosts: Novita, DigitalOcean, SambaNova and Amazon Bedrock.</li>
+  <li>Since 19 October 2026, Subline asks OpenRouter for <b>zero data retention</b> and <b>no data collection</b>. OpenRouter then sends a request only to hosts that, under their terms with OpenRouter, do not keep prompts and do not train on them. Groq, Cerebras and DeepInfra are all on that list.</li>
   <li>If OpenRouter fails, the relay sends the request to <b>Groq</b> directly.</li>
   <li>A long request may be split into parallel pieces. Each piece carries all the context lines.</li>
   <li>The relay's code can also use Google Gemini. That path is switched off today.</li>
@@ -362,20 +364,20 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li>It does not hold your code, your install id, or your IP address. The AI service sees the relay's Cloudflare address, not yours.</li>
   <li>OpenRouter receives two labels that say the request comes from Subline: the address <code>https://subline.page/</code> and the name "Subline".</li>
-  <li>Subline sets no "do not keep" or "do not train" option on these requests. It sends no per-user identifier to the AI service.</li>
-  <li>We have not confirmed what OpenRouter, Groq, Cerebras, DeepInfra or any fallback host keeps, or for how long. Their own policies apply.</li>
+  <li>Subline sends no per-user identifier to the AI service.</li>
+  <li>The zero-retention rule above is OpenRouter's list. We have not checked each host ourselves. OpenRouter's own policy applies to OpenRouter. When the relay goes to Groq directly, Groq's own policy applies.</li>
 </ul>
 
 <h3>What the relay keeps from a ✦ request</h3>
 <ul>
   <li><b>Message text: not stored.</b> The relay's code does not save or log message text, usernames or request bodies.</li>
-  <li><b>A daily count per code</b>, to apply daily limits. The row contains your code. For ✦ previews, it contains your account id instead. It is deleted within 3 days.</li>
+  <li><b>A daily number per code:</b> how much ✦ you used today, to apply daily limits. The row holds your code and that number, and no text. For ✦ previews, it holds your Subline account id instead of a code. That is not your Discord account id. The row is deleted within 3 days.</li>
   <li><b>A per-minute count</b>, held in memory only.</li>
-  <li><b>For ✦ previews only:</b> a marker so the same message is not counted twice. It holds a 96-bit scrambled form (SHA-256, no secret) of the message id, target language and message text, under your account. It is deleted within 3 days.</li>
+  <li><b>For ✦ previews only:</b> a marker so the same message is not counted twice. It holds a 96-bit scrambled form (SHA-256, no secret) of the message id, target language and message text, under your account. A long message sent in parts gets one such marker per part. It also gets a few markers for the whole message, named with a scrambled form of its message id and target language (no text), that hold its part sizes and what was charged. All are deleted within 3 days.</li>
   <li><b>Stats markers and an analytics row.</b> See <a href="#stats">Stats</a>.</li>
   <li><b>The day your computer was last seen</b>, on your account. See <a href="#account">Your code and account</a>.</li>
 </ul>
-<p class="muted">Limits: AI plans allow 2,000 ✦ translations a day and 60 requests a minute. The relay refuses a request above 40 messages or 131,072 bytes. It keeps only the newest 12 context lines, cuts each to 1,000 characters, and keeps at most 6,000 characters of context in all. It does not translate a message over 4,000 characters.</p>
+<p class="muted">Limits: AI plans allow about 2,000 ✦ messages a day and 60 requests a minute. Each message counts 1. A request with long text or long context counts 1 more for each 1,000 characters above 1,000 per message. The relay refuses a request above 40 messages or 131,072 bytes. It keeps only the newest 12 context lines, cuts each to 1,000 characters, and keeps at most 6,000 characters of context in all. It does not translate a message over 4,000 characters.</p>
 
 <h2 id="surfaces">Profiles, statuses, embeds and titles</h2>
 <p>With a paid plan, Subline also translates text around messages. The setting is <b>Profiles, embeds and more</b> in <b>Subline → Settings</b>. It is on by default.</p>
@@ -789,13 +791,13 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>Checkout counts.</b> The relay counts per day how many checkouts start, for Automatic and for AI. It counts new purchases the same way. These are numbers only, kept 400 days. A purchase with a 100%-off coupon is not counted as a purchase. To leave it out, the relay keeps Dodo's payment id of a payment of 0 for 3 days.</li>
   <li><b>Website counts.</b> See <a href="#website">This website</a>.</li>
   <li><b>"Seen today" markers.</b> To count each paid AI code once a day, the relay writes a marker named with a 16-character SHA-256 fingerprint (no secret) of your code. For older versions, the fingerprint is of your install id instead. It is written on ✦ requests. It is kept 2 days.</li>
-  <li><b>An analytics row per ✦ request,</b> in Cloudflare Workers Analytics Engine. It holds the result (for example "ok" or "daily limit reached"), an 8-character fingerprint (SHA-256, no secret) of your code, your install id or, for ✦ previews, your account id, the plan name, the number of messages, and sometimes the AI service's error code. It holds no text, no IP address and no country. Cloudflare decides how long it keeps these rows.</li>
+  <li><b>An analytics row per ✦ request,</b> in Cloudflare Workers Analytics Engine. It holds the result (for example "ok" or "daily limit reached"), an 8-character fingerprint (SHA-256, no secret) of your code, your install id or, for ✦ previews, your account id with a fixed prefix, the plan name, the number of messages, and sometimes the AI service's error code. It holds no text, no IP address and no country. Cloudflare decides how long it keeps these rows.</li>
 </ul>
 
 <h2 id="logs">Server logs</h2>
 <ul>
   <li>Cloudflare's Workers Logs keep only the relay's own log lines. Request logs (each request's address, headers and network details) are switched off.</li>
-  <li>The relay's own log lines are warnings and errors with fixed text. They contain no message text, no usernames and no request bodies. Error text is cut to 200 characters. On the translation and spending paths, codes and IP addresses are blanked from error text. Other error text is not blanked.</li>
+  <li>The relay's own log lines are warnings and errors with fixed text. They contain no message text, no usernames and no request bodies. Error text is cut to 200 characters. On the translation, spending and plan-check paths, codes, install ids and IP addresses are blanked from error text. Other error text is not blanked.</li>
   <li>Some log lines do hold: a server code with a short network tag or claim counts, Dodo checkout and payment ids, a Dodo product id, up to 200 characters of an error from Dodo, broken item names from patch reports, a feedback item's id when its email copy fails, and the AI service's name and error status.</li>
   <li>Cloudflare's network still carries each request. It can keep its own security and traffic records, which can include your IP address. Cloudflare decides what it keeps, and for how long.</li>
   <li>Subline's setup adds no other log store.</li>
