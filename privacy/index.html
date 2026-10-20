@@ -212,7 +212,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <a class="pv-back" href="../">← subline.page</a>
 
 <h1>Privacy</h1>
-<p class="pv-date">Last updated 19 October 2026</p>
+<p class="pv-date">Last updated 20 October 2026</p>
 <p class="pv-intro">Subline translates Discord messages on your computer. To translate, it must send text to a translation service. This page says what leaves your computer, where it goes, what is kept, and for how long. It describes what the current version (0.2.8) does today. Where something is outside our control, or we have not confirmed it, this page says so.</p>
 
 <nav class="toc" aria-label="Contents">
@@ -722,7 +722,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <p>The Subline app (the installer) never contacts the relay. It only installs. It writes your reading language and a new install id into Vencord's <code>settings.json</code>. Linking and your plan happen inside Discord. The app does not update itself. It has no crash reporter and no analytics.</p>
 
 <h2 id="browser">The browser add-on</h2>
-<p>Subline can also come as an add-on for Discord in your browser: Chrome, Edge, Brave and Opera through the Chrome Web Store, and Firefox through Firefox Add-ons. It is not out yet. This page will say when it is.</p>
+<p>Subline can also come as an add-on for Discord in your browser: Chrome, Edge, Brave and Opera through the Chrome Web Store, and Firefox through Firefox Add-ons. The Chrome add-on is out since 19 October 2026. The Firefox add-on is not out yet.</p>
 <ul>
   <li>It runs the same Subline inside Discord in your browser. It sends the same kinds of requests as Subline in the Discord app, as this page describes: ≈ text to Google, and ✦ requests, status checks and linking to the relay.</li>
   <li>The add-on's own background part sends these requests, only to <code>relay.subline.page</code> and Google's translate service.</li>
@@ -815,7 +815,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>To limit fake counts, the relay counts at most 30 page opens and 10 download presses per IP address a day. The counter's name holds a keyed hash of your address, not the address (see <a href="#ip">IP addresses</a>). It is deleted after 2 days.</li>
   <li>The download section asks GitHub for the latest release. Your browser calls <code>https://api.github.com/repos/subline-page/subline/releases/latest</code>. The answer is kept in your browser tab (session storage) for 10 minutes. Downloads come from GitHub.</li>
   <li>The page guesses your system (Mac or Windows, and the Mac chip type) inside your browser. The guess is never sent. A download ping says only which button you pressed: Mac or Windows.</li>
-  <li>When the browser add-on is out, its buttons link to the Chrome Web Store and Firefox Add-ons. Those stores then see your visit.</li>
+  <li>The Chrome link goes to the Chrome Web Store. When you open it, the store sees your visit.</li>
 </ul>
 
 <h3>Returning from checkout</h3>
