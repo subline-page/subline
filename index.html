@@ -262,6 +262,9 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 .plan h3 .pr{font-weight:400;color:var(--muted);margin-left:6px}
 .plan p{margin:0;font-size:13.5px;color:var(--muted)}
 .plans-note{margin:14px 2px 0}
+.plan ul{grid-column:2;margin:6px 0 0;padding:0;list-style:none}
+.plan li{font-size:13.5px;color:var(--muted);padding-left:14px;position:relative;margin:3px 0}
+.plan li::before{content:"·";position:absolute;left:3px;color:var(--accent)}
 #footer .wrap{max-width:1160px;padding-top:8px;padding-bottom:48px}
 .foot{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;border-top:1px solid var(--line);padding-top:20px;font-size:13px;color:var(--muted)}
 .foot a{color:var(--muted);text-decoration:none}
@@ -423,12 +426,23 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   <div class="panel plan" data-plan="automatic">
     <span class="pg">≈</span>
     <h3>Automatic<span class="pr">$4.99, once</span></h3>
-    <p>Google translates every message.</p>
+    <p>Every message in another language gets its translation right under it, by itself.</p>
+    <ul>
+      <li>Messages already in your language are left alone.</li>
+      <li>Names, pronouns, bios, statuses, thread titles and server rules too.</li>
+      <li>Mac, Windows and Chrome. Your plan follows your Discord account.</li>
+      <li>5 ✦ AI translations a day, to try it.</li>
+      <li>Pay once. No subscription.</li>
+    </ul>
   </div>
   <div class="panel plan" data-plan="ai">
     <span class="pg">✦</span>
     <h3>AI<span class="pr">$1.99 a month, or $19.99 a year</span></h3>
-    <p>Context-based AI translation.</p>
+    <p>Reads the chat around each message, so slang, typos and jokes come out right.</p>
+    <ul>
+      <li>Gets languages typed in English letters, like Hinglish.</li>
+      <li>Better names, bios and titles too.</li>
+    </ul>
   </div>
 </div>
 </div>
