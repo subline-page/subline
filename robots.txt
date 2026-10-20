@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://subline.page/sitemap.xml
