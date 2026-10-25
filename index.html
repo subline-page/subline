@@ -177,7 +177,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
    so it sits on the page instead of on top of it, in light and in dark.
    Built from the real client: ⚡ and 🌐 sit in each message's hover toolbar,
    next to the emoji button; a status shows translated in place, in its bubble,
-   with ✦ (or ≈) to switch to the original. Invented people and messages only.
+   with ✦ to switch to the original. Invented people and messages only.
    Motion: nothing jumps. A new message or line slides the others up (the
    player measures and animates every move), and text swaps cross-fade. */
 .dc{--d-bg:var(--panel);--d-hover:var(--bg);--d-tx:var(--fg);--d-name:var(--fg);--d-mut:var(--muted);--d-dim:var(--muted);--d-sl:var(--muted);
@@ -207,8 +207,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 .rp span{overflow:hidden;text-overflow:ellipsis}
 .sl{font-size:15px;line-height:1.35;color:var(--d-sl);font-style:italic;margin-top:1px;transition:opacity .28s ease-out;overflow-wrap:anywhere}
 .sl[hidden]{display:none}
-.sl .p,.sl .add{color:var(--d-mut)}
-.sl .add b{color:var(--d-link);font-weight:400}
+.sl .p{color:var(--d-mut)}
 .dc[data-off] .sl{opacity:0}
 .bar{position:absolute;right:14px;top:-20px;display:flex;align-items:center;gap:2px;padding:3px;background:var(--d-float);border:1px solid var(--d-float-line);
   border-radius:8px;z-index:2;box-shadow:var(--d-shadow);transition:opacity .14s ease-out}
@@ -254,8 +253,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 @media (max-width:640px){.dc-feed{height:560px}.dc-pop{left:12px}.bi{width:27px}.bi.x{display:none}.dc-input .ic .x{display:none}.dc-cap{height:4.8em}}
 @media (prefers-reduced-motion:reduce){.dc-cursor{display:none}}
 #pricing .wrap{max-width:1160px;padding-top:20px;padding-bottom:36px}
-.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-@media (max-width:760px){.plans{grid-template-columns:1fr}}
+.plans{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;max-width:640px}
 .plan{padding:18px 20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:baseline}
 .plan .pg{font-family:var(--font-mono);font-size:22px;color:var(--accent);grid-row:span 2;line-height:1}
 .plan h3{margin:0;font-size:16px;font-weight:600}
@@ -350,7 +348,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   <h1>Read Discord in your language.</h1>
   <div class="cta" id="downloads">
     <a class="btn btn-primary" data-hero="primary" href="https://github.com/subline-page/subline/releases/latest">Download for Mac</a>
-    <span class="fine">$4.99, once</span>
+    <span class="fine">7 days of AI included, then $1.99 a month</span>
   </div>
   <div class="hero-notes">
     <p class="also">Also for <a data-hero="secondary" href="https://github.com/subline-page/subline/releases/latest">Windows</a><span data-hero="intel" hidden> · <a data-dl="mac-intel" href="https://github.com/subline-page/subline/releases/latest">Intel Mac</a></span><span data-store="chrome"> · <a href="https://chromewebstore.google.com/detail/subline/eenbmffpbhjoadmigpnhidcoafmcncaa">Chrome</a></span></p>
@@ -413,7 +411,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     </div>
     <svg class="dc-cursor" data-demo-cursor viewBox="0 0 18 22" aria-hidden="true"><path d="M1 1l15 11.2-6.6.9 3.9 7.6-2.8 1.3-3.8-7.7L1 19z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
   </div>
-  <p class="dc-cap" data-demo-cap><span class="gl-inline">≈</span> Google, instant, under every message you can't read. <span class="gl-inline">✦</span> AI translates with context, so slang and replies come out right.</p>
+  <p class="dc-cap" data-demo-cap><span class="gl-inline">✦</span> AI translation, under every message you can't read. It reads the chat around each message, so slang and replies come out right.</p>
 </div>
 </div>
 </div>
@@ -423,28 +421,21 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 <section id="pricing">
 <div class="wrap">
 <div class="plans">
-  <div class="panel plan" data-plan="automatic">
-    <span class="pg">≈</span>
-    <h3>Automatic<span class="pr">$4.99, once</span></h3>
-    <p>Every message in another language gets its translation right under it, by itself.</p>
-    <ul>
-      <li>Messages already in your language are left alone.</li>
-      <li>Names, pronouns, bios, statuses, thread titles and server rules too.</li>
-      <li>Mac, Windows and Chrome. Your plan follows your Discord account.</li>
-      <li>5 ✦ AI translations a day, to try it.</li>
-      <li>Pay once. No subscription.</li>
-    </ul>
-  </div>
   <div class="panel plan" data-plan="ai">
     <span class="pg">✦</span>
-    <h3>AI<span class="pr">$1.99 a month, or $19.99 a year</span></h3>
-    <p>Reads the chat around each message, so slang, typos and jokes come out right.</p>
+    <h3>AI translation<span class="pr">$1.99 a month, or $19.99 a year</span></h3>
+    <p>Every message in another language gets its translation right under it, by itself. The AI reads the chat around each message, so slang, typos and jokes come out right.</p>
     <ul>
+      <li>7 days of AI included, from your first translation.</li>
+      <li>Messages already in your language are left alone.</li>
+      <li>Names, pronouns, bios, statuses, thread titles and server rules too.</li>
       <li>Gets languages typed in English letters, like Hinglish.</li>
-      <li>Better names, bios and titles too.</li>
+      <li>Mac, Windows and Chrome. Your plan follows your Discord account.</li>
+      <li>After the 7 days, 5 ⚡ AI translations a day, or subscribe in Discord.</li>
     </ul>
   </div>
 </div>
+<p class="fine plans-note">The 7 days are once per Discord account, for accounts at least 30 days old.</p>
 </div>
 </section>
 
@@ -972,11 +963,10 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     });
 
   // The hero demo: a Discord channel that plays what Subline does, then loops.
-  // It follows the real client: ⚡ and 🌐 sit in a message's hover toolbar, next
-  // to the emoji button. For an Automatic owner ⚡ is a ✦ preview, "Preview ✦
-  // (5 left today)", and the ✦ line then replaces the ≈ one, with "Add AI" on it.
-  // A status shows translated in place in its bubble; ✦ (≈ on Automatic)
-  // switches it to the original, which then ends in ↩.
+  // It follows the real client (0.2.9, AI only): every line is ✦, from the
+  // first one. ⚡ and 🌐 sit in a message's hover toolbar, next to the emoji
+  // button. A status shows translated in place in its bubble; ✦ switches it to
+  // the original, which then ends in ↩.
   // The page ships the END state in its HTML (every line ✦), so with scripts off,
   // or with reduced motion asked for, the visitor sees a finished, still example.
   // Every person and message here is invented.
@@ -985,7 +975,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   // new message or line moves everything above it. Every change goes through
   // flip(): measure where each row is, change the page, then animate each row
   // from its old place to its new one. New rows fade and rise in. Text that
-  // changes (≈ to ✦, the caption) fades out, swaps, and fades back in.
+  // changes (the caption, the status) fades out, swaps, and fades back in.
   function sublineDemo(doc, win) {
     var root = doc.querySelector("[data-demo]");
     if (!root) return;
@@ -1031,31 +1021,16 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       flip(function () { n.hidden = false; });
       anim(n, [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], 300);
     }
-    function fill(sl, glyph, lang, text, tail) {
+    function fill(sl, lang, text) {
       while (sl.firstChild) sl.removeChild(sl.firstChild);
-      sl.appendChild(el("span", "p", glyph + " " + lang + " · "));
+      sl.appendChild(el("span", "p", "✦ " + lang + " · "));
       sl.appendChild(el("span", "t", text));
-      if (tail) sl.appendChild(tail);
     }
-    // One Subline line: "≈ es · text", then an optional tail (" · Add AI").
-    // A new line fades in; a line that changes fades out first.
-    function line(name, glyph, lang, text, tail) {
+    // One Subline line: "✦ es · text". A new line fades in.
+    function line(name, lang, text) {
       var sl = m(name).querySelector(".sl");
-      if (sl.hidden) {
-        flip(function () { fill(sl, glyph, lang, text, tail); sl.hidden = false; });
-        anim(sl, [{ opacity: 0 }, { opacity: 1 }], 280);
-        return;
-      }
-      anim(sl, [{ opacity: 1 }, { opacity: 0 }], 120);
-      win.setTimeout(function () {
-        flip(function () { fill(sl, glyph, lang, text, tail); });
-        anim(sl, [{ opacity: 0 }, { opacity: 1 }], 280);
-      }, 110);
-    }
-    function tail(text, link) {
-      var t = el("span", "add", " · " + (text || ""));
-      if (link) t.appendChild(el("b", "", link));
-      return t;
+      flip(function () { fill(sl, lang, text); sl.hidden = false; });
+      anim(sl, [{ opacity: 0 }, { opacity: 1 }], 280);
     }
     function say(html) {
       if (!cap) return;
@@ -1105,7 +1080,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       bio.appendChild(tg);
     }
   
-    var G = '<span class="gl-inline">≈</span>', S = '<span class="gl-inline">✦</span>';
+    var S = '<span class="gl-inline">✦</span>';
   
     function reset() {
       if (feed) feed.classList.remove("gone");
@@ -1122,38 +1097,19 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   
     var steps = [
       [0, reset],
-      [100, function () { say("<b>" + G + " under every message you can't read.</b> Google, instant."); }],
+      [100, function () { say("<b>" + S + " AI translation, under every message you can't read.</b>"); }],
       [400, function () { show("luna"); }],
-      [700, function () { line("luna", "≈", "es", "anyone playing tonight? I'm really bored"); }],
+      [700, function () { line("luna", "es", "anyone up for a game tonight? I'm so bored"); }],
       [1000, function () { show("kenji"); }],
-      [700, function () { line("kenji", "≈", "ja", "I can go! If it's from 9 o'clock"); }],
+      [700, function () { line("kenji", "ja", "I'm in! As long as it's from 9"); }],
       [2000, function () { show("you"); say("<b>Your own messages stay as they are.</b>"); }],
       [2400, function () { show("rafa"); }],
-      [700, function () { line("rafa", "≈", "pt", "brother I'm dead kkkkk"); say("<b>Slang trips Google up.</b>"); }],
-      [1800, function () { hover("rafa"); point(zap); }],
-      [1000, function () {
-        showTip(zap, "Preview ✦ (5 left today)");
-        say("Hover the message and press <b>⚡</b> for a <b>" + S + " preview</b>. Automatic gives you 5 a day.");
+      [700, function () {
+        line("rafa", "pt", "bro I'm dying lol");
+        say("<b>Slang, typos and jokes come out right.</b> The AI reads the chat around each message.");
       }],
-      [1900, function () { press(zap); }],
-      [300, function () {
-        hideTip();
-        hover(null);
-        line("rafa", "≈", "pt", "brother I'm dead kkkkk", tail("⚡ translating…"));
-      }],
-      [1300, function () {
-        line("rafa", "✦", "pt", "bro I'm dying lol", tail("", "Add AI"));
-        say("<b>" + S + " AI translates with context</b> and gets it right. Its line replaces the " + G + " one.");
-      }],
-      [3200, function () {
-        hideCursor();
-        say("<b>With AI, every line is " + S + ".</b> A reply is read with the message it answers.");
-        show("dev");
-      }],
-      [700, function () { line("dev", "✦", "hi", "what's the plan, which game?"); }],
-      [1100, function () { line("luna", "✦", "es", "anyone up for a game tonight? I'm so bored"); }],
-      [350, function () { line("kenji", "✦", "ja", "I'm in! As long as it's from 9"); }],
-      [350, function () { line("rafa", "✦", "pt", "bro I'm dying lol"); }],
+      [3000, function () { say("<b>A reply is read with the message it answers.</b> Hinglish too."); show("dev"); }],
+      [700, function () { line("dev", "hi", "what's the plan, which game?"); }],
       [3000, function () { point(m("luna").querySelector(".av")); }],
       [1000, function () {
         press(m("luna").querySelector(".av"));

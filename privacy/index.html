@@ -213,14 +213,15 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 
 <h1>Privacy</h1>
 <p class="pv-date">Last updated 25 October 2026</p>
-<p class="pv-intro">Subline translates Discord messages on your computer. To translate, it must send text to a translation service. This page says what leaves your computer, where it goes, what is kept, and for how long. It describes what the current version (0.2.8) does today. Where something is outside our control, or we have not confirmed it, this page says so.</p>
+<p class="pv-intro">Subline translates Discord messages on your computer. To translate, it must send text to a translation service. This page says what leaves your computer, where it goes, what is kept, and for how long. It describes what the current version (0.2.9) does today. Version 0.2.9 translates only with AI and does not use Google Translate. Older versions are under <a href="#older">Older versions</a>. Where something is outside our control, or we have not confirmed it, this page says so.</p>
 
 <nav class="toc" aria-label="Contents">
 <p>Contents</p>
 <ol>
   <li><a href="#short">The short version</a></li>
-  <li><a href="#messages">Messages and ≈</a></li>
+  <li><a href="#messages">Messages</a></li>
   <li><a href="#ai">✦ AI translation</a></li>
+  <li><a href="#periods">The 7 days of AI</a></li>
   <li><a href="#surfaces">Profiles, statuses, embeds and titles</a></li>
   <li><a href="#names">Names and pronouns</a></li>
   <li><a href="#local">What stays on your computer</a></li>
@@ -240,7 +241,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><a href="#website">This website</a></li>
   <li><a href="#support">Support email</a></li>
   <li><a href="#debug">Debug log</a></li>
-  <li><a href="#older">Older versions (0.1.x)</a></li>
+  <li><a href="#older">Older versions</a></li>
   <li><a href="#off">Turning things off</a></li>
   <li><a href="#third-parties">Third parties</a></li>
   <li><a href="#retention">Retention at a glance</a></li>
@@ -253,12 +254,12 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 
 <h2 id="short">The short version</h2>
 <ul class="short">
-  <li><b>Subline translates nothing until this computer has a plan.</b> That is a linked Discord account with a plan. A plan from before 0.2.8 keeps working on this computer until a Discord account on it links. Without a plan, no Discord message text leaves your computer.</li>
+  <li><b>Subline translates nothing until this computer has AI.</b> That is a linked Discord account with AI: its 7 days of AI, a server code's 30 days, or a subscription. These keep AI for good: a plan bought before 0.2.9, a server code redeemed before 0.2.9, and AI paid for before the price change. On a computer that had its plan before 0.2.8, a bought plan or a server code keeps working until a Discord account on it links. An early-user or gifted plan does not. It needs a link, then gives the 7 days of AI. Without AI, a message is sent only when you press ⚡ on it, up to 5 a day. Otherwise no Discord message text leaves your computer.</li>
   <li><b>Linking uses Discord's own Authorize window.</b> It asks only for identify. The relay keeps a keyed hash of your Discord account id and the day your Discord account was made. It never keeps your Discord account id, your username or your email. See <a href="#linking">Linking your Discord account</a>.</li>
-  <li><b>≈ translations go to Google.</b> Your computer sends the message text straight to Google Translate.</li>
-  <li><b>Names and pronouns go to Google only when you hover them</b>, or open a profile card. Only names in a script your language does not use, and pronouns. See <a href="#names">Names and pronouns</a>.</li>
-  <li><b>✦ translations go to Subline's relay, then to an AI service.</b> Each ✦ request also carries usernames, message ids and up to 8 earlier messages for context. Those earlier messages can include your own.</li>
-  <li><b>The relay does not store the messages it translates.</b> For ✦ previews only, it keeps a scrambled form of the text for up to 3 days, so the same message is not counted twice. It keeps your code, your account, the keyed hash from linking, scrambled ids of your computers, and purchase links. For a linked account, it also keeps five of your settings and your 🌐 choices, with channels in scrambled form. Most of these have no expiry.</li>
+  <li><b>Every translation goes to Subline's relay, then to an AI service.</b> Each request also carries usernames, message ids and up to 8 earlier messages for context. Those earlier messages can include your own.</li>
+  <li><b>The 7 days of AI start with your first translation.</b> The relay keeps when they started, under the keyed hash of your Discord account id, with no expiry. So they happen once per Discord account. See <a href="#periods">The 7 days of AI</a>.</li>
+  <li><b>Names and pronouns go to the relay only when you hover them</b>, or open a profile card. Only names in a script your language does not use, and pronouns. See <a href="#names">Names and pronouns</a>.</li>
+  <li><b>The relay does not store the messages it translates.</b> For ⚡ translations without AI only, it keeps a scrambled form of the text for up to 3 days, so the same message is not counted twice. It keeps your code, your account, the keyed hash from linking, scrambled ids of your computers, and purchase links. For a linked account, it also keeps five of your settings and your 🌐 choices, with channels in scrambled form. Most of these have no expiry.</li>
   <li><b>Feedback goes only when you press Send.</b> You see all of it first. The relay keeps it for 180 days and emails a copy to the owner. See <a href="#feedback">Feedback box</a>.</li>
   <li><b>Payments go through Dodo Payments, and start only inside Discord.</b> This website sells nothing. Dodo collects your name, email and payment details. Dodo's payment notices to the relay can include your name, email, address and some card details. The relay does not store or log them.</li>
   <li><b>Subline checks in with the relay</b> every time Discord starts, and about every 24 hours. It sends your install id. Only uninstalling stops this.</li>
@@ -267,12 +268,13 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>You can turn things off.</b> Use the globe button for one channel, or <b>Subline → Settings</b> for all servers and for profiles and embeds. DMs are off until you turn one on.</li>
 </ul>
 
-<h2 id="messages">Messages and <span class="gl">≈</span></h2>
-<p>The ≈ translation comes from Google Translate. Subline uses it on every plan.</p>
+<h2 id="messages">Messages</h2>
+<p>Every translation comes from an AI model, through Subline's relay. See <a href="#ai">✦ AI translation</a>. Version 0.2.9 does not use Google Translate.</p>
 
 <h3>When a message is sent</h3>
 <ul>
-  <li>Only when this computer has a plan: your linked Discord account has one, or this computer had one before 0.2.8 and no Discord account on it has linked yet.</li>
+  <li>By itself, only while this computer has AI: your linked Discord account has AI, or this computer had a bought plan or a server code before 0.2.8 and no Discord account on it has linked yet. See <a href="#periods">The 7 days of AI</a>.</li>
+  <li>When you press ⚡ on a single message. Without AI, ⚡ works up to 5 times a day. Nothing else is sent then.</li>
   <li>Only in the channel you have open. Other channels send nothing until you open them.</li>
   <li>Only in channels that are on. Server channels are on by default. DMs and group DMs are off by default.</li>
   <li>When you open a channel, Subline translates up to 20 recent messages. This is the <b>Earlier messages</b> setting. You can set it to 0.</li>
@@ -284,51 +286,31 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 
 <h3>What is not sent</h3>
 <ul>
-  <li>Your own messages are never sent to be translated by themselves. If you press ⚡ on one of your own messages, it is sent. With ✦, your own messages can also go as context. See the next section.</li>
-  <li>Messages that need no translation stay on your computer. This includes text that is only emoji, mentions, links, digits or punctuation. It also includes chat shorthand, laughter and repeated words. Subline decides this on your computer.</li>
-  <li>If you read English, a message that Subline is sure is English also stays on your computer. For other reading languages, Subline cannot tell this on your computer. The message goes to Google, and with AI to the relay, and they answer that it needs no translation.</li>
-  <li>Language detection runs on your computer. Google also detects the language as part of each translation. There is no separate detection request.</li>
+  <li>Your own messages are never sent to be translated by themselves. If you press ⚡ on one of your own messages, it is sent. Your own messages can also go as context. See the next section.</li>
+  <li>Messages that have nothing to translate for you stay on your computer. This is text that is only emoji, mentions, links, digits or punctuation, and laughter. A word repeated many times is still sent. Subline decides this on your computer.</li>
+  <li>If you read English, English chat shorthand also stays on your computer, and so does a message that Subline is sure is English. For other reading languages, Subline cannot tell this on your computer. The message goes to the relay, and the AI answers that it needs no translation.</li>
+  <li>Language detection runs on your computer. The AI also detects the language as part of each translation. There is no separate detection request.</li>
   <li>Attachment file names and voice audio are never translated or sent.</li>
 </ul>
 
-<h3>What Google receives</h3>
-<ul>
-  <li>The message text, the language to translate from, and your reading language.</li>
-  <li>The "from" language is usually "auto". For a short reply, Subline may use the language of the message it replies to.</li>
-  <li>Mentions are replaced by names before sending. A user mention becomes that person's server nickname, display name or username. Channel and role mentions become their names. Custom emoji are removed.</li>
-  <li>Google does <b>not</b> receive the author's name, message ids, server or channel ids, or earlier messages.</li>
-  <li>Your computer sends the request directly to Google. Google therefore sees your IP address.</li>
-</ul>
-
-<h3>Technical details</h3>
-<ul>
-  <li>Address: <code>https://translate-pa.googleapis.com/v1/translate</code>. This is the service behind Google's own translate widget. Subline uses that widget's public key.</li>
-  <li>The text travels inside the web address of a GET request. One request goes per message, or per piece of a long message. Text that would make the address longer than 14,000 characters is split into several requests.</li>
-  <li>In the Discord app, the request identifies itself as Chrome 130 on Windows, with <code>translate.google.com</code> as its referrer and origin. It carries no Discord or Subline identifier.</li>
-  <li>In the Discord app, Discord's background process on your computer makes the request, not a web page.</li>
-  <li>In the browser add-on, the add-on's background part makes the request. A browser does not let an add-on set these headers, so the request carries your browser's own User-Agent, with no <code>translate.google.com</code> referrer or origin. Google may see that the request came from the Subline add-on. The request carries no Discord identifier.</li>
-  <li>Timeout: 15 seconds. If Google says "too many requests", Subline tries once more after 0.4 seconds. When Google is the only translator in use, it retries up to 3 times, after 0.4, 1.5 and 4 seconds. A batch that fails with a network or server error is retried once after 1 second.</li>
-  <li>With ✦ active, each message goes to <b>both</b> Google and the relay.</li>
-</ul>
-<p>Subline does not control what Google keeps. We do not know how long Google keeps the text or your IP address. Google's own privacy policy applies.</p>
-
 <h2 id="ai"><span class="gl">✦</span> AI translation</h2>
-<p>The ✦ translation comes from an AI model. Your computer does not talk to the AI service directly (one rare exception is under <a href="#older">Older versions</a>). It sends the request to Subline's relay, a small server program on Cloudflare at <code>relay.subline.page</code>. The relay checks your code, then asks the AI service.</p>
+<p>The ✦ translation comes from an AI model. Your computer does not talk to the AI service directly (versions before 0.2.9 have one rare exception, under <a href="#older">Older versions</a>). It sends the request to Subline's relay, a small server program on Cloudflare at <code>relay.subline.page</code>. The relay checks that your account has AI, then asks the AI service.</p>
 
 <h3>When ✦ is used</h3>
 <ul>
-  <li>Automatically, on every message that ≈ would translate, when your plan includes AI.</li>
-  <li>With AI, when you press ⚡ on a single message. This works on any message, in any channel, DMs included. It sends only when you press it.</li>
-  <li>For ✦ previews. Automatic owners without AI get up to 5 a day. Press ⚡ on a single message, in any channel, DMs included. A preview is sent only when you press it.</li>
+  <li>Automatically, on every message that the section above says is sent, while your account has AI.</li>
+  <li>When you press ⚡ on a single message. This works on any message, in any channel, DMs included. It sends only when you press it.</li>
+  <li>Without AI, ⚡ gives up to 5 AI translations a day. Press ⚡ on a single message, in any channel, DMs included. It is sent only when you press it.</li>
 </ul>
 
 <h3>What one ✦ request carries</h3>
 <ul>
-  <li><b>Up to 25 messages.</b> For each: the message text (with names put in for mentions, as with Google), the Discord message id, and the author's Discord username. The username is the account handle, not the display name.</li>
+  <li><b>Up to 25 messages.</b> Subline waits up to 3 seconds to gather them. For each: the message text, the Discord message id, and the author's Discord username. The username is the account handle, not the display name.</li>
+  <li><b>Mentions are replaced by names before sending.</b> A user mention becomes that person's server nickname, display name or username. Channel and role mentions become their names. Custom emoji are removed.</li>
   <li><b>Reply information.</b> If a message is a reply, the id of the message it replies to. If that message is not in the same request, its author's username and its first 200 characters also go.</li>
-  <li><b>Context lines.</b> Up to 8 earlier messages from the same channel, as username and text, so the AI understands the conversation. ⚡ and previews send up to 6. Your computer cuts each line to 600 characters. For a ✦ preview of a message up to 4,000 characters, it does not, and the relay cuts each line to 1,000 characters before the AI service sees it. Context lines carry no ids.</li>
+  <li><b>Context lines.</b> Up to 8 earlier messages from the same channel, as username and text, so the AI understands the conversation. ⚡ sends up to 6. Your computer cuts each line to 600 characters. For a ⚡ translation without AI of a message up to 4,000 characters, it does not, and the relay cuts each line to 1,000 characters before the AI service sees it. Context lines carry no ids.</li>
   <li><b>Your reading language.</b></li>
-  <li><b>Who is asking.</b> Your Subline code if this computer has one, your install id, the Subline version, the app it runs in (the Subline app's version, or the add-on and its version), and a version number of the request format. See <a href="#install-id">The install id</a>.</li>
+  <li><b>Who is asking.</b> Your Subline code if this computer has one, your install id, the Subline version, the app it runs in (the Subline app's version, or the add-on and its version), a version number of the request format, and a marker that says this Subline translates only with AI. See <a href="#install-id">The install id</a>.</li>
 </ul>
 
 <div class="note">
@@ -372,16 +354,29 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h3>What the relay keeps from a ✦ request</h3>
 <ul>
   <li><b>Message text: not stored.</b> The relay's code does not save or log message text, usernames or request bodies.</li>
-  <li><b>A daily number per code:</b> how much ✦ you used today, to apply daily limits. The row holds your code and that number, and no text. For ✦ previews, it holds your Subline account id instead of a code. That is not your Discord account id. The row is deleted within 3 days.</li>
+  <li><b>A daily number:</b> how much ✦ you used today, to apply daily limits. The row holds your code and that number, and no text. During the 7 days or a server code's 30 days, it holds the keyed hash of your Discord account id instead of a code (before you link, the server code). For ⚡ without AI, it holds your Subline account id. That is not your Discord account id. The row is deleted within 3 days.</li>
   <li><b>A per-minute count</b>, held in memory only.</li>
-  <li><b>For ✦ previews only:</b> a marker so the same message is not counted twice. It holds a 96-bit scrambled form (SHA-256, no secret) of the message id, target language and message text, under your account. A long message sent in parts gets one such marker per part. It also gets a few markers for the whole message, named with a scrambled form of its message id and target language (no text), that hold its part sizes and what was charged. All are deleted within 3 days.</li>
+  <li><b>For ⚡ without AI only:</b> a marker so the same message is not counted twice. It holds a 96-bit scrambled form (SHA-256, no secret) of the message id, target language and message text, under your account. A long message sent in parts gets one such marker per part. It also gets a few markers for the whole message, named with a scrambled form of its message id and target language (no text), that hold its part sizes and what was charged. All are deleted within 3 days.</li>
   <li><b>Stats markers and an analytics row.</b> See <a href="#stats">Stats</a>.</li>
   <li><b>The day your computer was last seen</b>, on your account. See <a href="#account">Your code and account</a>.</li>
 </ul>
-<p class="muted">Limits: AI plans allow about 2,000 ✦ messages a day and 60 requests a minute. Each message counts 1. A request with long text or long context counts 1 more for each 1,000 characters above 1,000 per message. The relay refuses a request above 40 messages or 131,072 bytes. It keeps only the newest 12 context lines, cuts each to 1,000 characters, and keeps at most 6,000 characters of context in all. It does not translate a message over 4,000 characters.</p>
+<p class="muted">Limits: every kind of AI has a daily ceiling, far above normal reading. When it is reached, translation pauses until 00:00 UTC, and Subline says so. There is also a per-minute limit. Each message counts 1. A request with long text or long context counts 1 more for each 1,000 characters above 1,000 per message. The relay refuses a request above 40 messages or 131,072 bytes. It keeps only the newest 12 context lines, cuts each to 1,000 characters, and keeps at most 6,000 characters of context in all. It does not translate a message over 4,000 characters.</p>
+
+<h2 id="periods">The 7 days of AI</h2>
+<p>The relay decides when your Discord account has AI. A period of AI is tied to a Discord account, never to one computer.</p>
+<ul>
+  <li><b>7 days.</b> A linked Discord account that is at least 30 days old gets 7 days of AI, once ever. They start with the first ✦ translation the relay sends back to it, not at install or link. A younger account gets no 7 days, only ⚡ up to 5 times a day. The relay knows the account's age from the day it was made (see <a href="#linking">Linking your Discord account</a>).</li>
+  <li><b>Server codes.</b> A server code gives 30 days of AI. They start with the first ✦ translation after the code is on your account. If you redeem it during your 7 days, its 30 days start when the 7 days end. A server code redeemed before 0.2.9 keeps AI for good, with no end.</li>
+  <li><b>When a period starts,</b> the relay keeps when it started. For the 7 days, under the keyed hash of your Discord account id. For a server code, under the code. <b>No expiry.</b> So reinstalling, linking again or a second computer never starts a new period. A second Discord account on the same computer has its own.</li>
+  <li><b>Starts from one network.</b> To limit misuse, the relay counts how many different periods start from one network address each UTC day (IPv4 in full, or the first 64 bits of IPv6). It keeps a keyed hash of the address (see <a href="#ip">IP addresses</a>), with the keyed hash of each Discord account (or a SHA-256 form of the server code) that started a period there that day. It is deleted at the end of that UTC day. After 10 starts, new periods from that address wait until the next day.</li>
+  <li><b>After a period,</b> ⚡ gives up to 5 AI translations a day.</li>
+  <li><b>Plans bought before 0.2.9</b> (Automatic) include AI at no extra cost, with no end. Subscriptions are unchanged.</li>
+  <li><b>AI paid for before the price change</b> keeps AI for good, with no end. This is true also when that subscription has ended.</li>
+  <li>If the relay cannot be reached, Subline keeps the last state it knew, up to 7 days. A network problem never ends a period.</li>
+</ul>
 
 <h2 id="surfaces">Profiles, statuses, embeds and titles</h2>
-<p>With a paid plan, Subline also translates text around messages. The setting is <b>Profiles, embeds and more</b> in <b>Subline → Settings</b>. It is on by default.</p>
+<p>While your account has AI, Subline also translates text around messages. The setting is <b>Profiles, embeds and more</b> in <b>Subline → Settings</b>. It is on by default.</p>
 <ul>
   <li><b>Bios and custom statuses</b> of other people, wherever Discord shows them: member list, profiles, the DM list and DM profiles. These have <b>no channel or DM switch</b>. They are translated even when DMs are off. Your own bio is never sent. Your own status is not sent from your profile, but it can be sent when it shows in a member list.</li>
   <li><b>Embeds, polls and forwarded messages</b>, in channels that are on.</li>
@@ -391,17 +386,16 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>Server onboarding questions and answers.</b> These have no channel switch.</li>
   <li><b>Reply quotes.</b> Subline reuses an existing translation. It sends a new request only when the quoted message is not loaded and the channel is on. It never sends one for a blocked, ignored or suspended author.</li>
 </ul>
-<p>With Automatic, these go to Google. With AI, they go to Google and to the relay. A request for these carries the text and your reading language. It has no username, no Discord ids and no context. A text over 2,000 characters is not sent. Longer kinds, such as embed descriptions, are cut to 4,000 characters. ✦ use for these is limited to 200 units a day.</p>
+<p>These go to the relay and an AI service. A request for these carries the text and your reading language. It has no username, no Discord ids and no context. A text over 2,000 characters is not sent. Longer kinds, such as embed descriptions, are cut to 4,000 characters. ✦ use for these is limited to 500 units a day. Without AI, none of these is sent.</p>
 
 <h2 id="names">Names and pronouns</h2>
-<p>With a paid plan, Subline also translates people's names and pronouns. The setting is <b>Names and pronouns</b> in <b>Subline → Settings</b>. It is on by default. Without a plan, no name is sent.</p>
+<p>While your account has AI, Subline also translates people's names and pronouns. The setting is <b>Names and pronouns</b> in <b>Subline → Settings</b>. It is on by default. Without AI, no name is sent.</p>
 <ul>
   <li><b>What.</b> Display names, server nicknames, usernames and pronouns, where Discord shows them: message authors, mentions, profile cards and reply previews. Never in the member list, the DM list or voice channels. Never server, channel or role names.</li>
   <li><b>When.</b> A name is sent only when you rest the pointer on it, or when you open that person's profile card. Nothing is sent when the pointer only passes over a name.</li>
-  <li><b>Which names.</b> Only a name written in a script your reading language does not use, such as 王小明 or Дмитрий for an English reader. A name in your own script is never sent by itself. Names in fancy fonts are read on your computer first. Emoji, symbols and digits do not count. With AI, a name in a script no language uses (runes, say) is never sent to Google: it goes to the relay only when you press ✦.</li>
-  <li><b>Which pronouns.</b> People can write any text in the pronouns field, so it follows the profile text rule: pronouns with a letter go to Google when you open the profile card, and nothing shows when they are already in your reading language.</li>
-  <li><b>Where.</b> To Google, like profile text. A request carries the name or pronouns and your reading language. It has no username, no Discord ids and no context.</li>
-  <li><b>✦.</b> With AI, you can press ✦ on a name or on the profile card line to ask the relay for it. Only then does it go to the relay and an AI service, like a profile ✦. It counts toward the same 200 units a day.</li>
+  <li><b>Which names.</b> Only a name written in a script your reading language does not use, such as 王小明 or Дмитрий for an English reader. A name in your own script is never sent by itself. Names in fancy fonts are read on your computer first. Emoji, symbols and digits do not count. A name in a script no reading language uses (runes, say) is never sent by itself: it goes to the relay only when you press ✦.</li>
+  <li><b>Which pronouns.</b> People can write any text in the pronouns field, so it follows the profile text rule: pronouns with a letter are sent when you open the profile card, and nothing shows when they are already in your reading language.</li>
+  <li><b>Where.</b> To the relay and an AI service, like profile text. A request carries the name or pronouns and your reading language. It has no username, no Discord ids and no context. It counts toward the same 500 units a day.</li>
   <li>Names and pronouns have no channel or DM switch. The setting turns them all off.</li>
   <li>Translations of names are kept in the profile and embed cache on your computer, with the original name. See <a href="#local">What stays on your computer</a>.</li>
 </ul>
@@ -409,21 +403,21 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h2 id="local">What stays on your computer</h2>
 
 <h3>Inside Discord's storage</h3>
-<p>Subline runs inside Discord through Vencord. It saves data in Discord's own browser storage (IndexedDB) on your computer. Most of it never leaves your computer. For a linked account, five settings and your 🌐 choices also go to the relay. See <a href="#sync">Settings and 🌐 choices on every computer</a>.</p>
+<p>Subline runs inside Discord through Vencord. It saves data in Discord's own browser storage (IndexedDB) on your computer. Nothing here is uploaded.</p>
 <table class="rt">
 <thead><tr><th>What</th><th>Contents</th><th>How long</th></tr></thead>
 <tbody>
 <tr><td>Translations</td><td data-k="Contents">The translated text, the message id and the language. The original text is not saved here.</td><td data-k="How long">The newest 2,000. No time limit.</td></tr>
 <tr><td>Profile and embed cache</td><td data-k="Contents">The <b>original text</b> of bios, statuses, embeds, topics, titles, names and pronouns, with their translations. This includes other people's bios, statuses and names.</td><td data-k="How long">The newest 2,000, and at most 30 days.</td></tr>
-<tr><td>✦ previews</td><td data-k="Contents">Message id, the translated preview, the language, and a short checksum of the original.</td><td data-k="How long">The newest 200.</td></tr>
+<tr><td>⚡ translations without AI</td><td data-k="Contents">Message id, the translation, the language, and a short checksum of the original.</td><td data-k="How long">The newest 200.</td></tr>
 <tr><td>Install ids</td><td data-k="Contents">The install id each Discord account uses with Subline on this computer, found by a value made from that account's id, and which account linked the one from <code>settings.json</code>. These stay on your computer.</td><td data-k="How long">No time limit.</td></tr>
 <tr><td>Accounts that linked here</td><td data-k="Contents">For each Discord account that linked here: its Discord username and whether its plan was live when it was last signed in here. So Subline can tell another account which account on this computer has the plan. Never sent anywhere.</td><td data-k="How long">No time limit.</td></tr>
-<tr><td>Plan record</td><td data-k="Contents">Your plan, whether this Discord account is linked, a pass from the relay (valid 7 days, holding your plan and the scrambled install id), when it was checked, and a checksum of your code and install id.</td><td data-k="How long">Updated at each check.</td></tr>
+<tr><td>Plan record</td><td data-k="Contents">Your plan, whether this Discord account is linked, your AI state as the relay last said it (whether AI is on, when a period started and ends, how many ⚡ are left today, whether a payment is on its way), a pass from the relay (valid 7 days, holding your plan and the scrambled install id), when it was checked, and a checksum of your code and install id.</td><td data-k="How long">Updated at each check.</td></tr>
 <tr><td>Channel switches</td><td data-k="Contents">For each Discord account here: the ids of channels it turned on or off with the globe button, and when each one changed. For a linked account, also the salt from the relay, and up to 1,000 scrambled entries from the relay that wait until this computer can match them to a channel. See <a href="#sync">Settings and 🌐 choices on every computer</a>.</td><td data-k="How long">No time limit.</td></tr>
 <tr><td>Settings for each account</td><td data-k="Contents">For each Discord account here: its own copy of five settings (your reading language, <b>Earlier messages</b>, <b>All servers</b>, <b>Profiles, embeds and more</b>, <b>Names and pronouns</b>), and when each one changed.</td><td data-k="How long">No time limit.</td></tr>
 <tr><td>Weekly note</td><td data-k="Contents">A count of translations this week and up to 200 language codes. No text, no ids.</td><td data-k="How long">Reset each week.</td></tr>
-<tr><td>Daily counters</td><td data-k="Contents">How many ✦ previews and ✦ profile translations you used today.</td><td data-k="How long">Reset each day.</td></tr>
-<tr><td>Small markers</td><td data-k="Contents">Patch check dates, rate-limit pauses, which notices you saw, and whether this computer used Subline before 0.2.0.</td><td data-k="How long">No time limit.</td></tr>
+<tr><td>Daily counters</td><td data-k="Contents">How many ⚡ translations without AI and ✦ profile translations you used today.</td><td data-k="How long">Reset each day.</td></tr>
+<tr><td>Small markers</td><td data-k="Contents">Patch check dates, rate-limit pauses, which notices you saw, which plan messages each Discord account here saw (the last-day notice and the ended panel, by period), whether the 0.2.9 update panel showed, and whether this computer used Subline before 0.2.0.</td><td data-k="How long">No time limit.</td></tr>
 </tbody></table>
 <p>Some data lives in memory only. It is gone when Discord closes. This includes the last 2,000 message texts, the last 64 messages per channel used for context, the last 10 error codes (for the feedback box), text you typed in the feedback box but did not send, and some short lookup tables.</p>
 <p>Uninstalling Subline does not remove this storage. Subline has no button to clear it. It lives in Discord's own app data folder. Deleting that folder removes it, and also signs you out of Discord.</p>
@@ -484,7 +478,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li>Mac: a login item at <code>~/Library/LaunchAgents/com.subline.helper.plist</code>. It runs at login, every 5 minutes, and when Discord's files change.</li>
   <li>Windows: a scheduled task named <code>\Subline\Helper</code>. It runs at sign-in and every 5 minutes, as you, with the lowest rights.</li>
-  <li>It repairs Subline after a Discord update, puts back missing Subline files, and installs Subline updates. If it does this while Discord is open, a notification asks you to quit and reopen Discord. It never closes Discord itself. Its notifications are local. Its only network use is the update check under <a href="#background">Background checks</a>.</li>
+  <li>It repairs Subline after a Discord update, puts back missing Subline files, and installs Subline updates. If it does this while Discord is open, a notification asks you to quit and reopen Discord. It never closes Discord itself. Its notifications are local. Its only network use is the update check under <a href="#background">Background checks</a>. Subline inside Discord can also start it (see <a href="#update-discord">Update checks (Subline inside Discord)</a>).</li>
 </ul>
 
 <h3>What uninstall keeps and removes</h3>
@@ -510,7 +504,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>When it is made.</b> The Subline app makes it when it installs Subline. If none exists, Subline makes one inside Discord. An existing one is never replaced.</li>
   <li><b>One per Discord account.</b> Until a Discord account links the install id in <code>settings.json</code>, every Discord account on this computer uses it. The account that links it keeps it. Every other Discord account on this computer then gets its own install id, made inside Discord. When you switch Discord accounts, Subline switches install ids with you.</li>
   <li><b>Where it is kept.</b> In Vencord's <code>settings.json</code> as <code>installId</code>, and in Discord's storage. Subline does not show it on screen.</li>
-  <li><b>Who receives it.</b> The relay, with nearly every request from Subline inside Discord: translation, status checks, linking, Move my plan, checkout, server codes, patch reports, feedback, and settings and 🌐 sync. The Subline app never sends it. Google never receives it. The log file never holds it.</li>
+  <li><b>Who receives it.</b> The relay, with nearly every request from Subline inside Discord: translation, status checks, linking, settings sync, checkout, server codes, patch reports, link and price steps, and feedback. The Subline app never sends it. No AI service receives it. The log file never holds it.</li>
   <li><b>With it.</b> Every request from Subline to the relay also names the Subline version and the app it runs in: the Subline app's version, or the add-on and its version. The app version comes from <code>app-version.json</code> in Subline's folder.</li>
   <li><b>Why.</b> The relay joins each install id to your linked account, so your plan works on every computer and browser where you link the same Discord account. It also lets a purchase made from Subline switch on by itself.</li>
   <li><b>Kept after uninstall.</b> Uninstall keeps it even when you tick "Also remove my settings and code". This is on purpose. A reinstall then joins your account again by itself.</li>
@@ -532,10 +526,10 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li>Subline opens Discord's own <b>Authorize</b> window, inside Discord. It asks only for identify. Subline has no Discord bot.</li>
   <li>With identify, Discord can tell Subline your account id, username, display name, avatar, banner and a few account details, such as your Discord language. It does not give your email. Subline cannot read your messages, servers or friends through it, and cannot post anything.</li>
-  <li>Before a link that would join a plan or a code already on this computer, Subline shows the Discord account the plan will belong to, and asks you to confirm. Other links go straight to Discord's Authorize window, or link by themselves (see <b>Linking by itself</b> below). The name and picture Subline shows before a link come from Discord on your computer. They are never sent.</li>
+  <li>Before you link by hand, Subline shows the Discord account the plan will belong to, and asks you to confirm. The name and picture Subline shows before a link come from Discord on your computer. They are never sent.</li>
   <li>When you press <b>Authorize</b>, Discord gives Subline a one-time code. Subline sends it to the relay, with your install id, like other relay requests. It also sends the id of the Discord account that is signed in, so the relay can check that Discord authorized that same account. If not, nothing is linked. The relay only compares the two ids. It never stores or logs the one Subline sent.</li>
   <li>The relay gives the code to Discord and gets a short-lived access token. It asks Discord who you are and takes only your account id. It never keeps the token. Subline then stays in your Discord settings under Authorized Apps, so your other computers link by themselves. You can remove it there at any time.</li>
-  <li><b>Linking by itself.</b> When a Discord account on this computer has not linked yet, Subline asks Discord once per Discord session whether that account already authorized Subline (for example, on another computer). This request goes through Discord's own connection, signed in as you, and asks only for identify. Only if Discord answers yes, Subline sends the approval with no window, as Discord's own window does. Discord then gives a one-time code, and linking goes on as above. If Discord does not answer yes within 8 seconds, nothing is approved and the Link bar shows. Subline does not try this when this computer has a plan from before, a code, or a purchase on its way that is not linked yet. Then you link by hand. The browser add-on does the same.</li>
+  <li><b>Linking by itself.</b> When a Discord account on this computer has not linked yet, Subline asks Discord once per Discord session whether that account already authorized Subline (for example, on another computer). This request goes through Discord's own connection, signed in as you, and asks only for identify. Only if Discord answers yes, Subline sends the approval with no window, as Discord's own window does. Discord then gives a one-time code, and linking goes on as above. If Discord does not answer yes, nothing is approved and the Link bar shows. Subline does not try this when this computer has a code or a plan that is not linked yet. Then you link by hand.</li>
   <li>The relay never stores or logs your Discord account id, the one-time code, the tokens, your username or your email. Its log lines about linking hold no account data. At most they hold Discord's answer status.</li>
   <li>If you press <b>Cancel</b>, nothing is sent and nothing is stored.</li>
   <li>The "Linked to" name in <b>Subline → Settings</b> comes from Discord on your computer. It is not sent anywhere.</li>
@@ -545,7 +539,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h3>What the relay keeps</h3>
 <ul>
   <li><b>A keyed hash of your Discord account id</b>, on your account and as a lookup row that leads to your account. It is made like the keyed hashes under <a href="#ip">IP addresses</a>, with the relay's secret key and its own label. Without the key, nobody can work back from it to your Discord account id.</li>
-  <li><b>The day your Discord account was made.</b> The relay works it out from the account id. It is used to check that a Discord account is at least 30 days old before it can claim a server code.</li>
+  <li><b>The day your Discord account was made.</b> The relay works it out from the account id. It is used to check that a Discord account is at least 30 days old before it can claim a server code or get the 7 days of AI.</li>
   <li>Both have <b>no expiry</b>, like the account. They are kept per linked account, never per computer.</li>
   <li>If the key is missing on the relay, linking is switched off and the relay stores nothing from it.</li>
 </ul>
@@ -584,7 +578,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h3>What is sent</h3>
 <ul>
   <li><b>Five settings</b> from <b>Subline → Settings</b>: your reading language, <b>Earlier messages</b>, <b>All servers</b>, <b>Profiles, embeds and more</b>, and <b>Names and pronouns</b>. Each goes with the time it last changed. No other setting is sent. Your code, your install id and the debug log setting are not sent this way.</li>
-  <li><b>🌐 choices.</b> For each channel you turned on or off with the globe button: on, off or back to normal, and when it changed. This includes DMs and group DMs. The channel id is never sent. Subline sends a scrambled form instead: the first 16 hex characters of a SHA-256 hash of a salt and the channel id. The salt is random. The relay makes one for each linked account.</li>
+  <li><b>🌐 choices.</b> For each channel you turned on or off with the globe button: on, off or back to normal, and when it changed. The channel id is never sent. Subline sends a scrambled form instead: the first 16 hex characters of a SHA-256 hash of a salt and the channel id. The salt is random. The relay makes one for each linked account.</li>
   <li>Both go to <code>relay.subline.page</code> (<code>/v1/prefs</code> and <code>/v1/channels</code>), with your install id, like other relay requests. They carry no message text, no Discord ids and no server ids.</li>
   <li>The browser add-on sends them the same way.</li>
 </ul>
@@ -592,7 +586,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h3>When</h3>
 <ul>
   <li>When a status check says this computer is linked: when Discord starts, after you link, and after you switch Discord accounts.</li>
-  <li>When Discord's window comes back online or into focus, at most once every 10 minutes.</li>
+  <li>When Discord's window comes back into focus, at most once every 10 minutes.</li>
   <li>Soon after you change something: 3 seconds after a setting changes, 2 seconds after a globe click.</li>
   <li>After a failure: again after 30 seconds, 2 minutes and 10 minutes. Then at the next focus, change or status check.</li>
 </ul>
@@ -624,7 +618,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>A linked account has no computer limit. See <a href="#linking">Linking your Discord account</a>.</li>
   <li>Older versions (0.2.7 and earlier) do not link. For them, a code works on up to <b>3 computers</b>, and a computer not seen for <b>30 days</b> can be replaced by a new one.</li>
   <li>The last-seen day is written at most once a day per computer.</li>
-  <li>Early users: a computer that used Subline before a fixed early-user date receives Automatic at no charge. The relay keeps a marker for that computer, with no expiry, so this happens only once.</li>
+  <li>Early users: a computer that used Subline before a fixed early-user date receives Automatic at no charge. The relay keeps a marker for that computer, with no expiry, so this happens only once. In 0.2.9 this grant gives the same 7 days of AI as a new account.</li>
   <li><b>The account and its links have no expiry.</b></li>
 </ul>
 
@@ -632,7 +626,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <p>Your code is shown in <b>Subline → Settings</b>, under <b>Your code</b>. You can select it and copy it. It is saved in plain text in Vencord's <code>settings.json</code>.</p>
 
 <h2 id="payments">Payments</h2>
-<p>Dodo Payments sells Subline as the merchant of record. You start a purchase inside Discord, in <b>Subline → Settings</b>. You pay on Dodo's checkout page. You enter your card details there, not in Subline. This website sells nothing.</p>
+<p>Dodo Payments sells Subline as the merchant of record. You start a purchase inside Discord. You pay on Dodo's checkout page. You enter your card details there, not in Subline. This website sells nothing.</p>
 
 <h3>What Dodo collects</h3>
 <p>Dodo collects your name, email, billing details and payment details on its own page. Dodo emails you your code. Dodo decides what it keeps, and for how long. Dodo's privacy policy applies.</p>
@@ -665,7 +659,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <p>While a checkout is open, Subline asks the relay every 5 seconds for 30 minutes. Then it asks every 5 minutes, for up to 48 hours. Each check sends your install id, as every status check does.</p>
 
 <h2 id="server-codes">Server codes</h2>
-<p>A server code is a short code (4 to 16 letters and digits) that a Discord server shares. It gives Automatic.</p>
+<p>A server code is a short code (4 to 16 letters and digits) that a Discord server shares. In 0.2.9 it gives 30 days of AI (see <a href="#periods">The 7 days of AI</a>). In older versions it gives Automatic. A server code redeemed before 0.2.9 keeps AI for good.</p>
 <ul>
   <li>You need a linked Discord account that is at least 30 days old.</li>
   <li>Redeeming sends the code and your install id to the relay.</li>
@@ -680,15 +674,16 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 </ul>
 
 <h2 id="ip">IP addresses</h2>
-<p>Every service you connect to sees your IP address. That includes Google (≈), the relay, GitHub, Dodo and the Vencord badge server. Subline does not hide it. AI services do not see your IP address. They see the relay's.</p>
+<p>Every service you connect to sees your IP address. That includes the relay, GitHub, Dodo and the Vencord badge server. Subline does not hide it. AI services do not see your IP address. They see the relay's.</p>
 <p>Here is every place where the relay's code uses your IP address:</p>
 <table class="rt">
 <thead><tr><th>Use</th><th>Form</th><th>How long</th></tr></thead>
 <tbody>
-<tr><td>✦ translation</td><td data-k="Form">Not used by the relay's code.</td><td data-k="How long">Not kept</td></tr>
-<tr><td>Settings and 🌐 sync</td><td data-k="Form">Not used by the relay's code.</td><td data-k="How long">Not kept</td></tr>
-<tr><td>Status checks</td><td data-k="Form">Only for the daily install counts (see <a href="#stats">Stats</a>): a keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 50 installs and 5 new installs are counted per address a day.</td><td data-k="How long">2 days</td></tr>
+<tr><td>✦ translation</td><td data-k="Form">Only for a period that has not started: a keyed hash of IPv4 in full or the first 64 bits of IPv6, for the start limit (see Starts of AI periods). Otherwise not used by the relay's code.</td><td data-k="How long">Until the end of that UTC day, only for a period start. Otherwise not kept.</td></tr>
+<tr><td>Starts of AI periods</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily record of the periods that started there (see <a href="#periods">The 7 days of AI</a>).</td><td data-k="How long">Until the end of that UTC day</td></tr>
+<tr><td>Status checks</td><td data-k="Form">For the daily install counts (see <a href="#stats">Stats</a>): a keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 50 installs and 5 new installs are counted per address a day. Before a period has started, a check also reads the start limit for the address (see Starts of AI periods). It stores nothing for that.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Website pings</td><td data-k="Form">A keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 30 page opens and 10 download presses are counted per address a day.</td><td data-k="How long">2 days</td></tr>
+<tr><td>Link and price steps</td><td data-k="Form">A keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 100 steps are counted per address a day.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Checkout limit</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name.</td><td data-k="How long">2 hours</td></tr>
 <tr><td>Server code tries</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name. Counts only.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Server code claims (IPv6 only)</td><td data-k="Form">Keyed hash of the first 48 bits of IPv6, with a count.</td><td data-k="How long">30 days after that network's last claim of that server code</td></tr>
@@ -706,7 +701,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>A keyed hash is HMAC-SHA-256 with a secret key that only the relay holds. The relay keeps the first 32 hex characters.</li>
   <li>Without the key, nobody can work back from the hash to your address, even by trying every possible address.</li>
   <li>Each use mixes in its own label, so the same address gives a different hash in each place.</li>
-  <li>If the key is missing on the relay, it stores nothing made from your address. It then refuses patch reports and linking. Website pings and install check-ins are then not counted at all. Server code claims run without the network limit and without the per-address limit on tries. Feedback runs without its per-install and per-address limits. Checkouts, purchase checks and older versions run without their per-address limits. The other limits still apply.</li>
+  <li>If the key is missing on the relay, it stores nothing made from your address. It then refuses patch reports and linking. Website pings, install check-ins and link and price steps are then not counted at all. Server code claims run without the network limit and without the per-address limit on tries. Feedback runs without its per-install and per-address limits. AI periods start without the per-address limit. Checkouts, purchase checks and older versions run without their per-address limits. The other limits still apply.</li>
   <li>Server code network counts stored before 0.2.4 held the plain first 48 bits. The relay converts each one to the keyed form the next time that server code's record is loaded. Without the key, it deletes them.</li>
 </ul>
 
@@ -722,7 +717,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>60 seconds before the saved answer expires;</li>
   <li>when Discord's window comes back online or into focus, at most once every 10 minutes;</li>
   <li>when your code changes;</li>
-  <li>for Automatic without AI, when ⚡ first shows on a new UTC day;</li>
+  <li>while AI is off, when ⚡ first shows on a new UTC day;</li>
   <li>after AI ends, at 2 minutes, 10 minutes, 30 minutes and 2 hours;</li>
   <li>after the relay refuses a ✦ request for your plan, and after you redeem a server code or try to buy something you already own;</li>
   <li>after a failure, at 5, 15 and 60 seconds, then every 5 minutes until answered.</li>
@@ -759,14 +754,26 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>The browser add-on does not do this.</li>
 </ul>
 
+<h3 id="steps">Link and price steps</h3>
+<p>So the owner can see where people stop, Subline in the Discord app tells the relay when you reach some steps (<code>/v1/event</code>):</p>
+<ul>
+  <li>The Link bar showed. Discord's Authorize window opened. The link finished. The window closed without a link. The prices showed to a linked Discord account with no plan and no code.</li>
+  <li>The request holds only the step's name, from that fixed list of five. Like every relay request, it carries your code (if you have one), your install id, the Subline version and the app it runs in.</li>
+  <li>Each step goes at most once per Discord session. A step that fails is not sent again.</li>
+  <li>The browser add-on does not send these.</li>
+  <li>The relay counts each step once per install. For this, it keeps a marker for each step, named with a keyed hash of your install id (see <a href="#ip">IP addresses</a>), for 400 days. The counts are numbers only, kept 400 days.</li>
+  <li>To limit fake counts, the relay counts at most 100 steps per IP address a day. The counter's name holds a keyed hash of your address, not the address. It is deleted after 2 days.</li>
+  <li>The owner's own installs are not counted. If the relay's secret key is missing, nothing is counted.</li>
+</ul>
+
 <h3>The Subline app</h3>
-<p>The Subline app (the installer) never contacts the relay. It only installs. It writes your reading language and a new install id into Vencord's <code>settings.json</code>. Linking and your plan happen inside Discord. The app does not update itself. It has no crash reporter and no analytics.</p>
+<p>The Subline app (the installer) never contacts the relay. It only installs. It writes your reading language, a new install id and the relay as the translator into Vencord's <code>settings.json</code>. Linking and your plan happen inside Discord. The app does not update itself. It has no crash reporter and no analytics.</p>
 
 <h2 id="browser">The browser add-on</h2>
 <p>Subline can also come as an add-on for Discord in your browser: Chrome, Edge, Brave and Opera through the Chrome Web Store, and Firefox through Firefox Add-ons. The Chrome add-on is out since 19 October 2026. The Firefox add-on is not out yet.</p>
 <ul>
-  <li>It runs the same Subline inside Discord in your browser. It sends the same kinds of requests as Subline in the Discord app, as this page describes. ≈ text goes to Google. To the relay go ✦ requests, status checks, linking, Move my plan, checkout, server codes, patch reports, feedback, and settings and 🌐 sync. It does not check for updates.</li>
-  <li>The add-on's own background part sends these requests, only to <code>relay.subline.page</code> and Google's translate service. <b>Linking by itself</b> is the one exception. It goes through Discord's own connection in the Discord page, as in the Discord app.</li>
+  <li>It runs the same Subline inside Discord in your browser. It sends the same kinds of requests as Subline in the Discord app, as this page describes: translations, status checks, linking, settings sync, checkout, server codes, patch reports and feedback, all to the relay. It does not send link and price steps or check for updates.</li>
+  <li>The add-on's own background part sends these requests, only to <code>relay.subline.page</code>. Version 0.2.9 of the add-on has no access to Google's translate service.</li>
   <li>The add-on also has access to <code>discord.com</code> pages. It uses it for one thing: it removes Discord's Content-Security-Policy headers from those pages, so Subline can run inside Discord. Vencord's own browser add-on does the same. It reads nothing and sends nothing through this access.</li>
   <li>You link your Discord account in the browser once, the same way. Your plan then works there.</li>
   <li>It keeps its data in your browser, like the app keeps it in Discord's storage.</li>
@@ -790,7 +797,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li><b>Your message</b>, up to 2,000 characters. You need a message or a report.</li>
   <li><b>Your email</b>, if you want a reply. It is optional. Leave it empty to stay anonymous.</li>
-  <li><b>A bad-translation report</b>, only from <b>Report translation</b>. It holds that one message's original text, the translation you saw, whether it was ≈ or ✦, and the two languages. It never holds other messages. The original is usually someone else's message. Mentions, channels, roles and custom emoji in it are replaced by words such as "@user" and "#channel", so it holds no Discord ids.</li>
+  <li><b>A bad-translation report</b>, only from <b>Report translation</b>. It holds that one message's original text, the translation you saw, which kind of line it was (✦ in 0.2.9), and the two languages. It never holds other messages. The original is usually someone else's message. Mentions, channels, roles and custom emoji in it are replaced by words such as "@user" and "#channel", so it holds no Discord ids.</li>
   <li><b>Recent error codes.</b> Up to 10 from this Discord session. Each is a code from a fixed list, with its time to the minute and, if there was one, an HTTP status number. No error text and no message text.</li>
   <li><b>App details.</b> The Subline version and build, your system (Mac, Windows, Linux or other) and your plan.</li>
 </ul>
@@ -827,12 +834,14 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 
 <h2 id="stats">Stats</h2>
 <ul>
-  <li><b>Daily totals.</b> The relay counts per day: active paid codes, ✦ previews served, and purchases per plan. For older versions it also counts active installs and new first-use records. These are numbers only. They are kept 400 days.</li>
+  <li><b>Daily totals.</b> The relay counts per day: active paid codes, ⚡ translations without AI served, purchases per plan, 7-day starts, server code period starts, and AI purchases by Discord accounts that had a period. For older versions it also counts active installs and new first-use records. These are numbers only. They are kept 400 days.</li>
   <li><b>Install counts.</b> The relay counts how many installs check in each day (see <a href="#status-checks">status checks</a>). It also counts how many of them are new: an install it has never seen before. For this, it keeps only scrambled markers, never your install id. Each marker is named with a keyed hash of your install id (see <a href="#ip">IP addresses</a>). The day's marker is kept 2 days. The "seen before" marker is kept 400 days. The counts are numbers only, kept 400 days.</li>
   <li><b>Checkout counts.</b> The relay counts per day how many checkouts start, for Automatic and for AI. It counts new purchases the same way. These are numbers only, kept 400 days. A purchase with a 100%-off coupon is not counted as a purchase. To leave it out, the relay keeps Dodo's payment id of a payment of 0 for 3 days.</li>
+  <li><b>AI use per day.</b> For each kind of AI (subscriptions and bought plans, periods, ⚡ without AI), the relay keeps a summary of each day: how many people used AI, how many messages, the middle and high amounts, the most, and how many reached the daily ceiling. Numbers only, with no codes or ids. Kept 60 days. It also counts the AI use of all of Subline per month, as one number.</li>
   <li><b>Website counts.</b> See <a href="#website">This website</a>.</li>
+  <li><b>Link and price steps.</b> See <a href="#steps">Link and price steps</a>.</li>
   <li><b>"Seen today" markers.</b> To count each paid AI code once a day, the relay writes a marker named with a 16-character SHA-256 fingerprint (no secret) of your code. For older versions, the fingerprint is of your install id instead. It is written on ✦ requests. It is kept 2 days.</li>
-  <li><b>An analytics row per ✦ request,</b> in Cloudflare Workers Analytics Engine. It holds the result (for example "ok" or "daily limit reached"), an 8-character fingerprint (SHA-256, no secret) of your code, your install id or, for ✦ previews, your account id with a fixed prefix, the plan name, the number of messages, and sometimes the AI service's error code. It holds no text, no IP address and no country. Cloudflare decides how long it keeps these rows.</li>
+  <li><b>An analytics row per ✦ request,</b> in Cloudflare Workers Analytics Engine. It holds the result (for example "ok" or "daily limit reached"), an 8-character fingerprint (SHA-256, no secret) of your code, your install id, for a period the keyed hash of your Discord account id with a fixed prefix, or, for ⚡ without AI, your account id with a fixed prefix, the plan name, the number of messages, and sometimes the AI service's error code. It holds no text, no IP address and no country. Cloudflare decides how long it keeps these rows.</li>
 </ul>
 
 <h2 id="logs">Server logs</h2>
@@ -884,7 +893,19 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>When it is off, the console gets only a few lines with no message text. A few of them name a message id or channel id.</li>
 </ul>
 
-<h2 id="older">Older versions (0.1.x)</h2>
+<h2 id="older">Older versions</h2>
+
+<h3>Versions 0.2.8 and earlier: Google Translate</h3>
+<p>Versions 0.2.8 and earlier also show a ≈ line from Google Translate. If you still run one:</p>
+<ul>
+  <li>Your computer sends the message text straight to Google Translate (<code>https://translate-pa.googleapis.com/v1/translate</code>), with the language to translate from and your reading language. Profile and embed text, names and pronouns go there too.</li>
+  <li>Google does <b>not</b> receive the author's name, message ids, server or channel ids, or earlier messages. Google sees your IP address.</li>
+  <li>With ✦ active, each message goes to both Google and the relay. A ✦ preview (5 a day for Automatic owners) is sent only when you press ⚡.</li>
+  <li>Subline does not control what Google keeps. Google's own privacy policy applies: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>.</li>
+  <li>Updating to 0.2.9 stops all of this.</li>
+</ul>
+
+<h3>Versions 0.1.x</h3>
 <p>Versions before 0.2.0 worked without a code. They send your install id to the relay in place of a code. If you still run one, the relay also keeps:</p>
 <ul>
   <li>A first-use record that holds your <b>install id itself</b> (not scrambled), for 90 days.</li>
@@ -892,7 +913,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li>Daily counts per IP address, for 2 days. The counter's name holds a keyed hash of the address (IPv4 in full, or the first 64 bits of IPv6), not the address.</li>
 </ul>
 <p>The relay reads first-use records to recognise early users.</p>
-<p>Versions 0.1.8 and earlier let you enter your own AI key (for Groq, Anthropic or Google Gemini). That key stays hidden in Vencord's <code>settings.json</code>. If it is still there and no Subline code is saved, ✦ requests go from your computer straight to that AI service, with your key. They carry the same message text, usernames, message ids and context lines as a ✦ prompt, and that service sees your IP address. Saving a Subline code switches this off.</p>
+<p>Versions 0.1.8 and earlier let you enter your own AI key (for Groq, Anthropic or Google Gemini). That key stays hidden in Vencord's <code>settings.json</code>. If it is still there and no Subline code is saved, ✦ requests go from your computer straight to that AI service, with your key. They carry the same message text, usernames, message ids and context lines as a ✦ prompt, and that service sees your IP address. Saving a Subline code switches this off. Version 0.2.9 never does this: it sends every translation to the relay.</p>
 
 <h2 id="off">Turning things off</h2>
 <table class="rt">
@@ -907,13 +928,12 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Your own messages</td><td data-k="What it stops">Never sent to be translated by themselves.</td><td data-k="What it does not stop">With ✦, they can be sent as context. Pressing ⚡ on one sends it.</td></tr>
 <tr><td>Uninstall, or removing the add-on</td><td data-k="What it stops">Everything Subline sends, including status checks, patch reports, the badge list and update checks.</td><td data-k="What it does not stop">Files kept on your computer (see <a href="#local">What stays on your computer</a>).</td></tr>
 </tbody></table>
-<p>While Subline is installed, no setting stops status checks, patch reports, update checks or the badge list. For a linked account, no setting stops settings and 🌐 sync.</p>
+<p>While Subline is installed, no setting stops status checks, patch reports, update checks or the badge list.</p>
 
 <h2 id="third-parties">Third parties</h2>
 <table class="rt">
 <thead><tr><th>Who</th><th>What they receive</th><th>Policy</th></tr></thead>
 <tbody>
-<tr><td>Google (Translate)</td><td data-k="What they receive">≈ text, languages, your IP address. Profile and embed text, and names and pronouns, on every plan.</td><td data-k="Policy"><a href="https://policies.google.com/privacy">policies.google.com/privacy</a></td></tr>
 <tr><td>Cloudflare</td><td data-k="What they receive">Hosts the relay, its stored records, analytics and logs. Every relay request, with your IP address. Stores feedback and sends its email copy. Routes support mail.</td><td data-k="Policy"><a href="https://www.cloudflare.com/privacypolicy/">cloudflare.com/privacypolicy</a></td></tr>
 <tr><td>OpenRouter</td><td data-k="What they receive">✦ prompts: message text, usernames, message ids, context lines, reply text, target language. Not your IP address or code.</td><td data-k="Policy"><a href="https://openrouter.ai/privacy">openrouter.ai/privacy</a></td></tr>
 <tr><td>Groq, Cerebras, DeepInfra and other OpenRouter hosts</td><td data-k="What they receive">The same ✦ prompts, when OpenRouter routes to them. Groq also receives them directly when OpenRouter fails.</td><td data-k="Policy"><a href="https://groq.com/privacy-policy/">groq.com/privacy-policy</a>, <a href="https://www.cerebras.ai/">cerebras.ai</a>, <a href="https://deepinfra.com/">deepinfra.com</a></td></tr>
@@ -944,6 +964,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Synced 🌐 choices</td><td data-k="Holds">A random salt; up to 1,000 scrambled channel entries, each with on, off or back to normal and a time. Never a channel id.</td><td data-k="How long"><b>No expiry</b></td></tr>
 <tr><td>Many-computers flag</td><td data-k="Holds">Random account id, number of computers, day.</td><td data-k="How long"><b>No expiry</b></td></tr>
 <tr><td>Computer to account, code to account</td><td data-k="Holds">Scrambled install id; code.</td><td data-k="How long"><b>No expiry</b></td></tr>
+<tr><td>AI period start</td><td data-k="Holds">When the 7 days started, under the keyed hash of your Discord account id; when a server code's 30 days started, under the code.</td><td data-k="How long"><b>No expiry</b></td></tr>
 <tr><td>Early-user marker</td><td data-k="Holds">Scrambled install id, date.</td><td data-k="How long"><b>No expiry</b></td></tr>
 <tr><td>Server code claims</td><td data-k="Holds">Scrambled install ids, one-claim marker per Discord account (per install for older versions).</td><td data-k="How long"><b>No expiry</b></td></tr>
 <tr><td>Server code AI counts</td><td data-k="Holds">Numbers only, per server code.</td><td data-k="How long"><b>No expiry</b></td></tr>
@@ -952,7 +973,8 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Server code network counts (IPv6)</td><td data-k="Holds">Keyed hash of the first 48 bits, count.</td><td data-k="How long">30 days after that network's last claim</td></tr>
 <tr><td>Patch reports</td><td data-k="Holds">Scrambled install id, keyed hash of IP, Discord build, broken items.</td><td data-k="How long">8 days</td></tr>
 <tr><td>Purchase in progress</td><td data-k="Holds">Ids, result, scrambled install id.</td><td data-k="How long">3 days</td></tr>
-<tr><td>Daily ✦ count, preview markers</td><td data-k="Holds">Your code (account id for previews); scrambled message id and text.</td><td data-k="How long">Up to 3 days</td></tr>
+<tr><td>Daily ✦ count, ⚡ markers</td><td data-k="Holds">Your code (the keyed hash of your Discord account id during a period; account id for ⚡ without AI); scrambled message id and text.</td><td data-k="How long">Up to 3 days</td></tr>
+<tr><td>AI period starts per address</td><td data-k="Holds">Keyed hash of the address; keyed hashes of the Discord accounts (or a SHA-256 form of the server code) that started a period there.</td><td data-k="How long">Until the end of that UTC day</td></tr>
 <tr><td>Checkout sessions</td><td data-k="Holds">Session, Dodo link, scrambled install id.</td><td data-k="How long">About 2 days</td></tr>
 <tr><td>Server code tries</td><td data-k="Holds">Counts, under a name with your IP.</td><td data-k="How long">2 days</td></tr>
 <tr><td>"Seen today" markers</td><td data-k="Holds">Scrambled code or install id.</td><td data-k="How long">2 days</td></tr>
@@ -960,9 +982,12 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Checkout limits</td><td data-k="Holds">Counts per computer and per keyed hash of IP.</td><td data-k="How long">2 hours</td></tr>
 <tr><td>Move ticket</td><td data-k="Holds">Random account id, keyed hash of its Discord account id.</td><td data-k="How long">10 minutes</td></tr>
 <tr><td>Browser sign-in code</td><td data-k="Holds">Discord's one-time code, scrambled install id, keyed hash of the address.</td><td data-k="How long">At most 5 minutes</td></tr>
-<tr><td>Sync limits</td><td data-k="Holds">Counts of settings and 🌐 writes per computer, under its scrambled install id. Limit 60 an hour each, deleted when the hour ends.</td><td data-k="How long">About an hour</td></tr>
 <tr><td>Linking limits</td><td data-k="Holds">Counts per computer (links, and checks while it waits for your browser) and per keyed hash of IP, deleted when the hour ends.</td><td data-k="How long">About an hour</td></tr>
+<tr><td>Sync limits</td><td data-k="Holds">Counts of changes sent per computer, under its scrambled install id, deleted when the hour ends.</td><td data-k="How long">About an hour</td></tr>
+<tr><td>Link and price step markers</td><td data-k="Holds">One marker per step, named with a keyed hash of the install id.</td><td data-k="How long">400 days</td></tr>
+<tr><td>Link and price step limits</td><td data-k="Holds">Counts, under a keyed hash of IP.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Daily totals</td><td data-k="Holds">Numbers only.</td><td data-k="How long">400 days</td></tr>
+<tr><td>AI use per day</td><td data-k="Holds">Numbers only, per kind of AI.</td><td data-k="How long">60 days</td></tr>
 <tr><td>Analytics rows</td><td data-k="Holds">Result, 8-character fingerprint, plan, count.</td><td data-k="How long">Set by Cloudflare</td></tr>
 <tr><td>Workers Logs</td><td data-k="Holds">Relay log lines, request details recorded by Cloudflare.</td><td data-k="How long">Set by Cloudflare</td></tr>
 <tr><td>Older versions</td><td data-k="Holds">Install id itself; keyed hash of IP in counters.</td><td data-k="How long">90 days; 2 days</td></tr>
@@ -975,8 +1000,8 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Translations</td><td data-k="Where">Discord's storage</td><td data-k="How long">Newest 2,000, no time limit</td></tr>
 <tr><td>Profile and embed cache, with original text</td><td data-k="Where">Discord's storage</td><td data-k="How long">Newest 2,000, at most 30 days</td></tr>
 <tr><td>Codes (yours and other Discord accounts' on this computer), install id, settings</td><td data-k="Where">Vencord <code>settings.json</code></td><td data-k="How long">Until you delete them. The install id survives uninstall.</td></tr>
-<tr><td>Install ids for each Discord account</td><td data-k="Where">Discord's storage</td><td data-k="How long">No time limit</td></tr>
 <tr><td>Settings and 🌐 choices for each Discord account</td><td data-k="Where">Discord's storage</td><td data-k="How long">No time limit</td></tr>
+<tr><td>Install ids for each Discord account</td><td data-k="Where">Discord's storage</td><td data-k="How long">No time limit</td></tr>
 <tr><td>Log files</td><td data-k="Where">Subline log folder</td><td data-k="How long">Up to about 2 MiB. Never removed by uninstall.</td></tr>
 <tr><td>Health note, helper notes</td><td data-k="Where">Subline's folder</td><td data-k="How long">Until uninstall with the box ticked</td></tr>
 </tbody></table>
@@ -985,7 +1010,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <caption>Elsewhere</caption>
 <thead><tr><th>What</th><th>Who</th><th>How long</th></tr></thead>
 <tbody>
-<tr><td>≈ text and your IP</td><td data-k="Who">Google</td><td data-k="How long">Set by Google</td></tr>
+<tr><td>≈ text and your IP (0.2.8 and earlier only)</td><td data-k="Who">Google</td><td data-k="How long">Set by Google</td></tr>
 <tr><td>✦ prompts</td><td data-k="Who">OpenRouter and the host that served it, or Groq</td><td data-k="How long">Set by each service</td></tr>
 <tr><td>Purchase and customer details</td><td data-k="Who">Dodo Payments</td><td data-k="How long">Set by Dodo</td></tr>
 <tr><td>Website and download requests</td><td data-k="Who">GitHub</td><td data-k="How long">Set by GitHub</td></tr>
