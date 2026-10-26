@@ -155,7 +155,7 @@ a:hover{color:var(--fg)}
 .fine{font-size:12.5px;color:var(--muted)}
 .wm-sm{font-family:var(--font-serif);font-size:17px;font-weight:400;letter-spacing:-.01em;display:inline-block;
   padding-bottom:3px;border-bottom:1.5px solid var(--accent);line-height:1}
-@media (max-width:640px){.wrap{padding:44px 20px}h2.sec{font-size:25px}}
+@media (max-width:640px){.wrap{padding:44px 16px}h2.sec{font-size:25px}}
 .keyrow{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:10px;max-width:560px;flex-wrap:wrap}
 .keyrow code{flex:1 1 240px;min-width:0;overflow-wrap:anywhere;user-select:all}
 .keyrow .btn{font-size:14px;padding:8px 16px}
@@ -163,39 +163,52 @@ a:hover{color:var(--fg)}
 details.thanks-fallback{margin-top:18px;max-width:560px}
 details.thanks-fallback summary{cursor:pointer;font-size:14px;color:var(--muted)}
 details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-#hero .wrap{max-width:1160px;padding-top:48px}
+#hero .wrap{max-width:1160px;padding-top:56px;padding-bottom:24px}
 .hero{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:center}
-@media (min-width:980px){.hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px}}
 .hero h1{font-family:var(--font-serif);font-size:52px;line-height:1.04;letter-spacing:-.02em;font-weight:400;margin:22px 0 0;max-width:14ch}
+@media (min-width:980px){.hero{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:64px}.hero h1{font-size:62px}}
 .cta{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-top:30px;scroll-margin-top:24px}
 .hero-notes{margin-top:16px}
 .hero-notes p{margin:6px 0 0}
 .hero-notes .also{margin:0;font-size:14px;color:var(--muted)}
 .gl-inline{font-family:var(--font-mono);font-size:1em;color:var(--accent)}
 @media (max-width:640px){.hero h1{font-size:36px}}
+/* The demo column: a soft accent ground behind the window, so the right half
+   reads as one object and not as a box floating in space. */
+.hero-stage{position:relative;isolation:isolate;min-width:0}
+.hero-stage::before{content:"";position:absolute;inset:-32px -24px -8px;border-radius:24px;background:radial-gradient(60% 55% at 60% 40%,var(--accent-weak),transparent 70%);z-index:-1;pointer-events:none}
 /* The demo: a Discord channel drawn in the page's own palette (tokens.css),
    so it sits on the page instead of on top of it, in light and in dark.
    Built from the real client: ⚡ and 🌐 sit in each message's hover toolbar,
    next to the emoji button; a status shows translated in place, in its bubble,
    with ✦ to switch to the original. Invented people and messages only.
    Motion: nothing jumps. A new message or line slides the others up (the
-   player measures and animates every move), and text swaps cross-fade. */
+   player measures and animates every move), and text swaps cross-fade.
+   EARLIER MESSAGES (.dh / .sh): the channel already has a past, so the feed
+   is full from the first frame of the loop, not an empty box filling up.
+   They are not .dm / .sl, because the player hides every .dm and .sl on
+   reset; these must stay. Today's messages push them up and out of view. */
 .dc{--d-bg:var(--panel);--d-hover:var(--bg);--d-tx:var(--fg);--d-name:var(--fg);--d-mut:var(--muted);--d-dim:var(--muted);--d-sl:var(--muted);
   --d-line:var(--line);--d-link:var(--accent);--d-float:var(--panel);--d-float-line:var(--line-strong);--d-input:var(--bg);--d-ico:var(--muted);
   --d-on:var(--line);--d-pop:var(--panel);--d-bub:var(--bg);--d-banner:var(--desk);--d-shadow:0 6px 18px rgba(0,0,0,.14);
-  position:relative;background:var(--d-bg);color:var(--d-tx);border-radius:12px;overflow:hidden;border:1px solid var(--line);
+  position:relative;background:var(--d-bg);color:var(--d-tx);border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-1);
   font-family:"gg sans","Noto Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;user-select:none}
 .dc-head{display:flex;align-items:center;gap:8px;height:48px;padding:0 16px;border-bottom:1px solid var(--d-line);font-weight:600;font-size:15px;color:var(--d-name)}
 .dc-hash{color:var(--d-dim);font-size:22px;font-weight:400;line-height:1}
-.dc-feed{height:468px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:6px 0 10px}
+.dc-tools{margin-left:auto;display:flex;align-items:center;gap:16px;color:var(--d-ico)}
+.dc-tools svg{width:20px;height:20px}
+.dc-feed{height:420px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:6px 0 10px;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,transparent 76px,#000 172px);mask-image:linear-gradient(to bottom,transparent 0,transparent 76px,#000 172px)}
 .dc-feed{transition:opacity .4s ease-out}
 .dc-feed.gone{opacity:0}
-.dc-day{display:flex;align-items:center;gap:8px;margin:6px 16px 4px;font-size:12px;font-weight:600;color:var(--d-mut)}
+.dc-day{display:flex;align-items:center;gap:8px;margin:12px 16px 4px;font-size:12px;font-weight:600;color:var(--d-mut);flex:none}
 .dc-day::before,.dc-day::after{content:"";flex:1;height:1px;background:var(--d-line)}
 .dm{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr);gap:0 16px;padding:4px 16px;margin-top:12px;transition:background-color .15s}
 .dm[hidden]{display:none}
 .dm.hover{background:var(--d-hover)}
 .dm>div{min-width:0}
+.dh{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr);gap:0 16px;padding:4px 16px;margin-top:12px;flex:none}
+.dh>div{min-width:0}
 .av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:16px;color:#fff;margin-top:2px}
 .nm{font-size:16px;font-weight:600;line-height:1.35;color:var(--d-name)}
 .tm{font-size:12px;color:var(--d-mut);margin-left:8px;font-weight:500}
@@ -209,6 +222,9 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 .sl[hidden]{display:none}
 .sl .p{color:var(--d-mut)}
 .dc[data-off] .sl{opacity:0}
+.sh{font-size:15px;line-height:1.35;color:var(--d-sl);font-style:italic;margin-top:1px;transition:opacity .28s ease-out;overflow-wrap:anywhere}
+.sh .p{color:var(--d-mut)}
+.dc[data-off] .sh{opacity:0}
 .bar{position:absolute;right:14px;top:-20px;display:flex;align-items:center;gap:2px;padding:3px;background:var(--d-float);border:1px solid var(--d-float-line);
   border-radius:8px;z-index:2;box-shadow:var(--d-shadow);transition:opacity .14s ease-out}
 .bar[hidden]{display:flex;opacity:0;pointer-events:none}
@@ -250,19 +266,189 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
 .dc-cap{height:3.2em;margin:16px 2px 0;font-size:14.5px;line-height:1.6;color:var(--muted);transition:opacity .18s ease-out}
 .dc-cap.out{opacity:0}
 .dc-cap b{color:var(--fg);font-weight:600}
-@media (max-width:640px){.dc-feed{height:560px}.dc-pop{left:12px}.bi{width:27px}.bi.x{display:none}.dc-input .ic .x{display:none}.dc-cap{height:4.8em}}
+@media (max-width:640px){.dc-feed{height:520px}.dc-pop{left:12px}.bi{width:27px}.bi.x{display:none}.dc-input .ic .x{display:none}.dc-tools .x{display:none}.dc-cap{height:4.8em}
+  [data-demo-globe] .tip{left:auto;right:-8px;transform:none}[data-demo-globe] .tip::after{left:auto;right:16px;transform:rotate(45deg)}
+  .hero-stage::before{inset:-16px -16px 0}}
+@media (max-width:380px){.dc-head{font-size:14px}.nm{font-size:15px}.tx{font-size:15px}.sl,.sh{font-size:14px}.dm,.dh{gap:0 12px;padding:4px 12px}}
 @media (prefers-reduced-motion:reduce){.dc-cursor{display:none}}
-#pricing .wrap{max-width:1160px;padding-top:20px;padding-bottom:36px}
-.plans{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;max-width:640px}
-.plan{padding:18px 20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:baseline}
-.plan .pg{font-family:var(--font-mono);font-size:22px;color:var(--accent);grid-row:span 2;line-height:1}
-.plan h3{margin:0;font-size:16px;font-weight:600}
-.plan h3 .pr{font-weight:400;color:var(--muted);margin-left:6px}
-.plan p{margin:0;font-size:13.5px;color:var(--muted)}
-.plans-note{margin:14px 2px 0}
-.plan ul{grid-column:2;margin:6px 0 0;padding:0;list-style:none}
-.plan li{font-size:13.5px;color:var(--muted);padding-left:14px;position:relative;margin:3px 0}
-.plan li::before{content:"·";position:absolute;left:3px;color:var(--accent)}
+/* SHARED by compare, tiles and pricing (repeat VERBATIM, so the build keeps one copy).
+   A section head, and a small Discord chat drawn in the page's own palette. */
+.shd{margin:0 0 36px}
+.shd h2{font-family:var(--font-serif);font-size:40px;line-height:1.1;letter-spacing:-.02em;font-weight:400;margin:0;max-width:22ch;text-wrap:balance}
+@media (max-width:640px){.shd{margin-bottom:24px}.shd h2{font-size:28px}}
+.mk{position:relative;width:100%;min-width:0;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px 0;
+  font-family:"gg sans","Noto Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;user-select:none}
+.mk-chan{display:flex;align-items:center;gap:6px;padding:0 14px 9px;margin-bottom:2px;border-bottom:1px solid var(--line);font-size:13px;font-weight:600}
+.mk-chan i{font-style:normal;font-weight:400;font-size:17px;line-height:1;color:var(--muted)}
+.mk-m{position:relative;display:grid;grid-template-columns:32px minmax(0,1fr);gap:0 12px;padding:6px 14px}
+.mk-m>div{min-width:0}
+.mk-av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:600;color:#fff;margin-top:2px}
+.mk-nm{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px;font-size:14px;font-weight:600;line-height:1.3}
+.mk-tm{font-size:11px;font-weight:500;color:var(--muted)}
+.mk-tx{font-size:14.5px;line-height:1.375;overflow-wrap:anywhere}
+.mk-sl{font-size:13.5px;line-height:1.35;font-style:italic;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.mk-sl .g,.mk-tg{font-style:normal;color:var(--accent)}
+.mk-tg{margin-left:5px;font-weight:400}
+.mk-was{display:block;margin-top:3px;padding-left:8px;border-left:2px solid var(--line-strong);font-size:11.5px;font-weight:400;font-style:normal;line-height:1.35;color:var(--muted);overflow-wrap:anywhere}
+.mk-none{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:2px 9px 2px 7px;border:1px dashed var(--line-strong);border-radius:999px;
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mk-none svg{width:11px;height:11px;flex:none}
+/* The same chat twice: as Discord shows it, and with Subline. The picture
+   carries the point; the pills name what to look at. Prefix: cp- */
+#compare .wrap{max-width:1160px;padding-top:72px;padding-bottom:40px}
+.cp-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:stretch}
+.cp-fig{margin:0;display:flex;flex-direction:column;min-width:0}
+.cp-lab{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.cp-lab .d{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--line-strong)}
+.cp-lab.on{color:var(--accent)}
+.cp-lab.on .d{border-color:var(--accent);background:var(--accent)}
+.cp-chat{flex:1;display:flex;flex-direction:column;padding-bottom:14px}
+.cp-chat .cp-msgs{flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+.cp-chat .mk-m{margin-top:6px}
+.cp-before{opacity:.92}
+.cp-after{box-shadow:var(--shadow-1);border-color:var(--line-strong)}
+.cp-tag{margin-left:auto;display:inline-flex;align-items:center;font-family:var(--font-sans);font-style:normal;font-size:11.5px;font-weight:600;line-height:1.2;
+  color:var(--accent);background:var(--accent-weak);border-radius:999px;padding:4px 9px;white-space:nowrap}
+@media (max-width:860px){.cp-pair{grid-template-columns:minmax(0,1fr);gap:28px}}
+@media (max-width:640px){#compare .wrap{padding-top:48px}}
+@media (max-width:420px){.cp-tag{margin-left:0;white-space:normal}}
+.cp-gh{visibility:hidden}
+@media (max-width:860px){.cp-gh{display:none}}
+/* What Subline reads, one picture each: a Discord mock-up (role="img", with
+   an aria-label), a serif title and one short caption. Prefix: tl- */
+#tiles .wrap{max-width:1160px;padding-top:56px;padding-bottom:32px}
+.tl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none}
+@media (max-width:640px){.tl-grid{grid-template-columns:minmax(0,1fr);gap:16px}#tiles .wrap{padding-top:40px}}
+.tl{display:flex;flex-direction:column;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tl-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:300px;padding:32px 24px;
+  background:var(--desk);background:color-mix(in srgb,var(--desk) 55%,var(--bg));border-bottom:1px solid var(--line)}
+.tl-stage .mk{max-width:360px;box-shadow:var(--shadow-1)}
+.tl-cap{padding:18px 22px 22px}
+.tl-cap h3{font-family:var(--font-serif);font-size:21px;line-height:1.2;letter-spacing:-.01em;font-weight:400;margin:0}
+.tl-cap p{margin:6px 0 0;font-size:14px;line-height:1.45;color:var(--muted);text-wrap:pretty}
+@media (max-width:640px){.tl-stage{min-height:0;padding:24px 14px}}
+/* A profile card. The name and pronouns keep their original, with a small
+   line under them; the status and the bio show translated in place, with
+   their original under them here so the picture says what changed. */
+.tl-stage .tl-prof{max-width:290px;padding:0;overflow:hidden}
+.tl-prof .bn{height:52px;background:var(--desk)}
+.tl-prof .pav{position:absolute;top:18px;left:14px;width:64px;height:64px;border-radius:50%;border:5px solid var(--panel);background:#3e8ed0;
+  display:grid;place-items:center;font-size:24px;font-weight:600;color:#fff}
+.tl-prof .bub{position:absolute;top:26px;left:88px;right:12px;width:max-content;max-width:calc(100% - 100px);background:var(--bg);border:1px solid var(--line-strong);
+  border-radius:12px;padding:5px 10px;font-size:12.5px;line-height:1.3;overflow-wrap:anywhere}
+.tl-prof .bub .mk-was{margin-top:2px;font-size:11px}
+.tl-prof .pb{padding:44px 16px 14px}
+.tl-prof .pn{font-size:18px;font-weight:700;line-height:1.2}
+.tl-prof .pu{font-size:12.5px;margin-top:2px}
+.tl-prof .nl{font-size:12px;font-style:italic;color:var(--muted);margin-top:3px}
+.tl-prof .ph{font-size:11px;font-weight:600;color:var(--muted);margin-top:12px}
+.tl-pre{margin:0 4px 0 0}
+.tl-prof .pd{font-size:13px;line-height:1.4;margin-top:2px;overflow-wrap:anywhere}
+/* A forum post title (translated in place, "✦ " first) and a server rule
+   (a line under it). */
+.tl-post{margin:4px 12px 8px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.tl-post .tt{display:flex;gap:7px;align-items:flex-start;font-size:14.5px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.tl-post .tt>span{min-width:0}
+.tl-post .tt svg{flex:none;width:15px;height:15px;margin-top:2px;color:var(--muted)}
+.tl-post .meta{font-size:11.5px;color:var(--muted);margin-top:6px}
+.tl-rules{border-bottom:0;padding-top:6px;padding-bottom:0}
+.tl-rule{display:grid;grid-template-columns:22px minmax(0,1fr);gap:0 8px;padding:6px 14px 2px}
+.tl-rule .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--bg);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--muted)}
+.tl-rule>div{min-width:0}
+/* Reads the whole chat: a reply, read with the message it answers. */
+.tl-rp{grid-column:1/-1;display:flex;align-items:center;gap:5px;min-width:0;padding-left:14px;margin-bottom:2px;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden}
+.tl-rp::before{content:"";flex:none;width:24px;height:9px;margin-top:8px;border:2px solid var(--line);border-right:0;border-bottom:0;border-top-left-radius:5px}
+.tl-rp .ra{flex:none;width:14px;height:14px;border-radius:50%}
+.tl-rp b{font-weight:600;color:var(--fg)}
+.tl-rp span{overflow:hidden;text-overflow:ellipsis}
+/* ⚡ in the message's hover toolbar: pressed, and the line comes in. The
+   still picture (no motion asked for, or no animation support) is the end
+   state: ⚡ lit, the pointer on it, the line shown. */
+.tl-hov{background:var(--bg);margin-top:26px}
+.tl-bar{position:absolute;right:10px;top:-17px;display:flex;gap:2px;padding:2px;background:var(--panel);border:1px solid var(--line-strong);border-radius:7px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:1}
+.tl-bi{position:relative;width:26px;height:26px;display:grid;place-items:center;border-radius:5px;font-size:14px;line-height:1;color:var(--muted)}
+.tl-bi svg{width:16px;height:16px}
+.tl-bi.on{background:var(--accent-weak);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}
+.tl-cur{position:absolute;left:14px;top:13px;width:15px;height:19px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .tl-zap .mk-sl{animation:tl-in 5s cubic-bezier(.2,.8,.2,1) infinite}
+  .tl-zap .tl-bi.on{animation:tl-press 5s ease-out infinite}
+  .tl-zap .tl-cur{animation:tl-cur 5s cubic-bezier(.22,.8,.24,1) infinite}
+}
+@keyframes tl-in{0%,20%{opacity:0;transform:translateY(3px)}30%,86%{opacity:1;transform:none}96%,100%{opacity:0}}
+@keyframes tl-press{0%,17%{transform:none;background:transparent;box-shadow:none}21%{transform:scale(.86);background:var(--accent-weak);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}26%,90%{transform:none;background:var(--accent-weak);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}100%{transform:none;background:transparent;box-shadow:none}}
+@keyframes tl-cur{0%{opacity:0;transform:translate(34px,30px)}6%{opacity:1;transform:translate(34px,30px)}17%,86%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+/* One AI plan, drawn as ONE line (the subline): 7 days from the first
+   translation, then it forks. Solid: a plan, every message keeps its line.
+   Dashed: no plan, ⚡ by hand, 5 a day. No buttons: the download at the top
+   is the page's one button, and subscribing happens inside Discord.
+   Grid with no row gap, so the fork's pieces (j1, j2) join edge to edge.
+   --y: the line's height in its row; --y2: the ⚡ key's centre. Prefix: pr- */
+.gl-inline{font-family:var(--font-mono);font-size:1em;color:var(--accent)}
+#pricing .wrap{max-width:1160px;padding-top:72px;padding-bottom:40px}
+#pricing .plan{border-radius:16px}
+.pr{--y:54px;--y2:35px;--dash:color-mix(in srgb,var(--muted) 55%,transparent);
+  display:grid;grid-template-columns:minmax(0,1.05fr) 88px minmax(0,1fr);
+  grid-template-areas:"line j1 then" "ax j1 then" "txt j1 then" ". j2 bolt";padding:52px 48px 48px}
+.pr-line{grid-area:line;position:relative;height:calc(var(--y) + 16px)}
+.pr-line::before{content:"";position:absolute;left:15px;right:0;top:calc(var(--y) - 1px);height:2px;border-radius:2px;background:var(--accent)}
+.pr-dots{position:absolute;left:0;right:0;top:var(--y);height:0}
+.pr-dots i{position:absolute;top:0;left:calc(15px + (100% - 15px) * var(--i) / 6);transform:translate(-50%,-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--panel)}
+.pr-dots .n1{left:15px;width:30px;height:30px;display:grid;place-items:center;font-style:normal;font-size:14px;line-height:1;color:var(--accent-fg);
+  box-shadow:0 0 0 4px var(--panel),0 0 0 5px color-mix(in srgb,var(--accent) 30%,transparent)}
+.pr-dots .n7{width:13px;height:13px;background:var(--panel);border:2px solid var(--accent);box-shadow:0 0 0 3px var(--panel)}
+.pr-ax{grid-area:ax;display:flex;justify-content:space-between;gap:12px;margin:0;padding-top:2px;
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pr-ax span:last-child{margin-right:14px}
+.pr-txt{grid-area:txt;margin:0;padding:18px 24px 0 0}
+.pr-txt p{margin:0;font-size:16px;line-height:1.45;color:var(--fg);max-width:34ch;text-wrap:balance}
+.pr-txt .fine{margin-top:10px;font-size:12.5px;line-height:1.5;max-width:44ch}
+.pr-j1,.pr-j2{position:relative}
+.pr-j1{grid-area:j1}
+.pr-j1::before{content:"";position:absolute;left:0;right:14px;top:calc(var(--y) - 1px);height:2px;border-radius:2px;background:var(--accent)}
+.pr-j1::after{content:"";position:absolute;left:-.75px;top:var(--y);bottom:0;border-left:1.5px dashed var(--dash)}
+.pr-j2{grid-area:j2}
+.pr-j2::before{content:"";position:absolute;left:-.75px;right:14px;top:0;height:var(--y2);
+  border-left:1.5px dashed var(--dash);border-bottom:1.5px dashed var(--dash);border-bottom-left-radius:18px}
+.pr-then{grid-area:then;padding-left:18px;min-width:0}
+.pr-lab{margin:0;height:16px;font-family:var(--font-mono);font-size:10.5px;line-height:16px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.pr-big{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin:6px 0 0;font-family:var(--font-serif);font-size:64px;font-weight:400;line-height:1;letter-spacing:-.03em;color:var(--fg)}
+.pr-big .per{font-family:var(--font-sans);font-size:16px;letter-spacing:0;color:var(--muted)}
+.pr-alt{margin:12px 0 0;font-size:15px;color:var(--muted)}
+.pr-alt b{font-family:var(--font-serif);font-size:21px;font-weight:400;letter-spacing:-.01em;color:var(--fg)}
+.pr-by{margin:14px 0 0;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--fg)}
+.pr-by .gl-inline{font-size:14px}
+.pr-bolt{grid-area:bolt;display:flex;align-items:flex-start;gap:14px;padding:18px 0 0 18px;font-size:15px;line-height:1.45;color:var(--muted)}
+.pr-key{flex:none;width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:var(--bg);border:1px solid var(--line-strong);
+  box-shadow:0 1px 0 var(--line-strong);font-size:16px;line-height:1}
+.pr-bolt span:last-child{padding-top:6px}
+.pr-bolt b{color:var(--fg);font-weight:600}
+@media (max-width:1023px){.pr{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);padding:36px 32px 40px}.pr-big{font-size:56px}}
+/* Phone: the line runs down a rail on the left and forks the same way. */
+@media (max-width:699px){
+  .pr{--y:44px;--y2:39px;grid-template-columns:40px minmax(0,1fr);
+    grid-template-areas:"line ax" "line txt" "j1 then" "j2 bolt";padding:24px 18px 28px 14px}
+  .pr-line{height:auto;min-height:120px}
+  .pr-line::before{left:19px;right:auto;width:2px;top:15px;bottom:0;height:auto}
+  .pr-dots{left:20px;right:auto;top:0;bottom:0;width:0;height:auto}
+  .pr-dots i{left:0;top:calc(15px + (100% - 15px) * var(--i) / 6)}
+  .pr-dots .n1{left:0;top:15px}
+  .pr-ax span:last-child{margin-right:0}
+  .pr-ax{justify-content:flex-start;align-items:center;gap:0;padding:8px 0 0 10px}
+  .pr-ax span:first-child::after{content:"";display:inline-block;vertical-align:middle;width:22px;height:1px;margin:0 10px;background:currentColor}
+  .pr-txt{padding:10px 0 26px 10px}
+  .pr-txt p{font-size:15px}
+  .pr-j1::before{left:19px;right:2px;top:0;height:calc(var(--y) + 1px);background:none;border-radius:0 0 0 14px;
+    border-left:2px solid var(--accent);border-bottom:2px solid var(--accent)}
+  .pr-j1::after{left:19.25px;top:0}
+  .pr-j2::before{left:19.25px;right:2px}
+  .pr-then{padding-left:10px}
+  .pr-big{font-size:48px}
+  .pr-bolt{padding:22px 0 0 10px;font-size:14.5px}
+}
+@media (max-width:359px){.pr-big{font-size:42px}}
 #footer .wrap{max-width:1160px;padding-top:8px;padding-bottom:48px}
 .foot{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;border-top:1px solid var(--line);padding-top:20px;font-size:13px;color:var(--muted)}
 .foot a{color:var(--muted);text-decoration:none}
@@ -357,29 +543,59 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   </div>
 </div>
 
-<div>
+<div class="hero-stage">
   <div class="dc" data-demo role="img" aria-label="A Discord channel with Subline: a translation under each message in another language">
-    <div class="dc-head"><span class="dc-hash">#</span>general</div>
+    <div class="dc-head"><span class="dc-hash">#</span>general
+      <span class="dc-tools" aria-hidden="true">
+        <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v10H9l-4 4z"/><path d="M9 9h6M9 12h4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7M10 20a2 2 0 0 0 4 0"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3 6"/></svg>
+      </span>
+    </div>
     <div class="dc-feed" data-demo-feed>
+      <div class="dh"><div class="av" style="background:#4a9a8f">M</div><div>
+        <div class="nm">mina<span class="tm">Yesterday at 23:38</span></div>
+        <div class="tx" lang="ko">오늘 다들 수고했어</div>
+        <div class="sh"><span class="p">✦ ko · </span><span class="t">good work today, everyone</span></div></div></div>
+      <div class="dh"><div class="av" style="background:#c25450">I</div><div>
+        <div class="nm">ines<span class="tm">Yesterday at 23:41</span></div>
+        <div class="tx" lang="fr">bonne nuit tout le monde, à demain</div>
+        <div class="sh"><span class="p">✦ fr · </span><span class="t">good night everyone, see you tomorrow</span></div></div></div>
+      <div class="dh"><div class="av" style="background:#b0794a">S</div><div>
+        <div class="nm">sofi<span class="tm">Yesterday at 23:44</span></div>
+        <div class="tx" lang="es">yo me quedo un rato más 😴</div>
+        <div class="sh"><span class="p">✦ es · </span><span class="t">I'm staying on a bit longer 😴</span></div></div></div>
+      <div class="dh"><div class="av" style="background:#7a5cc4">D</div><div>
+        <div class="nm">dev<span class="tm">Yesterday at 23:46</span></div>
+        <div class="tx" lang="hi-Latn">kal milte hain sab</div>
+        <div class="sh"><span class="p">✦ hi · </span><span class="t">see you all tomorrow</span></div></div></div>
+      <div class="dh"><div class="av" style="background:#3e8ed0">K</div><div>
+        <div class="nm">kenji<span class="tm">Yesterday at 23:50</span></div>
+        <div class="tx" lang="ja">おやすみ〜</div>
+        <div class="sh"><span class="p">✦ ja · </span><span class="t">night~</span></div></div></div>
+      <div class="dh"><div class="av" style="background:#d08a3e">R</div><div>
+        <div class="nm">rafa<span class="tm">Yesterday at 23:52</span></div>
+        <div class="tx" lang="pt">boa noite galera</div>
+        <div class="sh"><span class="p">✦ pt · </span><span class="t">good night guys</span></div></div></div>
       <div class="dc-day">Today</div>
       <div class="dm" data-m="luna"><div class="av" style="background:#c45fb1">L</div><div>
         <div class="nm">luna<span class="tm">Today at 21:02</span></div>
-        <div class="tx">alguien juega esta noche? ando bien aburrida</div>
+        <div class="tx" lang="es">alguien juega esta noche? ando bien aburrida</div>
         <div class="sl"><span class="p">✦ es · </span><span class="t">anyone up for a game tonight? I'm so bored</span></div></div></div>
       <div class="dm" data-m="kenji"><div class="av" style="background:#3e8ed0">K</div><div>
         <div class="nm">kenji<span class="tm">Today at 21:03</span></div>
-        <div class="tx">行ける！9時からなら</div>
+        <div class="tx" lang="ja">行ける！9時からなら</div>
         <div class="sl"><span class="p">✦ ja · </span><span class="t">I'm in! As long as it's from 9</span></div></div></div>
       <div class="dm" data-m="you"><div class="av" style="background:#5b8f6a">Y</div><div>
         <div class="nm">you<span class="tm">Today at 21:03</span></div>
         <div class="tx">im down</div></div></div>
       <div class="dm" data-m="rafa"><div class="av" style="background:#d08a3e">R</div><div>
         <div class="nm">rafa<span class="tm">Today at 21:04</span></div>
-        <div class="tx">mano tô morto kkkkk</div>
+        <div class="tx" lang="pt">mano tô morto kkkkk</div>
         <div class="sl"><span class="p">✦ pt · </span><span class="t">bro I'm dying lol</span></div></div></div>
       <div class="dm" data-m="dev"><div class="rp"><span class="ra" style="background:#c45fb1"></span><b>@luna</b><span>alguien juega esta noche? ando bien aburrida</span></div><div class="av" style="background:#7a5cc4">D</div><div>
         <div class="nm">dev<span class="tm">Today at 21:05</span></div>
-        <div class="tx">scene kya hai, kaunsa game?</div>
+        <div class="tx" lang="hi-Latn">scene kya hai, kaunsa game?</div>
         <div class="sl"><span class="p">✦ hi · </span><span class="t">what's the plan, which game?</span></div></div></div>
     </div>
     <div class="bar" data-demo-bar hidden>
@@ -411,31 +627,185 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     </div>
     <svg class="dc-cursor" data-demo-cursor viewBox="0 0 18 22" aria-hidden="true"><path d="M1 1l15 11.2-6.6.9 3.9 7.6-2.8 1.3-3.8-7.7L1 19z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
   </div>
-  <p class="dc-cap" data-demo-cap><span class="gl-inline">✦</span> AI translation, under every message you can't read. It reads the chat around each message, so slang and replies come out right.</p>
+  <p class="dc-cap" data-demo-cap><b><span class="gl-inline">✦</span> A line under every message you can't read.</b></p>
 </div>
 </div>
+</div>
+</section>
+
+<!-- compare -->
+<section id="compare">
+<div class="wrap">
+<div class="shd">
+  <h2>Same chat. Now you can read it.</h2>
+</div>
+<div class="cp-pair">
+  <figure class="cp-fig">
+    <figcaption class="cp-lab"><span class="d"></span>Without Subline</figcaption>
+    <div class="mk cp-chat cp-before" role="img" aria-label="A study chat in Korean, Spanish, English and Hinglish, with no translations">
+      <div class="mk-chan"><i>#</i>study-hall</div>
+      <div class="cp-msgs">
+        <div class="mk-m"><div class="mk-av" style="background:#3e8ed0">M</div><div>
+          <div class="mk-nm">mina<span class="mk-tm">22:14</span></div>
+          <div class="mk-tx" lang="ko">오늘 몇 시까지 해? 난 새벽 2시 각</div>
+          <div class="cp-gh" aria-hidden="true"><div class="mk-sl"><span class="g">✦</span> ko · how late are you going today? I&#39;m looking at 2am</div></div></div></div>
+        <div class="mk-m"><div class="mk-av" style="background:#c45fb1">S</div><div>
+          <div class="mk-nm">sofi<span class="mk-tm">22:15</span></div>
+          <div class="mk-tx" lang="es">nmms el examen de mañana está bien cañón 💀</div>
+          <div class="cp-gh" aria-hidden="true"><div class="mk-sl"><span class="g">✦</span> es · no way, tomorrow&#39;s exam is brutal 💀</div></div></div></div>
+        <div class="mk-m"><div class="mk-av" style="background:#5b8f6a">Y</div><div>
+          <div class="mk-nm">you<span class="mk-tm">22:15</span></div>
+          <div class="mk-tx">same. pomodoro at 10?</div>
+          <div class="cp-gh" aria-hidden="true"><span class="mk-none"><svg viewBox="0 0 12 12"></svg>Your language: no line</span></div></div></div>
+        <div class="mk-m"><div class="mk-av" style="background:#7a5cc4">A</div><div>
+          <div class="mk-nm">arjun<span class="mk-tm">22:16</span></div>
+          <div class="mk-tx" lang="hi-Latn">haan yaar, main bhi aata hoon</div>
+          <div class="cp-gh" aria-hidden="true"><div class="mk-sl"><span class="g">✦</span> hi · yeah man, I&#39;m coming too</div></div></div></div>
+      </div>
+    </div>
+  </figure>
+  <figure class="cp-fig">
+    <figcaption class="cp-lab on"><span class="d"></span>With Subline</figcaption>
+    <div class="mk cp-chat cp-after" role="img" aria-label="The same chat with Subline: an English line under the Korean, Spanish and Hinglish messages. The English message has no line.">
+      <div class="mk-chan"><i>#</i>study-hall</div>
+      <div class="cp-msgs">
+        <div class="mk-m"><div class="mk-av" style="background:#3e8ed0">M</div><div>
+          <div class="mk-nm">mina<span class="mk-tm">22:14</span></div>
+          <div class="mk-tx" lang="ko">오늘 몇 시까지 해? 난 새벽 2시 각</div>
+          <div class="mk-sl"><span class="g">✦</span> ko · how late are you going today? I'm looking at 2am</div></div></div>
+        <div class="mk-m"><div class="mk-av" style="background:#c45fb1">S</div><div>
+          <div class="mk-nm">sofi<span class="mk-tm">22:15</span></div>
+          <div class="mk-tx" lang="es">nmms el examen de mañana está bien cañón 💀</div>
+          <div class="mk-sl"><span class="g">✦</span> es · no way, tomorrow's exam is brutal 💀</div></div></div>
+        <div class="mk-m"><div class="mk-av" style="background:#5b8f6a">Y</div><div>
+          <div class="mk-nm">you<span class="mk-tm">22:15</span></div>
+          <div class="mk-tx">same. pomodoro at 10?</div>
+          <span class="mk-none"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2.5 6.2 5 8.5l4.5-5"/></svg>Your language: no line</span></div></div>
+        <div class="mk-m"><div class="mk-av" style="background:#7a5cc4">A</div><div>
+          <div class="mk-nm">arjun<span class="mk-tm">22:16</span><span class="cp-tag">Hinglish</span></div>
+          <div class="mk-tx" lang="hi-Latn">haan yaar, main bhi aata hoon</div>
+          <div class="mk-sl"><span class="g">✦</span> hi · yeah man, I'm coming too</div></div></div>
+      </div>
+    </div>
+  </figure>
+</div>
+</div>
+</section>
+
+<!-- tiles -->
+<section id="tiles">
+<div class="wrap">
+<div class="shd">
+  <h2>Not just messages.</h2>
+</div>
+<ul class="tl-grid">
+
+  <li class="tl">
+    <div class="tl-stage" role="img" aria-label="A Discord profile card from a Japanese speaker. The name and pronouns keep their Japanese, with an English line under them. The status and the bio show in English, each marked with a small star.">
+      <div class="mk tl-prof">
+        <div class="bn"></div>
+        <div class="pav">さ</div>
+        <div class="bub">exams all week<span class="mk-tg">✦</span><span class="mk-was" lang="ja">試験週間</span></div>
+        <div class="pb">
+          <div class="pn" lang="ja">さくら</div>
+          <div class="pu">sakura.k · <span lang="ja">彼女</span></div>
+          <div class="nl"><span class="mk-tg tl-pre">✦</span>Sakura · she/her</div>
+          <div class="ph">About Me</div>
+          <div class="pd">Night owl. Coffee first, then physics.<span class="mk-tg">✦</span><span class="mk-was" lang="ja">夜型。まずコーヒー、それから物理。</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-cap"><h3>Profiles</h3></div>
+  </li>
+
+  <li class="tl">
+    <div class="tl-stage" role="img" aria-label="A Spanish forum post title shown in English, and a Spanish server rule with an English line under it.">
+      <div class="mk">
+        <div class="mk-chan"><i>#</i>ayuda</div>
+        <div class="tl-post">
+          <div class="tt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg><span><span class="mk-tg tl-pre">✦</span>Questions about the final exam<span class="mk-was" lang="es">Dudas del examen final</span></span></div>
+          <div class="meta">12 messages</div>
+        </div>
+        <div class="mk-chan tl-rules"><i>#</i>reglas</div>
+        <div class="tl-rule"><span class="n">1</span><div>
+          <div class="mk-tx" lang="es">Nada de spam ni autopromoción.</div>
+          <div class="mk-sl"><span class="g">✦</span> No spam or self-promotion.</div></div></div>
+      </div>
+    </div>
+    <div class="tl-cap"><h3>Threads and rules</h3></div>
+  </li>
+
+  <li class="tl">
+    <div class="tl-stage" role="img" aria-label="A French reply chain. The slang reply is translated by what it means in the conversation.">
+      <div class="mk">
+        <div class="mk-chan"><i>#</i>homework</div>
+        <div class="mk-m"><div class="mk-av" style="background:#3e8ed0">N</div><div>
+          <div class="mk-nm">noor<span class="mk-tm">18:02</span></div>
+          <div class="mk-tx" lang="fr">t'as fini le devoir de maths ?</div>
+          <div class="mk-sl"><span class="g">✦</span> fr · did you finish the math homework?</div></div></div>
+        <div class="mk-m"><div class="tl-rp"><span class="ra" style="background:#3e8ed0"></span><b>@noor</b><span lang="fr">t'as fini le devoir de maths ?</span></div>
+          <div class="mk-av" style="background:#c4a13e">T</div><div>
+          <div class="mk-nm">theo<span class="mk-tm">18:03</span></div>
+          <div class="mk-tx" lang="fr">grave, mais c'était chaud 💀</div>
+          <div class="mk-sl"><span class="g">✦</span> fr · yeah, but it was brutal 💀</div></div></div>
+      </div>
+    </div>
+    <div class="tl-cap"><h3>Gets the slang</h3></div>
+  </li>
+
+  <li class="tl">
+    <div class="tl-stage" role="img" aria-label="A German message with Discord's hover toolbar open. The lightning button is pressed and an English line appears under the message.">
+      <div class="mk tl-zap">
+        <div class="mk-chan"><i>#</i>lounge</div>
+        <div class="mk-m tl-hov">
+          <div class="tl-bar" aria-hidden="true">
+            <span class="tl-bi on">⚡<svg class="tl-cur" viewBox="0 0 18 22"><path d="M1 1l15 11.2-6.6.9 3.9 7.6-2.8 1.3-3.8-7.7L1 19z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
+            <span class="tl-bi">🌐</span>
+            <span class="tl-bi"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM8.5 8a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM7.3 14h9.4a5 5 0 0 1-9.4 0z"/></svg></span>
+            <span class="tl-bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 7 5 12l5 5M5 12h9a5 5 0 0 1 5 5v1"/></svg></span>
+          </div>
+          <div class="mk-av" style="background:#d0603e">K</div><div>
+          <div class="mk-nm">kai<span class="mk-tm">13:47</span></div>
+          <div class="mk-tx" lang="de">bin gleich zurück, hol mir nur Pizza 🍕</div>
+          <div class="mk-sl"><span class="g">✦</span> de · back in a sec, just grabbing pizza 🍕</div></div></div>
+      </div>
+    </div>
+    <div class="tl-cap"><h3>Press ⚡ on any message</h3></div>
+  </li>
+
+</ul>
 </div>
 </section>
 
 <!-- pricing -->
 <section id="pricing">
 <div class="wrap">
-<div class="plans">
-  <div class="panel plan" data-plan="ai">
-    <span class="pg">✦</span>
-    <h3>AI translation<span class="pr">$1.99 a month, or $19.99 a year</span></h3>
-    <p>Every message in another language gets its translation right under it, by itself. The AI reads the chat around each message, so slang, typos and jokes come out right.</p>
-    <ul>
-      <li>7 days of AI included, from your first translation.</li>
-      <li>Messages already in your language are left alone.</li>
-      <li>Names, pronouns, bios, statuses, thread titles and server rules too.</li>
-      <li>Gets languages typed in English letters, like Hinglish.</li>
-      <li>Mac, Windows and Chrome. Your plan follows your Discord account.</li>
-      <li>After the 7 days, 5 ⚡ AI translations a day, or subscribe in Discord.</li>
-    </ul>
-  </div>
+<div class="shd">
+  <h2>Start with 7 days of AI.</h2>
 </div>
-<p class="fine plans-note">The 7 days are once per Discord account, for accounts at least 30 days old.</p>
+<div class="panel plan" data-plan="ai">
+<div class="pr">
+
+  <div class="pr-line" aria-hidden="true"><div class="pr-dots">
+    <i class="n1">✦</i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i class="n7" style="--i:6"></i>
+  </div></div>
+  <p class="pr-ax" aria-hidden="true"><span>Day 1</span><span>Day 7</span></p>
+  <div class="pr-txt">
+    <p>Starts with your first translation.</p>
+    <p class="fine">Once per Discord account, 30+ days old.</p>
+  </div>
+
+  <div class="pr-j1" aria-hidden="true"></div>
+  <div class="pr-then">
+    <p class="pr-lab">Then</p>
+    <p class="pr-big">$1.99<span class="per">a month</span></p>
+    <p class="pr-alt">or <b>$19.99</b> a year</p>
+  </div>
+
+  <div class="pr-j2" aria-hidden="true"></div>
+  <p class="pr-bolt"><span class="pr-key" aria-hidden="true">⚡</span><span><b>No plan?</b> 5 ⚡ a day.</span></p>
+</div>
+</div>
 </div>
 </section>
 
@@ -1097,7 +1467,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   
     var steps = [
       [0, reset],
-      [100, function () { say("<b>" + S + " AI translation, under every message you can't read.</b>"); }],
+      [100, function () { say("<b>" + S + " A line under every message you can't read.</b>"); }],
       [400, function () { show("luna"); }],
       [700, function () { line("luna", "es", "anyone up for a game tonight? I'm so bored"); }],
       [1000, function () { show("kenji"); }],
@@ -1106,15 +1476,15 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       [2400, function () { show("rafa"); }],
       [700, function () {
         line("rafa", "pt", "bro I'm dying lol");
-        say("<b>Slang, typos and jokes come out right.</b> The AI reads the chat around each message.");
+        say("<b>Slang comes out right.</b>");
       }],
-      [3000, function () { say("<b>A reply is read with the message it answers.</b> Hinglish too."); show("dev"); }],
+      [3000, function () { say("<b>Replies too. Even Hinglish.</b>"); show("dev"); }],
       [700, function () { line("dev", "hi", "what's the plan, which game?"); }],
       [3000, function () { point(m("luna").querySelector(".av")); }],
       [1000, function () {
         press(m("luna").querySelector(".av"));
         if (pop) pop.hidden = false;
-        say("<b>Statuses and bios show translated, in place.</b> Press " + S + " to see the original.");
+        say("<b>Bios and statuses too.</b>");
       }],
       [1800, function () { point(bio && bio.querySelector(".tg")); }],
       [1000, function () { status(false); }],
@@ -1122,7 +1492,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       [1800, function () { if (pop) pop.hidden = true; hover("kenji"); point(globe); }],
       [1000, function () {
         showTip(globe, "Disable auto-translate here");
-        say("<b>🌐 turns a channel off</b>, from any message in it. DMs stay off until you turn one on.");
+        say("<b>🌐 turns a channel off.</b>");
       }],
       [1600, function () { press(globe); hideTip(); root.setAttribute("data-off", ""); }],
       [2000, function () { showTip(globe, "Enable auto-translate here"); }],
