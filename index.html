@@ -271,6 +271,20 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   .hero-stage::before{inset:-16px -16px 0}}
 @media (max-width:380px){.dc-head{font-size:14px}.nm{font-size:15px}.tx{font-size:15px}.sl,.sh{font-size:14px}.dm,.dh{gap:0 12px;padding:4px 12px}}
 @media (prefers-reduced-motion:reduce){.dc-cursor{display:none}}
+/* The Try box. It ships hidden and the page script shows it, so a visitor
+   with scripts off never sees a box that cannot answer. */
+.try-box{margin-top:24px;padding:18px 20px 20px}
+.try-box label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px}
+.try-box textarea,.try-box select{font:inherit;font-size:15px;color:var(--fg);background:var(--bg);border:1px solid var(--line-strong);border-radius:var(--radius);width:100%}
+.try-box textarea{display:block;min-height:84px;padding:10px 12px;resize:vertical}
+.try-box select{padding:9px 10px}
+.try-box textarea:focus-visible,.try-box select:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.try-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-top:14px}
+.try-row>div{flex:1 1 220px;min-width:0}
+.try-out{margin:16px 0 0;font-size:15.5px;line-height:1.45;font-style:italic;color:var(--fg);overflow-wrap:anywhere;white-space:pre-wrap}
+.try-out .g{font-style:normal;color:var(--accent)}
+.try-fail{margin:16px 0 0;font-size:14px;color:var(--muted)}
+@media (max-width:640px){.try-box{padding:14px 14px 16px}.try-row .btn{width:100%}}
 /* SHARED by compare, tiles and pricing (repeat VERBATIM, so the build keeps one copy).
    A section head, and a small Discord chat drawn in the page's own palette. */
 .shd{margin:0 0 36px}
@@ -630,6 +644,60 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   <p class="dc-cap" data-demo-cap><b><span class="gl-inline">✦</span> A line under every message you can't read.</b></p>
 </div>
 </div>
+</div>
+</section>
+
+<!-- try -->
+<section id="try" hidden>
+<div class="wrap">
+<p class="kicker">Try it</p>
+<h2 class="sec">Type anything. Read it in your language.</h2>
+<p class="lead">This is the AI behind Subline's ✦ lines. In Discord, it does this under each message as it arrives.</p>
+<form class="panel try-box" data-try-form>
+  <label for="try-text">A message, in any language</label>
+  <textarea id="try-text" name="text" maxlength="280" data-try-text>今日の配信めっちゃ面白かったw また明日ね</textarea>
+  <div class="try-row">
+    <div>
+      <label for="try-lang">Your language</label>
+      <select id="try-lang" name="target" data-try-lang>
+        <option value="ar">Arabic</option>
+        <option value="bn">Bengali</option>
+        <option value="zh">Chinese</option>
+        <option value="cs">Czech</option>
+        <option value="nl">Dutch</option>
+        <option value="en" selected>English</option>
+        <option value="fil">Filipino</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="el">Greek</option>
+        <option value="he">Hebrew</option>
+        <option value="hi">Hindi</option>
+        <option value="hu">Hungarian</option>
+        <option value="id">Indonesian</option>
+        <option value="it">Italian</option>
+        <option value="ja">Japanese</option>
+        <option value="ko">Korean</option>
+        <option value="ms">Malay</option>
+        <option value="fa">Persian</option>
+        <option value="pl">Polish</option>
+        <option value="pt">Portuguese</option>
+        <option value="ro">Romanian</option>
+        <option value="ru">Russian</option>
+        <option value="es">Spanish</option>
+        <option value="sv">Swedish</option>
+        <option value="th">Thai</option>
+        <option value="tr">Turkish</option>
+        <option value="uk">Ukrainian</option>
+        <option value="ur">Urdu</option>
+        <option value="vi">Vietnamese</option>
+      </select>
+    </div>
+    <button class="btn btn-secondary" type="submit" data-try-go>Translate</button>
+  </div>
+  <p class="try-out" data-try-out aria-live="polite" hidden></p>
+  <p class="try-fail" data-try-fail aria-live="polite" hidden><span data-try-msg></span> <a href="#downloads" data-try-dl>Get Subline</a></p>
+  <p class="fine">What you type goes to Subline's server and its AI service to be translated. It is not stored. <a href="privacy/#try">Privacy</a></p>
+</form>
 </div>
 </section>
 
@@ -1150,8 +1218,9 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
   // so the build inlines this text into the page and a node test runs the very
   // same text.
   //
-  // Two pings, nothing else: one when the page opens ({e: "visit"}), and one
-  // when a download button is pressed ({e: "download", os: "mac" | "win"}).
+  // Two pings, nothing else: one when a visit starts on a page ({e: "visit"};
+  // every page of the site sends it), and one when a download button on the
+  // home page is pressed ({e: "download", os: "mac" | "win"}).
   // Each carries the source: the page's ?ref= value, else the name of the site
   // the visitor came from (its host name only, never the full address), else
   // nothing. No cookie, no id, no browser details. The server keeps only daily
@@ -1178,6 +1247,19 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     }
     // The server keeps at most 40 characters of letters, digits, dots and dashes.
     return ref.slice(0, 64);
+  }
+  
+  /**
+   * Whether this visit should send its visit ping. Every page sends one when a
+   * visit starts on it. A page opened from another page of this site sends
+   * none, because the visit was counted where it began, even when its address
+   * carries a ?ref= (a guide page's download button does): counting it again
+   * would inflate the visits. The home page still reads that ?ref= for its
+   * download pings, which count who came on from which guide.
+   */
+  function visitCounts(search, referrer, ownHost) {
+    var h = /^[a-z][a-z0-9+.-]*:\/\/(?:[^\/?#@]*@)?([^\/?#:@]+)/i.exec(String(referrer || ""));
+    return !(h && h[1].toLowerCase() === String(ownHost || "").toLowerCase());
   }
   
   /** The computer type of a download button: its data-dl kind, else the hero button's default text. */
@@ -1215,7 +1297,8 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     return "none";
   }
 
-  // One visit ping now, and one download ping per press of a download button
+  // One visit ping now (unless the visit began on another page of this site,
+  // which counted it), and one download ping per press of a download button
   // (the hero buttons, whichever system they were set to, and every data-dl
   // link). Never waits and never stops the download: the link opens as usual.
   (function () {
@@ -1223,7 +1306,7 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       return sendPing(HIT_URL, payload, navigator, typeof fetch === "function" ? function (u, o) { return fetch(u, o); } : null);
     };
     var ref = pingRef(location.search, document.referrer, location.hostname);
-    send({ e: "visit", ref: ref });
+    if (visitCounts(location.search, document.referrer, location.hostname)) send({ e: "visit", ref: ref });
     [].forEach.call(document.querySelectorAll('[data-dl], [data-hero="primary"], [data-hero="secondary"]'), function (a) {
       a.addEventListener("click", function () {
         send({ e: "download", os: downloadOs(a.getAttribute("data-dl"), a.getAttribute("data-hero")), ref: ref });
@@ -1331,6 +1414,178 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       [].forEach.call(document.querySelectorAll("[data-fallback]"), function (el) { el.hidden = false; });
       [].forEach.call(document.querySelectorAll("[data-version]"), function (el) { el.setAttribute("data-state", "failed"); });
     });
+
+  // The home page's Try box: type a message, read it in your language, with the
+  // same AI that writes Subline's ✦ lines (relay POST /v1/try). Pure: no DOM of
+  // its own, and fetch is handed in, so the build inlines this text into the
+  // page and a node test runs the very same text.
+  //
+  // The request carries the text and the target language code ({text, to}, as
+  // the relay's parseTry in relay/src/tryDemo.ts reads it), nothing else:
+  // no cookie, no id, no referrer. The relay translates it, stores nothing of
+  // it, and keeps only daily counts. Nothing is kept in the browser either.
+  //
+  // Every failure ends in a plain sentence and the download link, never an
+  // error dump: a limit, a busy day, the demo switched off, a timeout, a
+  // blocked request, a reply that is not the expected JSON.
+  
+  var TRY_URL = "https://relay.subline.page/v1/try";
+  var TRY_MAX_CHARS = 280;
+  /** How long one try may take before the box gives up on it. */
+  var TRY_TIMEOUT_MS = 20000;
+  
+  /** The 30 target languages the relay accepts (bare codes, as Subline's settings use). */
+  var TRY_LANGS = [
+    "ar", "bn", "cs", "de", "el", "en", "es", "fa", "fil", "fr",
+    "he", "hi", "hu", "id", "it", "ja", "ko", "ms", "nl", "pl",
+    "pt", "ro", "ru", "sv", "th", "tr", "uk", "ur", "vi", "zh"
+  ];
+  
+  /** The visitor's language from the browser's list, if the box offers it, else English. */
+  function tryTarget(browserLangs) {
+    var list = browserLangs || [];
+    for (var i = 0; i < list.length; i++) {
+      var code = String(list[i] || "").split(/[-_]/)[0].toLowerCase();
+      if (code === "tl") code = "fil";
+      if (code === "iw") code = "he";
+      if (TRY_LANGS.indexOf(code) >= 0) return code;
+    }
+    return "en";
+  }
+  
+  /**
+   * The text as the relay accepts it: trimmed, with a tab or any other control
+   * character but the new line turned into a space. The relay refuses them, and
+   * a pasted tab is no reason to fail a try.
+   */
+  function tryClean(text) {
+    return String(text || "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0009\u000b-\u001f\u007f-\u009f]/g, " ").trim();
+  }
+  
+  /** Why a text cannot be sent ("empty" or "long"), or null when it can. Counts characters, not UTF-16 units. */
+  function tryCheck(text) {
+    var t = tryClean(text);
+    if (t === "") return "empty";
+    var n = 0;
+    for (var i = 0; i < t.length; i++) {
+      var c = t.charCodeAt(i);
+      if (c >= 0xd800 && c <= 0xdbff && i + 1 < t.length) i++;
+      n++;
+    }
+    return n > TRY_MAX_CHARS ? "long" : null;
+  }
+  
+  /**
+   * Send one try. Resolves {ok: true, text} or {ok: false, reason}, where the
+   * reason is "empty", "long", "same" (the AI found nothing to translate, as
+   * for text already in that language), "limit" (this network used its tries), "busy"
+   * (the demo's day is used up), "off" (switched off) or "error" (anything
+   * else, including no answer in time). Never rejects.
+   */
+  function tryRequest(url, text, target, fetchFn, timers) {
+    var bad = tryCheck(text);
+    if (bad) return Promise.resolve({ ok: false, reason: bad });
+    if (TRY_LANGS.indexOf(target) < 0) target = "en";
+    if (typeof fetchFn !== "function") return Promise.resolve({ ok: false, reason: "error" });
+    var ctrl = null;
+    try { ctrl = typeof AbortController === "function" ? new AbortController() : null; } catch (e) { ctrl = null; }
+    var timer = null;
+    var timeout = new Promise(function (resolve) {
+      timer = timers.setTimeout(function () {
+        try { if (ctrl) ctrl.abort(); } catch (e) { /* gone already */ }
+        resolve({ ok: false, reason: "error" });
+      }, TRY_TIMEOUT_MS);
+    });
+    var request;
+    try {
+      request = Promise.resolve(fetchFn(url, {
+        method: "POST", body: JSON.stringify({ text: tryClean(text), to: target }),
+        credentials: "omit", referrerPolicy: "no-referrer", cache: "no-store",
+        headers: { "content-type": "text/plain" }, signal: ctrl ? ctrl.signal : undefined
+      }));
+    } catch (e) {
+      request = Promise.reject(e);
+    }
+    var answer = request.then(function (res) {
+      var status = res && typeof res.status === "number" ? res.status : 0;
+      var json = res && typeof res.json === "function" ? res.json() : Promise.reject(new Error("no body"));
+      return Promise.resolve(json).then(function (b) { return tryAnswer(status, b); }, function () { return tryAnswer(status, null); });
+    }).then(null, function () { return { ok: false, reason: "error" }; });
+    return Promise.race([answer, timeout]).then(function (r) {
+      try { timers.clearTimeout(timer); } catch (e) { /* fine */ }
+      return r;
+    });
+  }
+  
+  /** The relay's answer as {ok, text} or {ok: false, reason}. */
+  function tryAnswer(status, body) {
+    var b = body && typeof body === "object" ? body : {};
+    if (status === 200 && b.ok === true && typeof b.text === "string" && b.text.trim() !== "") return { ok: true, text: b.text };
+    if (status === 200 && b.ok === true && b.skip === true) return { ok: false, reason: "same" };
+    var why = String(b.reason || b.error || "");
+    if (why === "off") return { ok: false, reason: "off" };
+    if (/busy|day/.test(why)) return { ok: false, reason: "busy" };
+    if (status === 429 || why === "limit" || why === "rate_limited") return { ok: false, reason: "limit" };
+    if (status === 503) return { ok: false, reason: "busy" };
+    return { ok: false, reason: "error" };
+  }
+  
+  /** The sentence the box shows for a reason. Each one but "empty", "long" and "same" sits beside the download link. */
+  function tryMessage(reason) {
+    switch (reason) {
+      case "empty": return "Type a message first.";
+      case "long": return "That's over " + TRY_MAX_CHARS + " characters. Try a shorter message.";
+      case "same": return "That's already in your language. Try a message in another one.";
+      case "limit": return "That's all the tries for now. In Discord, Subline translates messages for you as they arrive.";
+      case "busy": return "The demo has had all its tries for today. In Discord, Subline translates messages for you as they arrive.";
+      case "off": return "The demo is paused right now. In Discord, Subline translates messages for you as they arrive.";
+      default: return "The demo didn't answer. Try again in a minute.";
+    }
+  }
+
+  // The Try box. Shown only here, with scripts on, and never under the thanks
+  // view. The answer is written with textContent only. The text is sent once
+  // per press, to the relay only, and kept nowhere.
+  (function () {
+    var box = document.getElementById("try");
+    var thanks = document.getElementById("thanks");
+    if (!box || typeof fetch !== "function" || (thanks && !thanks.hidden)) return;
+    var form = box.querySelector("[data-try-form]");
+    var input = box.querySelector("[data-try-text]");
+    var lang = box.querySelector("[data-try-lang]");
+    var go = box.querySelector("[data-try-go]");
+    var out = box.querySelector("[data-try-out]");
+    var fail = box.querySelector("[data-try-fail]");
+    var msg = box.querySelector("[data-try-msg]");
+    var dl = box.querySelector("[data-try-dl]");
+    if (!form || !input || !lang || !go || !out || !fail || !msg) return;
+    lang.value = tryTarget(navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]);
+    box.hidden = false;
+    var busy = false;
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      if (busy) return;
+      var bad = tryCheck(input.value);
+      out.hidden = true;
+      if (bad) { msg.textContent = tryMessage(bad); if (dl) dl.hidden = true; fail.hidden = false; return; }
+      busy = true;
+      go.disabled = true;
+      go.textContent = "Translating…";
+      fail.hidden = true;
+      tryRequest(TRY_URL, input.value, lang.value, function (u, o) { return fetch(u, o); }, {
+        setTimeout: function (fn, ms) { return setTimeout(fn, ms); },
+        clearTimeout: function (t) { clearTimeout(t); }
+      }).then(function (r) {
+        busy = false;
+        go.disabled = false;
+        go.textContent = "Translate";
+        if (r.ok) { out.textContent = "✦ " + r.text; out.hidden = false; return; }
+        msg.textContent = tryMessage(r.reason);
+        if (dl) dl.hidden = r.reason === "empty" || r.reason === "long" || r.reason === "same";
+        fail.hidden = false;
+      });
+    });
+  })();
 
   // The hero demo: a Discord channel that plays what Subline does, then loops.
   // It follows the real client (0.2.9, AI only): every line is ✦, from the
