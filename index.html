@@ -163,6 +163,17 @@ a:hover{color:var(--fg)}
 details.thanks-fallback{margin-top:18px;max-width:560px}
 details.thanks-fallback summary{cursor:pointer;font-size:14px;color:var(--muted)}
 details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+/* "Where did you hear about Subline?": one quiet line under the downloads.
+   Hidden until a download button is pressed (the page script shows it);
+   one tap swaps it for "Thanks!". Never a modal. Prefix: heard- */
+.heard{margin-top:14px;font-size:12.5px;color:var(--muted)}
+.heard [hidden]{display:none}
+.heard-ask{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.heard-q{margin-right:4px}
+.heard-chip{font-family:inherit;font-size:12.5px;line-height:1.3;color:var(--fg);background:var(--panel);border:1px solid var(--line-strong);
+  border-radius:999px;padding:3px 10px;cursor:pointer}
+.heard-chip:hover{border-color:var(--muted)}
+.heard-chip:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 #hero .wrap{max-width:1160px;padding-top:56px;padding-bottom:24px}
 .hero{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:center}
 .hero h1{font-family:var(--font-serif);font-size:52px;line-height:1.04;letter-spacing:-.02em;font-weight:400;margin:22px 0 0;max-width:14ch}
@@ -491,6 +502,10 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       <a data-dl="win" class="btn btn-secondary" href="https://github.com/subline-page/subline/releases/latest">Download for Windows</a>
     </div>
     <p class="fine" data-thanks-intel hidden>Intel Mac? <a data-dl="mac-intel" href="https://github.com/subline-page/subline/releases/latest">Get the Intel version.</a></p>
+    <div class="heard" data-heard hidden aria-live="polite">
+      <div class="heard-ask" data-heard-ask><span class="heard-q">Where did you hear about Subline?</span><button type="button" class="heard-chip" data-heard-pick="server">A Discord server</button><button type="button" class="heard-chip" data-heard-pick="friend">A friend</button><button type="button" class="heard-chip" data-heard-pick="reddit">Reddit</button><button type="button" class="heard-chip" data-heard-pick="video">YouTube or TikTok</button><button type="button" class="heard-chip" data-heard-pick="search">A web search</button><button type="button" class="heard-chip" data-heard-pick="other">Somewhere else</button></div>
+      <div data-heard-done hidden>Thanks!</div>
+    </div>
   </div>
 </div>
 <div data-thanks-pending hidden>
@@ -554,6 +569,10 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
     <p class="also">Also for <a data-hero="secondary" href="https://github.com/subline-page/subline/releases/latest">Windows</a><span data-hero="intel" hidden> · <a data-dl="mac-intel" href="https://github.com/subline-page/subline/releases/latest">Intel Mac</a></span><span data-store="chrome"> · <a href="https://chromewebstore.google.com/detail/subline/eenbmffpbhjoadmigpnhidcoafmcncaa">Chrome</a></span></p>
     <p class="fine" data-hero="win-note" hidden>Windows warns the first time, because Subline isn't signed for Windows yet. Choose <b>Keep</b>, then <b>More info</b>, then <b>Run anyway</b>.</p>
     <p class="fine" data-hero="phone" hidden>Subline runs on a Mac or Windows computer. Open this page there.</p>
+    <div class="heard" data-heard hidden aria-live="polite">
+      <div class="heard-ask" data-heard-ask><span class="heard-q">Where did you hear about Subline?</span><button type="button" class="heard-chip" data-heard-pick="server">A Discord server</button><button type="button" class="heard-chip" data-heard-pick="friend">A friend</button><button type="button" class="heard-chip" data-heard-pick="reddit">Reddit</button><button type="button" class="heard-chip" data-heard-pick="video">YouTube or TikTok</button><button type="button" class="heard-chip" data-heard-pick="search">A web search</button><button type="button" class="heard-chip" data-heard-pick="other">Somewhere else</button></div>
+      <div data-heard-done hidden>Thanks!</div>
+    </div>
   </div>
 </div>
 
@@ -1311,6 +1330,93 @@ details.thanks-fallback summary:focus-visible{outline:2px solid var(--focus);out
       a.addEventListener("click", function () {
         send({ e: "download", os: downloadOs(a.getAttribute("data-dl"), a.getAttribute("data-hero")), ref: ref });
       });
+    });
+  })();
+
+  // "Where did you hear about Subline?" under the download buttons, on the
+  // home page only. Pure: no DOM of its own, and the storage is handed in, so
+  // the build inlines this text into the page and a node test runs the very
+  // same text.
+  //
+  // The page shows the line after a download button is pressed, never before.
+  // It never stops or slows the download, and ignoring it is the way to close
+  // it. A tap on an answer sends ONE ping to the relay ({e: "heard", h: name},
+  // POST /v1/hit, sendPing in ping.js), counted with the Discord app's answers
+  // (relay src/funnel.ts), and leaves a mark in this browser's local storage so
+  // the question never shows here again. The mark is "1": the answer itself is
+  // not kept. Where storage is blocked, the question can show on a later visit.
+  
+  var HEARD_KEY = "subline-heard";
+  
+  /** The answers' names, as the relay counts them (relay funnel.ts SITE_HEARD_SOURCES). */
+  var HEARD_NAMES = ["server", "friend", "reddit", "video", "search", "other"];
+  
+  /** This browser's local storage, or null where it is blocked (even reading window.localStorage can throw). */
+  function heardStorage(win) {
+    try {
+      return win && win.localStorage ? win.localStorage : null;
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  /** Whether this browser answered already. Blocked or broken storage counts as no. */
+  function heardAnswered(store) {
+    try {
+      return !!store && store.getItem(HEARD_KEY) === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  /** Keep the mark that this browser answered (only that it did). Never throws. */
+  function heardRemember(store) {
+    try {
+      if (store) store.setItem(HEARD_KEY, "1");
+    } catch (e) {
+      // full or blocked: the question can show again on a later visit
+    }
+  }
+  
+  /** The ping for an answer's name, or null for any other name. */
+  function heardPayload(name) {
+    return HEARD_NAMES.indexOf(name) >= 0 ? { e: "heard", h: name } : null;
+  }
+
+  // "Where did you hear about Subline?" A download press shows the line under
+  // the buttons of the part of the page that was pressed (the hero, or the
+  // thanks view), once per page and only while this browser has not answered.
+  // The download goes on as usual: nothing here stops or slows it. One tap
+  // shows "Thanks!", sends one ping, and keeps the mark (heard.js).
+  (function () {
+    var store = heardStorage(window);
+    var boxes = [].slice.call(document.querySelectorAll("[data-heard]"));
+    if (!boxes.length || heardAnswered(store)) return;
+    var shown = false, sent = false;
+    function show(a) {
+      if (shown || heardAnswered(store)) return;
+      var part = a.closest ? a.closest("section") : null;
+      var box = boxes.filter(function (b) { return !part || part.contains(b); })[0];
+      if (!box) return;
+      shown = true;
+      box.hidden = false;
+    }
+    boxes.forEach(function (box) {
+      [].forEach.call(box.querySelectorAll("[data-heard-pick]"), function (chip) {
+        chip.addEventListener("click", function () {
+          var payload = heardPayload(chip.getAttribute("data-heard-pick"));
+          if (sent || !payload) return;
+          sent = true;
+          heardRemember(store);
+          sendPing(HIT_URL, payload, navigator, typeof fetch === "function" ? function (u, o) { return fetch(u, o); } : null);
+          var ask = box.querySelector("[data-heard-ask]"), done = box.querySelector("[data-heard-done]");
+          if (ask) ask.hidden = true;
+          if (done) done.hidden = false;
+        });
+      });
+    });
+    [].forEach.call(document.querySelectorAll('[data-dl], [data-hero="primary"], [data-hero="secondary"]'), function (a) {
+      a.addEventListener("click", function () { show(a); });
     });
   })();
 

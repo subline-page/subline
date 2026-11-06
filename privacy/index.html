@@ -212,7 +212,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <a class="pv-back" href="../">← subline.page</a>
 
 <h1>Privacy</h1>
-<p class="pv-date">Last updated 25 October 2026</p>
+<p class="pv-date">Last updated 6 November 2026</p>
 <p class="pv-intro">Subline translates Discord messages on your computer. To translate, it must send text to a translation service. This page says what leaves your computer, where it goes, what is kept, and for how long. It describes what the current version (0.2.9) does today. Version 0.2.9 translates only with AI and does not use Google Translate. Older versions are under <a href="#older">Older versions</a>. Where something is outside our control, or we have not confirmed it, this page says so.</p>
 
 <nav class="toc" aria-label="Contents">
@@ -263,7 +263,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>Feedback goes only when you press Send.</b> You see all of it first. The relay keeps it for 180 days and emails a copy to the owner. See <a href="#feedback">Feedback box</a>.</li>
   <li><b>Payments go through Dodo Payments, and start only inside Discord.</b> This website sells nothing. Dodo collects your name, email and payment details. Dodo's payment notices to the relay can include your name, email, address and some card details. The relay does not store or log them.</li>
   <li><b>Subline checks in with the relay</b> every time Discord starts, and about every 24 hours. It sends your install id. Only uninstalling stops this.</li>
-  <li><b>No ads and no cookies.</b> No third-party analytics or tracking scripts in the app or on this website. This website sends Subline's server one ping when you open one of its pages, and one when you press a download button. The relay keeps only daily counts of these, and its own usage counts (see <a href="#stats">Stats</a> and <a href="#website">This website</a>).</li>
+  <li><b>No ads and no cookies.</b> No third-party analytics or tracking scripts in the app or on this website. This website sends Subline's server one ping when you open one of its pages, one when you press a download button, and one if you then answer where you heard about Subline. The relay keeps only daily counts of these, and its own usage counts (see <a href="#stats">Stats</a> and <a href="#website">This website</a>).</li>
   <li><b>Your computer keeps copies.</b> Translations, your code (in plain text), a log file and settings stay on your computer. Some of these stay after you uninstall.</li>
   <li><b>You can turn things off.</b> Use the globe button for one channel, or <b>Subline → Settings</b> for all servers and for profiles and embeds. DMs are off until you turn one on.</li>
 </ul>
@@ -416,8 +416,9 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Channel switches</td><td data-k="Contents">For each Discord account here: the ids of channels it turned on or off with the globe button, and when each one changed. For a linked account, also the salt from the relay, and up to 1,000 scrambled entries from the relay that wait until this computer can match them to a channel. See <a href="#sync">Settings and 🌐 choices on every computer</a>.</td><td data-k="How long">No time limit.</td></tr>
 <tr><td>Settings for each account</td><td data-k="Contents">For each Discord account here: its own copy of five settings (your reading language, <b>Earlier messages</b>, <b>All servers</b>, <b>Profiles, embeds and more</b>, <b>Names and pronouns</b>), and when each one changed.</td><td data-k="How long">No time limit.</td></tr>
 <tr><td>Weekly note</td><td data-k="Contents">A count of translations this week and up to 200 language codes. No text, no ids.</td><td data-k="How long">Reset each week.</td></tr>
+<tr><td>Days used</td><td data-k="Contents">The dates of up to 60 days on which a translation showed, when the first one was, when the review request showed, and when the last error happened (the time only, not the error). No text, no ids, no languages. Never sent.</td><td data-k="How long">No time limit.</td></tr>
 <tr><td>Daily counters</td><td data-k="Contents">How many ⚡ translations without AI and ✦ profile translations you used today.</td><td data-k="How long">Reset each day.</td></tr>
-<tr><td>Small markers</td><td data-k="Contents">Patch check dates, rate-limit pauses, which notices you saw, which plan messages each Discord account here saw (the last-day notice and the ended panel, by period), whether the 0.2.9 update panel showed, and whether this computer used Subline before 0.2.0.</td><td data-k="How long">No time limit.</td></tr>
+<tr><td>Small markers</td><td data-k="Contents">Patch check dates, rate-limit pauses, which notices you saw, which plan messages each Discord account here saw (the last-day notice and the ended panel, by period), whether the 0.2.9 update panel showed, whether the question where you heard about Subline showed, and whether this computer used Subline before 0.2.0.</td><td data-k="How long">No time limit.</td></tr>
 </tbody></table>
 <p>Some data lives in memory only. It is gone when Discord closes. This includes the last 2,000 message texts, the last 64 messages per channel used for context, the last 10 error codes (for the feedback box), text you typed in the feedback box but did not send, and some short lookup tables.</p>
 <p>Uninstalling Subline does not remove this storage. Subline has no button to clear it. It lives in Discord's own app data folder. Deleting that folder removes it, and also signs you out of Discord.</p>
@@ -683,7 +684,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Starts of AI periods</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily record of the periods that started there (see <a href="#periods">The 7 days of AI</a>).</td><td data-k="How long">Until the end of that UTC day</td></tr>
 <tr><td>Status checks</td><td data-k="Form">For the daily install counts (see <a href="#stats">Stats</a>): a keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 50 installs and 5 new installs are counted per address a day. Before a period has started, a check also reads the start limit for the address (see Starts of AI periods). It stores nothing for that.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Website Try box</td><td data-k="Form">A keyed hash of the first 24 bits of IPv4 or the first 48 bits of IPv6 (your network, not only your address), in the name of a daily counter and a per-minute counter. Counts only. At most 5 tries a minute and 30 a day per network, shared by everyone on it.</td><td data-k="How long">The per-minute counter about a minute; the daily counter until the first daily cleanup after that UTC day</td></tr>
-<tr><td>Website pings</td><td data-k="Form">A keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 30 page opens and 10 download presses are counted per address a day.</td><td data-k="How long">2 days</td></tr>
+<tr><td>Website pings</td><td data-k="Form">A keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 30 page opens, 10 download presses and 10 answers are counted per address a day.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Link and price steps</td><td data-k="Form">A keyed hash of IPv4 in full or the first 64 bits of IPv6, in the name of a daily counter. Counts only. At most 100 steps are counted per address a day.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Checkout limit</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name.</td><td data-k="How long">2 hours</td></tr>
 <tr><td>Server code tries</td><td data-k="Form">Keyed hash of IPv4 in full or the first 64 bits of IPv6, in a counter's name. Counts only.</td><td data-k="How long">2 days</td></tr>
@@ -756,13 +757,14 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 </ul>
 
 <h3 id="steps">Link and price steps</h3>
-<p>So the owner can see where people stop, Subline in the Discord app tells the relay when you reach some steps (<code>/v1/event</code>):</p>
+<p>So the owner can see where people stop, and how people find Subline, Subline tells the relay when you reach some steps (<code>/v1/event</code>):</p>
 <ul>
   <li>The Link bar showed. Discord's Authorize window opened. The link finished. The window closed without a link. The prices showed to a linked Discord account with no plan and no code.</li>
-  <li>The request holds only the step's name, from that fixed list of five. Like every relay request, it carries your code (if you have one), your install id, the Subline version and the app it runs in.</li>
+  <li>Your answer to "Where did you hear about Subline?". Subline asks this once per computer, after your first translation. If you tap an answer (a Discord server, a friend, Reddit, YouTube or TikTok, a web search, the Chrome Web Store, or somewhere else), only that answer's name is sent. <b>Skip</b> or closing the question sends nothing.</li>
+  <li>The request holds only the step's name, from that fixed list of twelve: the five steps and the seven answers. Like every relay request, it carries your code (if you have one), your install id, the Subline version and the app it runs in.</li>
   <li>Each step goes at most once per Discord session. A step that fails is not sent again.</li>
-  <li>The browser add-on does not send these.</li>
-  <li>The relay counts each step once per install. For this, it keeps a marker for each step, named with a keyed hash of your install id (see <a href="#ip">IP addresses</a>), for 400 days. The counts are numbers only, kept 400 days.</li>
+  <li>The browser add-on sends these too. In Firefox, only if you allowed technical and interaction data for Subline.</li>
+  <li>The relay counts each step once per install, and one answer per install for the question. For this, it keeps a marker for each step and one marker for all the answers, named with a keyed hash of your install id (see <a href="#ip">IP addresses</a>), for 400 days. The counts are numbers only, kept 400 days.</li>
   <li>To limit fake counts, the relay counts at most 100 steps per IP address a day. The counter's name holds a keyed hash of your address, not the address. It is deleted after 2 days.</li>
   <li>The owner's own installs are not counted. If the relay's secret key is missing, nothing is counted.</li>
 </ul>
@@ -773,7 +775,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <h2 id="browser">The browser add-on</h2>
 <p>Subline can also come as an add-on for Discord in your browser: Chrome, Edge, Brave and Opera through the Chrome Web Store, and Firefox through Firefox Add-ons. The Chrome add-on is out since 19 October 2026. The Firefox add-on is not out yet.</p>
 <ul>
-  <li>It runs the same Subline inside Discord in your browser. It sends the same kinds of requests as Subline in the Discord app, as this page describes: translations, status checks, linking, settings sync, checkout, server codes, patch reports and feedback, all to the relay. It does not send link and price steps or check for updates.</li>
+  <li>It runs the same Subline inside Discord in your browser. It sends the same kinds of requests as Subline in the Discord app, as this page describes: translations, status checks, linking, settings sync, checkout, server codes, patch reports, feedback, and link and price steps, all to the relay. It does not check for updates.</li>
   <li>The add-on's own background part sends these requests, only to <code>relay.subline.page</code>. Version 0.2.9 of the add-on has no access to Google's translate service.</li>
   <li>The add-on also has access to <code>discord.com</code> pages. It uses it for one thing: it removes Discord's Content-Security-Policy headers from those pages, so Subline can run inside Discord. Vencord's own browser add-on does the same. It reads nothing and sends nothing through this access.</li>
   <li>You link your Discord account in the browser once, the same way. Your plan then works there.</li>
@@ -803,6 +805,12 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
   <li><b>App details.</b> The Subline version and build, your system (Mac, Windows, Linux or other) and your plan.</li>
 </ul>
 <p>The report, the error codes and the app details each have a tick box. They are ticked by default. Untick one, and it is not sent.</p>
+
+<h3>Share translation and the review request</h3>
+<ul>
+  <li>A message that shows a Subline translation also has <b>Share translation</b> on its right-click menu. It makes an image on your computer of that one message and its translation. The author's name and picture, mentions of people, roles and channels, links, the server and any Discord ids are left out, and text hidden as a spoiler stays hidden. Other names typed in the message stay. You see the image first, so you can check it. <b>Copy image</b> puts it on your clipboard, or <b>Save image</b> saves it as a file. Subline sends nothing: you choose where to paste it.</li>
+  <li>Once per computer, after you have used Subline on several days, Subline may ask if it is useful to you. In the add-on for Chrome, Edge, Brave and Opera, the button opens the add-on's reviews on the Chrome Web Store. In the Discord app and in Firefox, it opens this feedback box. The question itself sends nothing.</li>
+</ul>
 
 <h3>Nothing is sent by itself</h3>
 <ul>
@@ -858,9 +866,10 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <ul>
   <li>This website sells nothing. All buying happens inside Discord.</li>
   <li>subline.page is hosted on <b>GitHub Pages</b>. GitHub receives each visit, with your IP address.</li>
-  <li>No cookies. No local storage. No third-party analytics, scripts, fonts or images.</li>
+  <li>No cookies. No third-party analytics, scripts, fonts or images. Local storage holds one mark only: that this browser answered where you heard about Subline.</li>
   <li><b>Pings to Subline's server.</b> Every page of this website, this one too, sends one ping to the relay when it opens. A page you reach from another page of this website sends none, because your visit was already counted. The home page sends one more when you press a download button.</li>
   <li>A ping holds the source: the page's <code>?ref=</code> value, or the name of the site you came from (for example reddit.com, never the full address). A download ping also holds the computer type of the button: Mac or Windows.</li>
+  <li>After you press a download button, the home page asks where you heard about Subline. If you tap an answer, one more ping holds only that answer's name, and the relay counts it, at most 10 answers per IP address a day.</li>
   <li>A ping sets no cookie and holds no id. The relay keeps no IP address, no browser details and no id from it.</li>
   <li>The relay keeps only daily counts: page opens, and download presses for Mac and for Windows, each also per source. It keeps up to 50 source names a day. Other sources count as "other". The counts are kept 400 days.</li>
   <li>To limit fake counts, the relay counts at most 30 page opens and 10 download presses per IP address a day. The counter's name holds a keyed hash of your address, not the address (see <a href="#ip">IP addresses</a>). It is deleted after 2 days.</li>
@@ -993,7 +1002,7 @@ table.rt caption{caption-side:top;text-align:left;font-weight:600;padding:0 0 10
 <tr><td>Browser sign-in code</td><td data-k="Holds">Discord's one-time code, scrambled install id, keyed hash of the address.</td><td data-k="How long">At most 5 minutes</td></tr>
 <tr><td>Linking limits</td><td data-k="Holds">Counts per computer (links, and checks while it waits for your browser) and per keyed hash of IP, deleted when the hour ends.</td><td data-k="How long">About an hour</td></tr>
 <tr><td>Sync limits</td><td data-k="Holds">Counts of changes sent per computer, under its scrambled install id, deleted when the hour ends.</td><td data-k="How long">About an hour</td></tr>
-<tr><td>Link and price step markers</td><td data-k="Holds">One marker per step, named with a keyed hash of the install id.</td><td data-k="How long">400 days</td></tr>
+<tr><td>Link and price step markers</td><td data-k="Holds">One marker per step, and one for all the answers to where you heard about Subline, named with a keyed hash of the install id.</td><td data-k="How long">400 days</td></tr>
 <tr><td>Link and price step limits</td><td data-k="Holds">Counts, under a keyed hash of IP.</td><td data-k="How long">2 days</td></tr>
 <tr><td>Daily totals</td><td data-k="Holds">Numbers only.</td><td data-k="How long">400 days</td></tr>
 <tr><td>AI use per day</td><td data-k="Holds">Numbers only, per kind of AI.</td><td data-k="How long">60 days</td></tr>
